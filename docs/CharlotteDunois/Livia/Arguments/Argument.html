@@ -210,7 +210,7 @@
                     <abbr title="React\Promise\Promise">Promise</abbr>
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_obtain">obtain</a>(<a href="../../../CharlotteDunois/Livia/CommandMessage.html"><abbr title="CharlotteDunois\Livia\CommandMessage">CommandMessage</abbr></a> $message, $value, $promptLimit = \INF, array $prompts = array(), array $answers = array())
+                    <a href="#method_obtain">obtain</a>(<a href="../../../CharlotteDunois/Livia/CommandMessage.html"><abbr title="CharlotteDunois\Livia\CommandMessage">CommandMessage</abbr></a> $message, $value, $promptLimit = \INF, array $prompts = array(), array $answers = array(), bool $valid = null)
         
                                             <p>Prompts the user and obtains the value for the argument. Resolves with an array of ('value' => mixed, 'cancelled' => string|null, 'prompts' => Message[], 'answers' => Message[]). Cancelled can be one of user, time and promptLimit.</p>                </div>
                 <div class="col-md-2"></div>
@@ -290,9 +290,9 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_obtain">
-        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/Arguments/Argument.php#L118">line 118</a></div>
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/Arguments/Argument.php#L119">line 119</a></div>
         <code>                    <abbr title="React\Promise\Promise">Promise</abbr>
-    <strong>obtain</strong>(<a href="../../../CharlotteDunois/Livia/CommandMessage.html"><abbr title="CharlotteDunois\Livia\CommandMessage">CommandMessage</abbr></a> $message, $value, $promptLimit = \INF, array $prompts = array(), array $answers = array())
+    <strong>obtain</strong>(<a href="../../../CharlotteDunois/Livia/CommandMessage.html"><abbr title="CharlotteDunois\Livia\CommandMessage">CommandMessage</abbr></a> $message, $value, $promptLimit = \INF, array $prompts = array(), array $answers = array(), bool $valid = null)
         </code>
     </h3>
     <div class="details">
@@ -330,6 +330,11 @@
                 <td>$answers</td>
                 <td></td>
             </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$valid</td>
+                <td></td>
+            </tr>
             </table>
 
             
@@ -350,7 +355,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_obtainInfinite">
-        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/Arguments/Argument.php#L210">line 210</a></div>
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/Arguments/Argument.php#L212">line 212</a></div>
         <code>                    <abbr title="React\Promise\Promise">Promise</abbr>
     <strong>obtainInfinite</strong>(<a href="../../../CharlotteDunois/Livia/CommandMessage.html"><abbr title="CharlotteDunois\Livia\CommandMessage">CommandMessage</abbr></a> $message, array $values = array(), $promptLimit = \INF, array $prompts = array(), array $answers = array(), int $currentVal)
         </code>

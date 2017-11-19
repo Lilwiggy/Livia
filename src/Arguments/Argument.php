@@ -117,7 +117,7 @@ class Argument {
      * @return \React\Promise\Promise
      */
     function obtain(\CharlotteDunois\Livia\CommandMessage $message, $value, $promptLimit = \INF, array $prompts = array(), array $answers = array(), bool $valid = null) {
-        return (new \React\Promise\Promise(function (callable $resolve, callable $reject) use ($message, $value, $promptLimit, $prompts, $answers) {
+        return (new \React\Promise\Promise(function (callable $resolve, callable $reject) use ($message, $value, $promptLimit, $prompts, $answers, $valid) {
             if(!$value && $this->default) {
                 return $resolve(array(
                     'value' => $this->default,
@@ -153,7 +153,7 @@ class Argument {
                             }, array(
                                 'max' => 1,
                                 'time' => $this->wait
-                            ))->then(function ($messages) use ($message, $promptLimit, $prompts, $answers, $resolve, $reject) {
+                            ))->then(function ($messages) use ($message, $promptLimit, $prompts, $answers, $resolve) {
                                 if($messages->count() === 0) {
                                     return $resolve(array(
                                         'value' => null,
