@@ -111,11 +111,12 @@ class Argument {
     /**
      * Prompts the user and obtains the value for the argument. Resolves with an array of ('value' => mixed, 'cancelled' => string|null, 'prompts' => Message[], 'answers' => Message[]). Cancelled can be one of user, time and promptLimit.
      * @param \CharlotteDunois\Livia\CommandMessage  $message      Message that triggered the command.
-     * @param string                                 $value        Pre-provided value.
+     * @param string|string[]                        $value        Pre-provided value(s).
      * @param int|double                             $promptLimit  Maximum number of times to prompt for the argument.
+     * @param bool|null                              $valid        Whether the last retrieved value was valid.
      * @return \React\Promise\Promise
      */
-    function obtain(\CharlotteDunois\Livia\CommandMessage $message, $value, $promptLimit = \INF, array $prompts = array(), array $answers = array()) {
+    function obtain(\CharlotteDunois\Livia\CommandMessage $message, $value, $promptLimit = \INF, array $prompts = array(), array $answers = array(), bool $valid = null) {
         return (new \React\Promise\Promise(function (callable $resolve, callable $reject) use ($message, $value, $promptLimit, $prompts, $answers) {
             if(!$value && $this->default) {
                 return $resolve(array(
@@ -127,7 +128,8 @@ class Argument {
             }
             
             if($this->infinite) {
-                return $this->obtainInfinite($message, $value, $promptLimit)->then($resolve, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
+                $this->obtainInfinite($message, (\is_array($value) ? $value : array($value)), $promptLimit)->then($resolve, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
+                return;
             }
             
             if(\count($prompts) > $promptLimit) {
@@ -142,7 +144,7 @@ class Argument {
             // Prompt the user for a new value
             $message->reply(($value === null ? $this->prompt : ($valid ? $valid : 'You provided an invalid '.$this->label.'.')).PHP_EOL.
                             'Please try again. Respond with `cancel` to cancel the command. The command will automatically be cancelled in  '.$this->wait.' seconds.')
-                        ->then(function ($msg) use ($message, $value, $promptLimit, $prompts, $answers, $resolve) {
+                        ->then(function ($msg) use ($message, $valid, $promptLimit, $prompts, $answers, $resolve, $reject) {
                             $prompts[] = $msg;
                             
                             // Get the user's response
@@ -166,7 +168,7 @@ class Argument {
                                 
                                 $value = $msg->content;
                                 
-                                if(\strotolower($value) === 'cancel') {
+                                if(\strtolower($value) === 'cancel') {
                                     return $resolve(array(
                                         'value' => null,
                                         'cancelled' => 'user',
@@ -175,17 +177,17 @@ class Argument {
                                     ));
                                 }
                                 
-                                $validate = ($this->validate ? $this->validate : $this->type->validate)($value, $message, $this->type);
+                                $validate = ($this->validate ? array($this, 'validate') : array($this->type, 'validate'))($value, $message, $this->type);
                                 if(!($validate instanceof \React\Promise\PromiseInterface)) {
                                     $validate = \React\Promise\resolve($validate);
                                 }
                                 
-                                return $validate->then(function ($valid) use ($message, $value, $promptLimit, $prompts, $answers, $resolve, $reject) {
+                                return $validate->then(function ($valid) use ($message, $value, $promptLimit, $prompts, $answers) {
                                     if($valid === false) {
-                                        return $this->obtain($message, $value, $promptLimit, $prompts, $answers);
+                                        return $this->obtain($message, $value, $promptLimit, $prompts, $answers, $valid);
                                     }
                                     
-                                    return ($this->parse ? $this->parse : $this->type->parse)($value, $message, $this->type);
+                                    return ($this->parse ? array($this, 'parse') : array($this->type, 'parse'))($value, $message, $this->type);
                                 });
                             }, function () use ($resolve) {
                                 return $resolve(array(
@@ -214,7 +216,7 @@ class Argument {
                 $value = $values[(\count($values) - 1)];
             }
             
-            $this->infiniteObtain($message, $value, $values, $prompts, $prompts, $answers, $currentVal)->then(function ($value) use ($message, $values, $promptLimit, $prompts, $answers, $currentVal, $resolve, $reject) {
+            $this->infiniteObtain($message, $value, $values, $promptLimit, $prompts, $answers)->then(function ($value) use ($message, $values, $promptLimit, $prompts, $answers, $currentVal, $resolve) {
                 if(\is_array($value)) {
                     return $resolve($value);
                 }
@@ -227,14 +229,22 @@ class Argument {
         }));
     }
     
-    protected function infiniteObtain(\CharlotteDunois\Livia\CommandMessage $message, $value, array &$values, $promptLimit, array &$prompts, array &$answers) {
+    protected function infiniteObtain(\CharlotteDunois\Livia\CommandMessage $message, $value, array &$values, $promptLimit, array &$prompts, array &$answers, bool $valid = null) {
         if($value === null) {
-            $reply = $message->reply($this->prompt);
+            $reply = $message->reply($this->prompt.PHP_EOL.
+                'Respond with `cancel` to cancel the command, or `finish` to finish entry up to this point.'.PHP_EOL.
+                'The command will automatically be cancelled in '.$this->wait.' seconds.');
+        } elseif($valid === false) {
+            $escaped = \str_replace('@', "@\u{200B}", \CharlotteDunois\Yasmin\Utils\DataHelpers::escapeMarkdown($value));
+            
+            $reply = $message->reply('You provided an invalid '.$this->label.','.PHP_EOL.
+                '"'.(\strlen($escaped) < 1850 ? $escaped : '[too long to show]').'".'.PHP_EOL.
+				'Please try again.');
         } else {
             $reply = \React\Promise\resolve(null);
         }
         
-        return $reply->then(function ($msg) use ($message, $value, $values, $promptLimit, $prompts, $answers) {
+        return $reply->then(function ($msg) use ($message, &$values, $promptLimit, &$prompts, &$answers) {
             if($msg !== null) {
                 $prompts[] = $msg;
             }
@@ -254,14 +264,14 @@ class Argument {
             }, array(
                 'max' => 1,
                 'time' => $this->wait
-            ))->then(function ($messages) use ($message, $values, $promptLimit, $prompts, $answers) {
+            ))->then(function ($messages) use ($message, &$values, $promptLimit, &$prompts, &$answers) {
                 if($messages->count() === 0) {
-                    return $resolve(array(
+                    return array(
                         'value' => null,
                         'cancelled' => 'time',
                         'prompts' => $prompts,
                         'answers' => $answers
-                    ));
+                    );
                 }
                 
                 $msg = $messages->first();
@@ -269,14 +279,14 @@ class Argument {
                 
                 $value = $msg->content;
                 
-                if(\strotolower($value) === 'finish') {
+                if(\strtolower($value) === 'finish') {
                     return array(
                         'value' => $values,
                         'cancelled' => (\count($values) > 0 ? null : 'user'),
                         'prompts' => $prompts,
                         'answers' => $answers
                     );
-                } elseif(\strotolower($value) === 'cancel') {
+                } elseif(\strtolower($value) === 'cancel') {
                     return array(
                         'value' => null,
                         'cancelled' => 'user',
@@ -285,17 +295,17 @@ class Argument {
                     );
                 }
                 
-                $validate = ($this->validate ? $this->validate : $this->type->validate)($value, $message, $this->type);
+                $validate = ($this->validate ? array($this, 'validate') : array($this->type, 'validate'))($value, $message, $this->type);
                 if(!($validate instanceof \React\Promise\PromiseInterface)) {
                     $validate = \React\Promise\resolve($validate);
                 }
                 
-                return $validate->then(function ($valid) use ($message, $value, $values, $promptLimit, $prompts, $answers) {
+                return $validate->then(function ($valid) use ($message, $value, &$values, $promptLimit, &$prompts, &$answers) {
                     if($valid === false) {
-                        return $this->infiniteObtain($message, $values, $promptLimit, $prompts, $answers);
+                        return $this->infiniteObtain($message, $value, $values, $promptLimit, $prompts, $answers, $valid);
                     }
                     
-                    return ($this->parse ? $this->parse : $this->type->parse)($value, $message, $this->type);
+                    return ($this->parse ? array($this, 'parse') : array($this->type, 'parse'))($value, $message, $this->type);
                 });
             }, function () {
                 return array(

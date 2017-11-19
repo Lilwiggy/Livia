@@ -79,7 +79,7 @@ class CommandDispatcher {
      * @return \React\Promise\Promise
      */
     function handleMessage(\CharlotteDunois\Yasmin\Models\Message $message, \CharlotteDunois\Yasmin\Models\Message $oldMessage = null) {
-        return (new \React\Promise\Promise(function (callable $resolve, callable $reject) use ($message, $oldMessage) {
+        return (new \React\Promise\Promise(function (callable $resolve) use ($message, $oldMessage) {
             if($this->shouldHandleMessage($message, $oldMessage) === false) {
                 return $resolve();
             }
@@ -103,7 +103,7 @@ class CommandDispatcher {
             }
             
             if($cmdMessage) {
-                $this->inhibit($cmdMessage)->then(function () use ($message, $oldMessage, $cmdMessage, $oldCmdMessage, $resolve) {
+                $this->inhibit($cmdMessage)->then(function () use ($message, $oldMessage, $cmdMessage, $resolve) {
                     if($cmdMessage->command) {
                         if($cmdMessage->isEnabledIn($message->guild)) {
                             $cmdMessage->run()->then(function ($responses = null) use ($message, $oldMessage, $cmdMessage, $resolve) {
@@ -119,6 +119,7 @@ class CommandDispatcher {
                                 $responses = array($response);
                                 $cmdMessage->finalize($responses);
                                 $this->cacheCommandMessage($message, $oldMessage, $cmdMessage, $responses);
+                                $resolve();
                             })->done(null, array($this->client, 'handlePromiseRejection'));
                         }
                     } else {
@@ -132,7 +133,7 @@ class CommandDispatcher {
                             })->done(null, array($this->client, 'handlePromiseRejection'));
                         }
                     }
-                }, function ($inhibited) use ($message, $oldMessage, $cmdMessage, $oldCmdMessage, $responses) {
+                }, function ($inhibited) use ($message, $oldMessage, $cmdMessage, $resolve) {
                     if(!\is_array($inhibited)) {
                         $inhibited = array($inhibited, null);
                     }
@@ -224,10 +225,10 @@ class CommandDispatcher {
     
     /**
 	 * Caches a command message to be editable.
-	 * @param \CharlotteDunois\Yasmin\Models\Message         $message     Triggering message
-	 * @param \CharlotteDunois\Yasmin\Models\Message|null    $oldMessage  Triggering message's old version
-	 * @param \CharlotteDunois\Livia\CommandMessage|null     $cmdMsg      Command message to cache
-	 * @param \CharlotteDunois\Yasmin\Models\Message[]|null  $responses   Responses to the message
+	 * @param \CharlotteDunois\Yasmin\Models\Message         $message     Triggering message.
+	 * @param \CharlotteDunois\Yasmin\Models\Message|null    $oldMessage  Triggering message's old version.
+	 * @param \CharlotteDunois\Livia\CommandMessage|null     $cmdMsg      Command message to cache.
+	 * @param \CharlotteDunois\Yasmin\Models\Message[]|null  $responses   Responses to the message.
 	 */
     protected function cacheCommandMessage($message, $oldMessage, $cmdMsg, $responses) {
         $duration = (int) $this->client->getOption('commandEditableDuration', 0);

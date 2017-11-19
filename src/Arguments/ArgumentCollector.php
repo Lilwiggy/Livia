@@ -74,7 +74,7 @@ class ArgumentCollector {
      * @return \React\Promise\Promise
      */
     function obtain(\CharlotteDunois\Livia\CommandMessage $message, $provided = array(), $promptLimit = $this->promptLimit) {
-        return (new \React\Promise\Promise(function (callable $resolve, callable $reject) use ($message, $provided, $promptLimit) {
+        return (new \React\Promise\Promise(function (callable $resolve) use ($message, $provided, $promptLimit) {
             $this->client->dispatcher->awaiting[] = $message->message->author->id.$message->message->channel->id;
             
             $values = array();
@@ -101,7 +101,7 @@ class ArgumentCollector {
                             return $res['answers'];
                         }, $results))
                     ));
-                }, function ($error) {
+                }, function ($error) use ($message) {
                     $key = \array_search($message->message->author->id.$message->message->channel->id, $this->client->dispatcher->awaiting);
                     if($key !== false) {
                         unset($this->client->dispatcher->awaiting[$key]);

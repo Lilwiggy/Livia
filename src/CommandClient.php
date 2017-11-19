@@ -106,7 +106,7 @@ class CommandClient extends \CharlotteDunois\Yasmin\Client {
             break;
             case 'owners':
                 $owners = array();
-                foreach($options['owners'] as $owner) {
+                foreach($this->options['owners'] as $owner) {
                     $owners[] = $this->users->get($owner);
                 }
                 
@@ -153,7 +153,7 @@ class CommandClient extends \CharlotteDunois\Yasmin\Client {
         return (new \React\Promise\Promise(function (callable $resolve, callable $reject) {
             $classname = \get_class($this->provider);
             
-            if($this->readyTimestamp) {
+            if($this->readyTimestamp !== null) {
                 $this->emit('debug', 'Provider set to '.$classname.' - initializing...');
 			    $this->provider->init($this)->then($resolve, $reject);
                 return;
