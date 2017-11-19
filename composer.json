@@ -14,6 +14,9 @@
         "php": ">=7.0",
         "charlottedunois/yasmin": "^0.1.0"
     },
+    "suggest": {
+        "react/mysql": "Required for MySQL Provider"
+    },
     "autoload": {
         "psr-4": {
             "CharlotteDunois\\Livia\\": "src"

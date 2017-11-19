@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow, all" />
+    <title>CharlotteDunois\Livia\Commands\Command | Yasmin</title>
+
+            <link rel="stylesheet" type="text/css" href="../../../css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../../../css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="../../../css/sami.css">
+        <script src="../../../js/jquery-1.11.1.min.js"></script>
+        <script src="../../../js/bootstrap.min.js"></script>
+        <script src="../../../js/typeahead.min.js"></script>
+        <script src="../../../sami.js"></script>
+        <meta name="MobileOptimized" content="width">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+    
+    
+    </head>
+
+    <body id="class" data-name="class:CharlotteDunois_Livia_Commands_Command" data-root-path="../../../">
+            <div id="content">
+        <div id="left-column">
+                <div id="control-panel">
+                <script>
+            $('option[data-version="'+window.projectVersion+'"]').prop('selected', true);
+        </script>
+        <form id="search-form" action="../../../search.html" method="GET">
+            <span class="glyphicon glyphicon-search"></span>
+            <input name="search"
+                   class="typeahead form-control"
+                   type="search"
+                   placeholder="Search">
+        </form>
+    </div>
+
+                <div id="api-tree"></div>
+
+        </div>
+        <div id="right-column">
+                <nav id="site-nav" class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-elements">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../../../index.html">Yasmin</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-elements">
+                <ul class="nav navbar-nav">
+                    <li><a href="../../../classes.html">Classes</a></li>
+                                            <li><a href="../../../namespaces.html">Namespaces</a></li>
+                                        <li><a href="../../../interfaces.html">Interfaces</a></li>
+                    <li><a href="../../../traits.html">Traits</a></li>
+                    <li><a href="../../../doc-index.html">Index</a></li>
+                    <li><a href="../../../search.html">Search</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+                        <div class="namespace-breadcrumbs">
+            <ol class="breadcrumb">
+                <li><span class="label label-default">class</span></li>
+                        <li><a href="../../../CharlotteDunois.html">CharlotteDunois</a></li><li class="backslash">\</li><li><a href="../../../CharlotteDunois/Livia.html">Livia</a></li><li class="backslash">\</li><li><a href="../../../CharlotteDunois/Livia/Commands.html">Commands</a></li><li class="backslash">\</li><li>Command</li>
+            </ol>
+        </div>
+                <div id="page-content">
+                
+    <div class="page-header">
+        <h1>
+            Command
+                
+        </h1>
+    </div>
+
+    <p>    class
+    <strong>Command</strong>        (<a href="https://github.com/CharlotteDunois/Yasmin/blob/master/src/Commands/Command.php">View source</a>)
+</p>
+
+        
+    
+
+            <div class="description">
+            <p>A command that can be run in a client.</p>                                </div>
+    
+    
+    
+            <h2>Properties</h2>
+
+            <table class="table table-condensed">
+                    <tr>
+                <td class="type" id="property_client">
+                                                                                <a href="../../../CharlotteDunois/Livia/CommandClient.html"><abbr title="CharlotteDunois\Livia\CommandClient">CommandClient</abbr></a>
+                </td>
+                <td>$client</td>
+                <td class="last">The client which initiated the instance.</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_globalEnabled">
+                                                                                bool
+                </td>
+                <td>$globalEnabled</td>
+                <td class="last">Whether the group is globally enabled.</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_guildEnabled">
+                                                                                array
+                </td>
+                <td>$guildEnabled</td>
+                <td class="last">An array containing guildID => bool pairs, which determine the enabled state.</td>
+                <td></td>
+            </tr>
+            </table>
+
+    
+            <h2>Methods</h2>
+
+            <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method___construct">__construct</a>(<a href="../../../CharlotteDunois/Livia/CommandClient.html"><abbr title="CharlotteDunois\Livia\CommandClient">CommandClient</abbr></a> $client, array $info)
+        
+                                            <p>Constructs a new Command. Info is an array as following:</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;string
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_buildUsage">buildUsage</a>(string $command, string $prefix = null, <abbr title="CharlotteDunois\Yasmin\Models\User">User</abbr> $user = null)
+        
+                                            <p>Creates a usage string for any command.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool|string
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_hasPermission">hasPermission</a>(<a href="../../../CharlotteDunois/Livia/CommandMessage.html"><abbr title="CharlotteDunois\Livia\CommandMessage">CommandMessage</abbr></a> $message, bool $ownerOverride = true)
+        
+                                            <p>Checks if the user has permission to use the command.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_isEnabledIn">isEnabledIn</a>(string|<abbr title="CharlotteDunois\Yasmin\Models\Guild">Guild</abbr>|null $guild)
+        
+                                            <p>Checks if the command is enabled in a guild (or globally).</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_isUsable">isUsable</a>(<abbr title="CharlotteDunois\Yasmin\Models\Message">Message</abbr> $message = null)
+        
+                                            <p>Checks if the command is usable for a message.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <abbr title="React\Promise\Promise">Promise</abbr>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_run">run</a>(<a href="../../../CharlotteDunois/Livia/CommandMessage.html"><abbr title="CharlotteDunois\Livia\CommandMessage">CommandMessage</abbr></a> $message, array $args, bool $fromPattern)
+        
+                                            <p>Runs the command.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_setEnabledIn">setEnabledIn</a>(string|<abbr title="CharlotteDunois\Yasmin\Models\Guild">Guild</abbr>|null $guild, bool $enabled)
+        
+                                            <p>Enables or disables the command in a guild (or globally).</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_usage">usage</a>(string $argString, string $prefix = null, <abbr title="CharlotteDunois\Yasmin\Models\User">User</abbr> $user = $this-&gt;client-&gt;user)
+        
+                                            <p>Creates a usage string for the command.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+            </div>
+
+
+        <h2>Details</h2>
+
+            <div id="method-details">
+                    <div class="method-item">
+                    <h3 id="method___construct">
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Yasmin/blob/master/src/Commands/Command.php#L82">line 82</a></div>
+        <code>                    
+    <strong>__construct</strong>(<a href="../../../CharlotteDunois/Livia/CommandClient.html"><abbr title="CharlotteDunois\Livia\CommandClient">CommandClient</abbr></a> $client, array $info)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Constructs a new Command. Info is an array as following:</p>                    <p>array(
+     'name' => string,
+     'aliases' => string[], (optional)
+     'group' => string,
+     'description => string,
+     'details' => string, (optional)
+     'format' => string, (optional)
+     'examples' => string[], (optional)
+     'guildOnly' => bool, (defaults to false)
+     'ownerOnly' => bool, (defaults to false)
+     'clientPermissions' => string[], (optional)
+     'userPermissions' => string[], (optional)
+     'nsfw' => bool, (defaults to false)
+     'throttling' => array, (associative array of array('usages' => int, 'duration' => int) - duration in seconds, optional)
+     'defaultHandling' => bool, (defaults to true)
+     'args' => array, ({see \CharlotteDunois\Livia\Arguments\Argument}, optional)
+     'argsPromptLimit' => int|\INF, (optional)
+     'argsType' => string, (one of 'single' or 'multiple', defaults to 'single')
+     'argsCount' => int, (optional)
+     'argsSingleQuotes' => bool, (optional)
+     'patterns' => string[], (Regular Expression strings, optional)
+     'guarded' => bool, (defaults to false)
+ )</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../CharlotteDunois/Livia/CommandClient.html"><abbr title="CharlotteDunois\Livia\CommandClient">CommandClient</abbr></a></td>
+                <td>$client</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$info</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a target="_blank" href="http://php.net/InvalidArgumentException">InvalidArgumentException</a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_buildUsage">
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Yasmin/blob/master/src/Commands/Command.php#L424">line 424</a></div>
+        <code>        static            string
+    <strong>buildUsage</strong>(string $command, string $prefix = null, <abbr title="CharlotteDunois\Yasmin\Models\User">User</abbr> $user = null)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Creates a usage string for any command.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$command</td>
+                <td>A command + arguments string.</td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$prefix</td>
+                <td>Prefix to use for the prefixed command format.</td>
+            </tr>
+                    <tr>
+                <td><abbr title="CharlotteDunois\Yasmin\Models\User">User</abbr></td>
+                <td>$user</td>
+                <td>User to use for the mention command format.</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_hasPermission">
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Yasmin/blob/master/src/Commands/Command.php#L269">line 269</a></div>
+        <code>                    bool|string
+    <strong>hasPermission</strong>(<a href="../../../CharlotteDunois/Livia/CommandMessage.html"><abbr title="CharlotteDunois\Livia\CommandMessage">CommandMessage</abbr></a> $message, bool $ownerOverride = true)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Checks if the user has permission to use the command.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../CharlotteDunois/Livia/CommandMessage.html"><abbr title="CharlotteDunois\Livia\CommandMessage">CommandMessage</abbr></a></td>
+                <td>$message</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$ownerOverride</td>
+                <td>Whether the bot owner(s) will always have permission.</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool|string</td>
+            <td>Whether the user has permission, or an error message to respond with if they don't.</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_isEnabledIn">
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Yasmin/blob/master/src/Commands/Command.php#L373">line 373</a></div>
+        <code>                    bool
+    <strong>isEnabledIn</strong>(string|<abbr title="CharlotteDunois\Yasmin\Models\Guild">Guild</abbr>|null $guild)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Checks if the command is enabled in a guild (or globally).</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string|<abbr title="CharlotteDunois\Yasmin\Models\Guild">Guild</abbr>|null</td>
+                <td>$guild</td>
+                <td>The guild instance or the guild ID.</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a target="_blank" href="http://php.net/InvalidArgumentException">InvalidArgumentException</a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_isUsable">
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Yasmin/blob/master/src/Commands/Command.php#L387">line 387</a></div>
+        <code>                    bool
+    <strong>isUsable</strong>(<abbr title="CharlotteDunois\Yasmin\Models\Message">Message</abbr> $message = null)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Checks if the command is usable for a message.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><abbr title="CharlotteDunois\Yasmin\Models\Message">Message</abbr></td>
+                <td>$message</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_run">
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Yasmin/blob/master/src/Commands/Command.php#L319">line 319</a></div>
+        <code>    abstract                <abbr title="React\Promise\Promise">Promise</abbr>
+    <strong>run</strong>(<a href="../../../CharlotteDunois/Livia/CommandMessage.html"><abbr title="CharlotteDunois\Livia\CommandMessage">CommandMessage</abbr></a> $message, array $args, bool $fromPattern)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Runs the command.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../CharlotteDunois/Livia/CommandMessage.html"><abbr title="CharlotteDunois\Livia\CommandMessage">CommandMessage</abbr></a></td>
+                <td>$message</td>
+                <td>The message the command is being run for</td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$args</td>
+                <td>The arguments for the command, or the matches from a pattern. If args is specified on the command, thise will be the argument values object. If argsType is single, then only one string will be passed. If multiple, an array of strings will be passed. When fromPattern is true, this is the matches array from the pattern match.</td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$fromPattern</td>
+                <td>Whether or not the command is being run from a pattern match</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><abbr title="React\Promise\Promise">Promise</abbr></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setEnabledIn">
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Yasmin/blob/master/src/Commands/Command.php#L351">line 351</a></div>
+        <code>                    
+    <strong>setEnabledIn</strong>(string|<abbr title="CharlotteDunois\Yasmin\Models\Guild">Guild</abbr>|null $guild, bool $enabled)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Enables or disables the command in a guild (or globally).</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string|<abbr title="CharlotteDunois\Yasmin\Models\Guild">Guild</abbr>|null</td>
+                <td>$guild</td>
+                <td>The guild instance or the guild ID.</td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$enabled</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><abbr title="BadMethodCallException|\InvalidArgumentException">InvalidArgumentException</abbr></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_usage">
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Yasmin/blob/master/src/Commands/Command.php#L406">line 406</a></div>
+        <code>                    string
+    <strong>usage</strong>(string $argString, string $prefix = null, <abbr title="CharlotteDunois\Yasmin\Models\User">User</abbr> $user = $this-&gt;client-&gt;user)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Creates a usage string for the command.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$argString</td>
+                <td>A string of arguments for the command.</td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$prefix</td>
+                <td>Prefix to use for the prefixed command format.</td>
+            </tr>
+                    <tr>
+                <td><abbr title="CharlotteDunois\Yasmin\Models\User">User</abbr></td>
+                <td>$user</td>
+                <td>User to use for the mention command format.</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+            </div>
+
+    
+            </div>
+                <div id="footer">
+        Generated by <a href="http://sami.sensiolabs.org/">Sami, the API Documentation Generator</a>.
+    </div>
+
+        </div>
+    </div>
+    </body>
+
+</html>

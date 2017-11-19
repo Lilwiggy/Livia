@@ -180,8 +180,8 @@ class CommandRegistry {
     
     /**
      * Registers all commands in a directory.
-     * @param string  $path
-     * @param bool    $ignoreSameLevelFiles  Ignores files in the specified directory and only includes files in sub directories.
+     * @param string        $path
+     * @param bool|string   $ignoreSameLevelFiles  Ignores files in the specified directory and only includes files in sub directories. As string it will ignore the file if the filename matches with the string.
      * @return $this
      * @throws \Exception
      */
@@ -195,11 +195,13 @@ class CommandRegistry {
         $files = \CharlotteDunois\Livia\FileHelpers::recursiveFileSearch($path, '*.php');
         
         foreach($files as $file) {
-            if($ignoreSameLevelFiles) {
+            if($ignoreSameLevelFiles === true) {
                 $filepath = \ltrim(str_replace(array($path, '\\'), array('', '/'), $file), '/');
                 if(\substr_count($filepath, '/') > 0) {
                     continue;
                 }
+            } elseif(!empty($ignoreSameLevelFiles) && \stripos($file, $ignoreSameLevelFiles) !== false) {
+                continue;
             }
             
             $code = \file_get_contents($file);
@@ -395,16 +397,20 @@ class CommandRegistry {
     protected function handleCommandSpacingFile(string $name, string $code) {
         $timestamp = time();
         $namespace = 'CharlotteDunois\\Livia\\Commands\\Spacing\\'.$timestamp;
+        $oldnamespace = "";
         
         $code = \explode("\n", \str_replace("\r", "", $code));
         foreach($code as $line => $lcode) {
             if(\stripos($lcode, '<?php') !== false) {
                 unset($contents[$line]);
             } elseif(\stripos($lcode, 'namespace') !== false) {
+                $oldnamespace = \trim(\str_replace(array('namespace', ';'), '', $lcode));
                 unset($contents[$line]);
                 break;
             }
         }
+        
+        $GLOBALS['OLD_NAMESPACE_'.\strtoupper($name)] = $oldnamespace;
         
         $php = <<<CMD
 <?php

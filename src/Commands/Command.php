@@ -82,11 +82,11 @@ class Command {
     function __construct(\CharlotteDunois\Livia\CommandClient $client, array $info) {
         $this->client = $client;
         
-        if(empty($info['name']) || !\is_string($info['description'])) {
-            throw new \InvalidArgumentException('Invalid command name specified');
+        if(empty($info['name']) || !\is_string($info['name'])) {
+            throw new \InvalidArgumentException('Command name must be specified and must be a string');
         }
-        if(\strtolower($info['name']) !== $info['name']) {
-            throw new \InvalidArgumentException('Command name must be lowercase');
+        if(\strtolower($info['name']) !== $info['name'] || \strpos($info['name'], ' ') !== false) {
+            throw new \InvalidArgumentException('Command name must be lowercase, without any whitespaces');
         }
         
         if(empty($info['group']) || !\is_string($info['group'])) {
@@ -317,6 +317,23 @@ class Command {
 	 * @return \React\Promise\Promise
 	 */
     abstract function run(\CharlotteDunois\Livia\CommandMessage $message, array $args, bool $fromPattern);
+    
+    /**
+     * Reloads the command.
+     */
+    function reload() {
+        $class = \explode('\\', \get_class($this));
+        $name = \array_pop($class);
+        
+        $this->client->registry->reregisterCommand($GLOBALS['OLD_NAMESPACE_'.\strtoupper($name)], $this);
+    }
+    
+    /**
+     * Unloads the command.
+     */
+    function unload() {
+        $this->client->registry->unregisterCommand($this);
+    }
     
     /**
 	 * Creates/obtains the throttle object for a user, if necessary (owners are excluded).
