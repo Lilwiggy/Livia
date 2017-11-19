@@ -44,7 +44,7 @@ class ArgumentType {
 	 * @param string                                     $value  Value to validate.
 	 * @param \CharlotteDunois\Livia\CommandMessage      $msg    Message the value was obtained from.
 	 * @param \CharlotteDUnois\Livia\Arguments\Argument  $arg    Argument the value obtained from.
-     * @return bool|\React\Promise\Promise
+     * @return bool|string|\React\Promise\Promise
      */
     abstract function validate(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg);
     

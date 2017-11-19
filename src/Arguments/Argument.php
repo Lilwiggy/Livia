@@ -113,10 +113,10 @@ class Argument {
      * @param \CharlotteDunois\Livia\CommandMessage  $message      Message that triggered the command.
      * @param string|string[]                        $value        Pre-provided value(s).
      * @param int|double                             $promptLimit  Maximum number of times to prompt for the argument.
-     * @param bool|null                              $valid        Whether the last retrieved value was valid.
+     * @param bool|string|null                       $valid        Whether the last retrieved value was valid.
      * @return \React\Promise\Promise
      */
-    function obtain(\CharlotteDunois\Livia\CommandMessage $message, $value, $promptLimit = \INF, array $prompts = array(), array $answers = array(), bool $valid = null) {
+    function obtain(\CharlotteDunois\Livia\CommandMessage $message, $value, $promptLimit = \INF, array $prompts = array(), array $answers = array(), $valid = null) {
         return (new \React\Promise\Promise(function (callable $resolve, callable $reject) use ($message, $value, $promptLimit, $prompts, $answers, $valid) {
             if(!$value && $this->default) {
                 return $resolve(array(
@@ -143,9 +143,12 @@ class Argument {
             
             if($value === null) {
                 $reply = $message->reply($this->prompt.PHP_EOL.
-                'Please try again. Respond with `cancel` to cancel the command. The command will automatically be cancelled in  '.$this->wait.' seconds.');
+                    'Please try again. Respond with `cancel` to cancel the command. The command will automatically be cancelled in  '.$this->wait.' seconds.');
             } elseif($valid === false) {
                 $reply = $message->reply('You provided an invalid '.$this->label.'.'.PHP_EOL.
+                    'Please try again. Respond with `cancel` to cancel the command. The command will automatically be cancelled in  '.$this->wait.' seconds.');
+            } elseif(\is_string($valid)) {
+                $reply = $message->reply($valid.PHP_EOL.
                     'Please try again. Respond with `cancel` to cancel the command. The command will automatically be cancelled in  '.$this->wait.' seconds.');
             } else {
                 $reply = \React\Promise\resolve();
@@ -191,7 +194,7 @@ class Argument {
                                 }
                                 
                                 return $validate->then(function ($valid) use ($message, $value, $promptLimit, $prompts, $answers) {
-                                    if($valid === false) {
+                                    if($valid !== true) {
                                         return $this->obtain($message, $value, $promptLimit, $prompts, $answers, $valid);
                                     }
                                     
@@ -237,7 +240,7 @@ class Argument {
         }));
     }
     
-    protected function infiniteObtain(\CharlotteDunois\Livia\CommandMessage $message, $value, array &$values, $promptLimit, array &$prompts, array &$answers, bool $valid = null) {
+    protected function infiniteObtain(\CharlotteDunois\Livia\CommandMessage $message, $value, array &$values, $promptLimit, array &$prompts, array &$answers, $valid = null) {
         if($value === null) {
             $reply = $message->reply($this->prompt.PHP_EOL.
                 'Respond with `cancel` to cancel the command, or `finish` to finish entry up to this point.'.PHP_EOL.
@@ -248,6 +251,10 @@ class Argument {
             $reply = $message->reply('You provided an invalid '.$this->label.','.PHP_EOL.
                 '"'.(\strlen($escaped) < 1850 ? $escaped : '[too long to show]').'".'.PHP_EOL.
 				'Please try again.');
+        } elseif(\is_string($valid)) {
+            $reply = $message->reply($valid.PHP_EOL.
+                'Respond with `cancel` to cancel the command, or `finish` to finish entry up to this point.'.PHP_EOL.
+                'The command will automatically be cancelled in '.$this->wait.' seconds.');
         } else {
             $reply = \React\Promise\resolve(null);
         }
@@ -309,7 +316,7 @@ class Argument {
                 }
                 
                 return $validate->then(function ($valid) use ($message, $value, &$values, $promptLimit, &$prompts, &$answers) {
-                    if($valid === false) {
+                    if($valid !== true) {
                         return $this->infiniteObtain($message, $value, $values, $promptLimit, $prompts, $answers, $valid);
                     }
                     
