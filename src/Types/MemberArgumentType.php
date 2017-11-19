@@ -12,6 +12,7 @@ namespace CharlotteDunois\Livia\Types;
 
 /**
  * @inheritDoc
+ * @internal
  */
 class MemberArgumentType extends ArgumentType {
     /**

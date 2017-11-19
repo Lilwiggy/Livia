@@ -33,7 +33,12 @@ class CommandGroup {
     protected $guildEnabled = array();
     
     /**
-     * @internal
+     * Constructs a new Command Group.
+     * @param \CharlotteDunois\Livia\CommandClient  $client
+     * @param string                                $id
+     * @param string                                $name
+     * @param bool                                  $guarded
+     * @param array|null                            $commands
      */
     function __construct(\CharlotteDunois\Livia\CommandClient $client, string $id, string $name, bool $guarded = false, array $commands = null) {
         $this->client = $client;

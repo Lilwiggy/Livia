@@ -12,6 +12,7 @@ namespace CharlotteDunois\Livia\Types;
 
 /**
  * @inheritDoc
+ * @internal
  */
 class IntegerArgumentType extends ArgumentType {
     /**

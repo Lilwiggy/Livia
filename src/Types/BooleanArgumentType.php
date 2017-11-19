@@ -12,6 +12,7 @@ namespace CharlotteDunois\Livia\Types;
 
 /**
  * @inheritDoc
+ * @internal
  */
 class BooleanArgumentType extends ArgumentType {
     protected $truthy = array('true', 't', 'yes', 'y', 'on', 'enable', 'enabled', '1', '+');
