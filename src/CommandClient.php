@@ -144,10 +144,10 @@ class CommandClient extends \CharlotteDunois\Yasmin\Client {
     
     /**
 	 * Sets the setting provider to use, and initializes it once the client is ready
-	 * @param \CharlotteDunois\Livia\Interfaces\ProviderInterface  $provider
+	 * @param \CharlotteDunois\Livia\Providers\SettingProvider  $provider
 	 * @return \React\Promise\Promise
 	 */
-    function setProvider(\CharlotteDunois\Livia\Interfaces\ProviderInterface $provider) {
+    function setProvider(\CharlotteDunois\Livia\Providers\SettingProvider $provider) {
         $this->provider = $provider;
         
         return (new \React\Promise\Promise(function (callable $resolve, callable $reject) {
