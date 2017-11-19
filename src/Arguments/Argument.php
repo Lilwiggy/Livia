@@ -141,10 +141,18 @@ class Argument {
                 ));
             }
             
+            if($value === null) {
+                $reply = $message->reply($this->prompt.PHP_EOL.
+                'Please try again. Respond with `cancel` to cancel the command. The command will automatically be cancelled in  '.$this->wait.' seconds.');
+            } elseif($valid === false) {
+                $reply = $message->reply('You provided an invalid '.$this->label.'.'.PHP_EOL.
+                    'Please try again. Respond with `cancel` to cancel the command. The command will automatically be cancelled in  '.$this->wait.' seconds.');
+            } else {
+                $reply = \React\Promise\resolve();
+            }
+            
             // Prompt the user for a new value
-            $message->reply(($value === null ? $this->prompt : ($valid ? $valid : 'You provided an invalid '.$this->label.'.')).PHP_EOL.
-                            'Please try again. Respond with `cancel` to cancel the command. The command will automatically be cancelled in  '.$this->wait.' seconds.')
-                        ->then(function ($msg) use ($message, $valid, $promptLimit, $prompts, $answers, $resolve, $reject) {
+            $reply->then(function ($msg) use ($message, $valid, $promptLimit, $prompts, $answers, $resolve, $reject) {
                             $prompts[] = $msg;
                             
                             // Get the user's response
