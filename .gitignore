@@ -1,0 +1,10 @@
+cache
+cache/*
+vendor
+vendor/*
+*.token
+composer.lock
+index.php
+sami
+sami/*
+sami.*
