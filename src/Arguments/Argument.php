@@ -13,18 +13,19 @@ namespace CharlotteDunois\Livia\Arguments;
 /**
  * A fancy argument.
  *
- * @property \CharlotteDunois\Livia\CommandClient        $client    The client which initiated the instance.
- * @property string                                      $key       Key for the argument.
- * @property string                                      $label     Label for the argument.
- * @property string                                      $prompt    Question prompt for the argument.
- * @property \CharlotteDunois\Livia\Types\ArgumentType   $type      Type of the argument.
- * @property int|float|null                              $max       If type is integer or float, this is the maximum value of the number. If type is string, this is the maximum length of the string.
- * @property int|float|null                              $min       If type is integer or float, this is the minimum value of the number. If type is string, this is the minimum length of the string.
- * @property mixed|null                                  $default   The default value for the argument.
- * @property bool                                        $infinite  Whether the argument accepts an infinite number of values.
- * @property callable|null                               $validate  Validator function for validating a value for the argument.
- * @property callable|null                               $parse     Parser function to parse a value for the argument.
- * @property int                                         $wait      How long to wait for input (in seconds).
+ * @property \CharlotteDunois\Livia\CommandClient        $client        The client which initiated the instance.
+ * @property string                                      $key           Key for the argument.
+ * @property string                                      $label         Label for the argument.
+ * @property string                                      $prompt        Question prompt for the argument.
+ * @property \CharlotteDunois\Livia\Types\ArgumentType   $type          Type of the argument.
+ * @property int|float|null                              $max           If type is integer or float, this is the maximum value of the number. If type is string, this is the maximum length of the string.
+ * @property int|float|null                              $min           If type is integer or float, this is the minimum value of the number. If type is string, this is the minimum length of the string.
+ * @property mixed|null                                  $default       The default value for the argument.
+ * @property bool                                        $infinite      Whether the argument accepts an infinite number of values.
+ * @property callable|null                               $validate      Validator function for validating a value for the argument. {@see \CharlotteDunois\Livia\Types\ArgumentType::validate}
+ * @property callable|null                               $parse         Parser function to parse a value for the argument. {@see \CharlotteDunois\Livia\Types\ArgumentType::parse}
+ * @property callable|null                               $emptyChecker  Empty checker function for the argument. {@see \CharlotteDunois\Livia\Types\ArgumentType::isEmpty}
+ * @property int                                         $wait          How long to wait for input (in seconds).
  */
 class Argument {
     protected $client;
@@ -39,6 +40,7 @@ class Argument {
     protected $infinite;
     protected $validate;
     protected $parse;
+    protected $emptyChecker;
     protected $wait;
     
     /**
@@ -55,6 +57,7 @@ class Argument {
      *      'infinite' => bool, (Infinite argument collecting, defaults to false)                                                                     <br />
      *      'validate' => callable, (Validator function for the argument, optional)                                                                   <br />
      *      'parse' => callable, (Parser function for the argument, optional)                                                                         <br />
+     *      'isEmpty' => callable, (Empty checker function for the argument, optional)                                                                <br />
      *      'wait' => int (How long to wait for input (in seconds)                                                                                    <br />
      *  )
      *
@@ -93,7 +96,8 @@ class Argument {
         $this->default = $info['default'] ?? null;
         $this->infinite = (!empty($info['infinite']));
         $this->validate = (!empty($info['validate']) && \is_callable($info['validate']) ? $info['validate'] : null);
-        $this->parse = (!empty($info['parse']) && \is_callable($info['parse']) ? $info['parse'] : null);
+        $this->parse = (!empty($info['parse']) && \is_callable($info['parse']) ? $info['parse'] : null);;
+        $this->emptyChecker = (!empty($info['isEmpty']) && \is_callable($info['isEmpty']) ? $info['isEmpty'] : null);
         $this->wait = (int) ($info['wait'] ?? 30);
     }
     
@@ -118,7 +122,8 @@ class Argument {
      */
     function obtain(\CharlotteDunois\Livia\CommandMessage $message, $value, $promptLimit = \INF, array $prompts = array(), array $answers = array(), $valid = null) {
         return (new \React\Promise\Promise(function (callable $resolve, callable $reject) use ($message, $value, $promptLimit, $prompts, $answers, $valid) {
-            if(!$value && $this->default) {
+            $empty = ($this->emptyChecker ? $this->emptyChecker($value, $message, $this) : $this->type->isEmpty($value, $message, $this));
+            if($empty && $this->default) {
                 return $resolve(array(
                     'value' => $this->default,
                     'cancelled' => null,
@@ -220,7 +225,7 @@ class Argument {
      * @param int                                    $currentVal   Current value getting obtained.
      * @return \React\Promise\Promise
      */
-    function obtainInfinite(\CharlotteDunois\Livia\CommandMessage $message, array $values = array(), $promptLimit = \INF, array &$prompts = array(), array &$answers = array(), int $currentVal = 0) {
+    protected function obtainInfinite(\CharlotteDunois\Livia\CommandMessage $message, array $values = array(), $promptLimit = \INF, array &$prompts = array(), array &$answers = array(), int $currentVal = 0) {
         return (new \React\Promise\Promise(function (callable $resolve, callable $reject) use ($message, $values, $promptLimit, $prompts, $answers, $currentVal) {
             $value = null;
             if(!empty($values)) {

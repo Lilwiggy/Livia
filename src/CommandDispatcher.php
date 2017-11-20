@@ -46,7 +46,7 @@ class CommandDispatcher {
     }
     
     /**
-     * Adds an inhibitor. The inhibitor is supposed to return false, if the command should not be blocked. Otherwise it should return a string (as reason) or an array, containing as first element the reason and as second element a Promise or Message instance.
+     * Adds an inhibitor. The inhibitor is supposed to return false, if the command should not be blocked. Otherwise it should return a string (as reason) or an array, containing as first element the reason and as second element a Promise (which resolves to a Message), a Message instance or null. The inhibitor can return a Promise (for async computation).
      * @param callable  $inhibitor
      * @return $this
      */
