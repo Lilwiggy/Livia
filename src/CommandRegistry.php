@@ -225,7 +225,7 @@ class CommandRegistry {
             $group = $this->resolveGroup($cmd->groupID);
             $group->commands->set($cmd->name, $cmd);
             
-            $this->client->emit('debug', 'Registered command '.$command->groupID.':'.$command->name);
+            $this->client->emit('debug', 'Registered command '.$cmd->groupID.':'.$cmd->name);
         }
         
         return $this;
@@ -332,10 +332,16 @@ class CommandRegistry {
         $this->registerDefaultCommands();
     }
     
+    /**
+     * Registers the default commands.
+     */
     function registerDefaultCommands() {
-        $this->registerCommandIn(__DIR__.'/Commands', true);
+        $this->registerCommandsIn(__DIR__.'/Commands', true);
     }
     
+    /**
+     * Registers the default command groups.
+     */
     function registerDefaultGroups() {
         $this->registerGroup(
             (new \CharlotteDunois\Livia\Commands\CommandGroup($this->client, 'commands', 'Commands', true)),
@@ -343,6 +349,9 @@ class CommandRegistry {
         );
     }
     
+    /**
+     * Registers the default argument types.
+     */
     function registerDefaultTypes() {
         $this->registerTypesIn(__DIR__.'/Types', 'ArgumentType.php');
     }

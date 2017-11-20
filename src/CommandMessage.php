@@ -187,6 +187,10 @@ class CommandMessage {
             
             \React\Promise\all($promises)->then(function () use ($args) {
                 $promise = $this->command->run($this, $args, ((bool) $args));
+                if(!($promise instanceof \React\Promise\PromiseInterface)) {
+                    $promise = \React\Promise\resolve($promise);
+                }
+                
                 $this->client->emit('commandRun', $this->command, $promise, $this, $args, ((bool) $args));
                 
                 return $promise->then(function($response) {

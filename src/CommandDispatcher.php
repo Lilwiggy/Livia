@@ -190,7 +190,7 @@ class CommandDispatcher {
     }
     
     /**
-     * Inhibits a command message. Resolves with false or array (reason, ?response).
+     * Inhibits a command message. Resolves with false or array (reason, ?response (Promise (-> Message), Message instance or null)).
      * @param \CharlotteDunois\Livia\CommandMessage  $message
      * @return \React\Promise\Promise
      */
