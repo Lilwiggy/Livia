@@ -423,12 +423,9 @@ class Command {
     function usage(string $argString, string $prefix = null, \CharlotteDunois\Yasmin\Models\User $user = $this->client->user) {
         if($prefix === null) {
             $prefix = $this->client->commandPrefix;
-			if($this->message->guild && $this->client->provider) {
-                $prefix = ($this->client->provider->get($this->message->guild, 'commandPrefix') ?: $prefix);
-			}
 		}
         
-        return self::buildUsage($argString, $prefix, $user);
+        return self::anyUsage($argString, $prefix, $user);
     }
     
     /**
@@ -438,7 +435,7 @@ class Command {
 	 * @param \CharlotteDunois\Yasmin\Models\User|null  $user       User to use for the mention command format.
 	 * @return string
 	 */
-    static function buildUsage(string $command, string $prefix = null, \CharlotteDunois\Yasmin\Models\User $user = null) {
+    static function anyUsage(string $command, string $prefix = null, \CharlotteDunois\Yasmin\Models\User $user = null) {
         $command = \str_replace(' ', "\u{00A0}", $command);
         
         if(empty($prefix) && $user === null) {

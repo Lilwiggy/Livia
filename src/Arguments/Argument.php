@@ -155,7 +155,7 @@ class Argument {
             }
             
             // Prompt the user for a new value
-            $reply->then(function ($msg) use ($message, $valid, $promptLimit, $prompts, $answers, $resolve, $reject) {
+            $reply->then(function ($msg) use ($message, $promptLimit, $prompts, $answers, $resolve, $reject) {
                             $prompts[] = $msg;
                             
                             // Get the user's response

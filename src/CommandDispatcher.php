@@ -211,7 +211,7 @@ class CommandDispatcher {
                 $promises[] = $inhibited;
             }
             
-            \React\Promise\all($promises)->then(function ($values) {
+            \React\Promise\all($promises)->then(function ($values) use ($resolve, $reject) {
                 foreach($values as $value) {
                     if($value !== false) {
                         return $reject($value);

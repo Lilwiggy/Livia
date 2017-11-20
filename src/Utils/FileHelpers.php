@@ -7,7 +7,7 @@
  * License: https://github.com/CharlotteDunois/Livia/blob/master/LICENSE
 */
 
-namespace CharlotteDunois\Livia;
+namespace CharlotteDunois\Livia\Utils;
 
 /**
  * File orientated helpers.
@@ -24,7 +24,9 @@ class FileHelpers {
 		
 		$files = array();
 		if(is_array($searchmask)) {
-			for($i = 0; $i < \count($searchmask); $i++) {
+            $csearchmask = \count($searchmask);
+            
+			for($i = 0; $i < $csearchmask; $i++) {
 				$files = \array_merge($files, \glob($path.'/'.$searchmask[$i]));
 			}
             

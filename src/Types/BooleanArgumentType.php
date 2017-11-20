@@ -30,7 +30,7 @@ class BooleanArgumentType extends ArgumentType {
      */
     function validate(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg) {
         $value = \strtolower($value);
-        return (\in_array($value, $this->truthy) || \in_array($value, $tthis->falsey));
+        return (\in_array($value, $this->truthy) || \in_array($value, $this->falsey));
     }
     
     /**
@@ -42,10 +42,10 @@ class BooleanArgumentType extends ArgumentType {
             return true;
         }
         
-        if(\in_array($value, $tthis->falsey)) {
+        if(\in_array($value, $this->falsey)) {
             return false;
         }
         
-        throw new \RangeException('Unknown boolean value.');
+        return null;
     }
 }
