@@ -192,7 +192,7 @@ class CommandRegistry {
         }
         
         $this->commandsPath = $path;
-        $files = \CharlotteDunois\Livia\FileHelpers::recursiveFileSearch($path, '*.php');
+        $files = \CharlotteDunois\Livia\Utils\FileHelpers::recursiveFileSearch($path, '*.php');
         
         foreach($files as $file) {
             if($ignoreSameLevelFiles === true) {
@@ -294,7 +294,7 @@ class CommandRegistry {
             throw new \Exception('Invalid path specified');
         }
         
-        $files = \CharlotteDunois\Livia\FileHelpers::recursiveFileSearch($path, '*.php');
+        $files = \CharlotteDunois\Livia\Utils\FileHelpers::recursiveFileSearch($path, '*.php');
         foreach($files as $file) {
             if($ignoreSameLevelFiles === true) {
                 $filepath = \ltrim(str_replace(array($path, '\\'), array('', '/'), $file), '/');
