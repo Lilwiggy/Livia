@@ -24,8 +24,8 @@ namespace CharlotteDunois\Livia\Commands;
  * @property string[]                                           $examples           Examples of and for the command.
  * @property bool                                               $guildOnly          Whether the command can only be triggered in a guild channel.
  * @property bool                                               $ownerOnly          Whether the command can only be triggered by the bot owner (requires default hasPermission method).
- * @property string[]|null                                      $clientPermissions  An array containing the required permissions for the client user to make the command work.
- * @property string[]|null                                      $userPermissions    An array containing the required permissions for the user.
+ * @property string[]|null                                      $clientPermissions  The required permissions for the client user to make the command work.
+ * @property string[]|null                                      $userPermissions    The required permissions for the user to use the command.
  * @property bool                                               $nsfw               Whether the command can only be run in NSFW channels.
  * @property array                                              $throttling         Options for throttling command usages.
  * @property bool                                               $defaultHandling    Whether the command gets handled normally.
