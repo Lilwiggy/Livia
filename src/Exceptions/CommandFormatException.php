@@ -15,12 +15,14 @@ namespace CharlotteDunois\Livia\Exceptions;
  *
  * @inheritDoc
  */
-class CommandFormatException extends FriendlyError {
+class CommandFormatException extends FriendlyException {
     /**
      * @internal
      */
     function __construct($message) {
+        $prefix = ($message->message->guild && $message->client->provider ? $message->client->provider->get($message->message->guild, 'commandPrefix') : $this->client->commandPrefix);
+        
         parent::__construct('Invalid command usage. The `'.$message->command->name.'` command\'s accepted format is: '.
-        $message->usage($msg->command->format).'. Use '.$message->anyUsage('help '.$message->command->name).' for more information.');
+        $message->command->usage($message->command->format, $prefix).'. Use '.\CharlotteDunois\Livia\Commands\Command::anyUsage('help '.$message->command->name, $prefix).' for more information.');
     }
 }

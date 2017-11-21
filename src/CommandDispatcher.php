@@ -46,7 +46,7 @@ class CommandDispatcher {
     }
     
     /**
-     * Adds an inhibitor. The inhibitor is supposed to return false, if the command should not be blocked. Otherwise it should return a string (as reason) or an array, containing as first element the reason and as second element a Promise or Message instance.
+     * Adds an inhibitor. The inhibitor is supposed to return false, if the command should not be blocked. Otherwise it should return a string (as reason) or an array, containing as first element the reason and as second element a Promise (which resolves to a Message), a Message instance or null. The inhibitor can return a Promise (for async computation).
      * @param callable  $inhibitor
      * @return $this
      */
@@ -190,7 +190,7 @@ class CommandDispatcher {
     }
     
     /**
-     * Inhibits a command message. Resolves with false or array (reason, ?response).
+     * Inhibits a command message. Resolves with false or array (reason, ?response (Promise (-> Message), Message instance or null)).
      * @param \CharlotteDunois\Livia\CommandMessage  $message
      * @return \React\Promise\Promise
      */
@@ -211,7 +211,7 @@ class CommandDispatcher {
                 $promises[] = $inhibited;
             }
             
-            \React\Promise\all($promises)->then(function ($values) {
+            \React\Promise\all($promises)->then(function ($values) use ($resolve, $reject) {
                 foreach($values as $value) {
                     if($value !== false) {
                         return $reject($value);

@@ -65,11 +65,11 @@ class CommandRegistry {
         $matches = array();
         foreach($this->commands as $command) {
             if($exact) {
-                if(\strtolower($command->name) === $searchString) {
+                if(\strtolower($command->name) === $searchString && ($message === null || $command->hasPermission($message) === true)) {
                     $matches[] = $command;
                 }
             } else {
-                if(\stripos($command->name, $searchString) !== false) {
+                if(\stripos($command->name, $searchString) !== false && ($message === null || $command->hasPermission($message) === true)) {
                     $matches[] = $command;
                 }
             }
@@ -192,7 +192,7 @@ class CommandRegistry {
         }
         
         $this->commandsPath = $path;
-        $files = \CharlotteDunois\Livia\FileHelpers::recursiveFileSearch($path, '*.php');
+        $files = \CharlotteDunois\Livia\Utils\FileHelpers::recursiveFileSearch($path, '*.php');
         
         foreach($files as $file) {
             if($ignoreSameLevelFiles === true) {
@@ -222,10 +222,10 @@ class CommandRegistry {
             
             $this->commands->set($cmd->name, $cmd);
             
-            $group = $this->resolveGroup($command->groupID);
-            $group->commands->set($command->name, $command);
+            $group = $this->resolveGroup($cmd->groupID);
+            $group->commands->set($cmd->name, $cmd);
             
-            $this->client->emit('debug', 'Registered command '.$command->groupID.':'.$command->name);
+            $this->client->emit('debug', 'Registered command '.$cmd->groupID.':'.$cmd->name);
         }
         
         return $this;
@@ -258,7 +258,7 @@ class CommandRegistry {
     
     /**
      * Registers a type.
-     * @param \CharlotteDunois\Livia\Types\Type|string  $type  The full qualified class name or an initiated instance of it.
+     * @param \CharlotteDunois\Livia\Types\ArgumentType|string  $type  The full qualified class name or an initiated instance of it.
      * @return $this
      * @throws \Exception
      */
@@ -266,11 +266,11 @@ class CommandRegistry {
         foreach($type as $t) {
             $oldT = $t;
             
-            if(!($t instanceof \CharlotteDunois\Livia\Types\Type)) {
+            if(!($t instanceof \CharlotteDunois\Livia\Types\ArgumentType)) {
                 $t = new $t($this);
             }
             
-            if(!($t instanceof \CharlotteDunois\Livia\Types\Type)) {
+            if(!($t instanceof \CharlotteDunois\Livia\Types\ArgumentType)) {
                 throw new \Exception($oldT.' is not an instance of Type');
             }
             
@@ -294,7 +294,7 @@ class CommandRegistry {
             throw new \Exception('Invalid path specified');
         }
         
-        $files = \CharlotteDunois\Livia\FileHelpers::recursiveFileSearch($path, '*.php');
+        $files = \CharlotteDunois\Livia\Utils\FileHelpers::recursiveFileSearch($path, '*.php');
         foreach($files as $file) {
             if($ignoreSameLevelFiles === true) {
                 $filepath = \ltrim(str_replace(array($path, '\\'), array('', '/'), $file), '/');
@@ -332,10 +332,16 @@ class CommandRegistry {
         $this->registerDefaultCommands();
     }
     
+    /**
+     * Registers the default commands.
+     */
     function registerDefaultCommands() {
-        $this->registerCommandIn(__DIR__.'/Commands', true);
+        $this->registerCommandsIn(__DIR__.'/Commands', true);
     }
     
+    /**
+     * Registers the default command groups.
+     */
     function registerDefaultGroups() {
         $this->registerGroup(
             (new \CharlotteDunois\Livia\Commands\CommandGroup($this->client, 'commands', 'Commands', true)),
@@ -343,6 +349,9 @@ class CommandRegistry {
         );
     }
     
+    /**
+     * Registers the default argument types.
+     */
     function registerDefaultTypes() {
         $this->registerTypesIn(__DIR__.'/Types', 'ArgumentType.php');
     }
@@ -402,10 +411,10 @@ class CommandRegistry {
         $code = \explode("\n", \str_replace("\r", "", $code));
         foreach($code as $line => $lcode) {
             if(\stripos($lcode, '<?php') !== false) {
-                unset($contents[$line]);
+                unset($code[$line]);
             } elseif(\stripos($lcode, 'namespace') !== false) {
                 $oldnamespace = \trim(\str_replace(array('namespace', ';'), '', $lcode));
-                unset($contents[$line]);
+                unset($code[$line]);
                 break;
             }
         }

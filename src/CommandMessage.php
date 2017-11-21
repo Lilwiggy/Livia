@@ -63,42 +63,6 @@ class CommandMessage {
     }
     
     /**
-	 * Creates an usage string for the message's command.
-	 * @param string                               $argString  A string of arguments for the command.
-	 * @param string|null                          $prefix     Prefix to use for the prefixed command format.
-	 * @param \CharlotteDunois\Yasmin\Models\User  $user       User to use for the mention command format.
-	 * @return string
-	 */
-    function usage(string $argString, string $prefix = null, \CharlotteDunois\Yasmin\Models\User $user = $this->client->user) {
-        if($prefix === null) {
-            $prefix = $this->client->commandPrefix;
-			if($this->message->guild && $this->client->provider) {
-                $prefix = ($this->client->provider->get($this->message->guild, 'commandPrefix') ?: $prefix);
-			}
-		}
-        
-        return $this->command->usage($argString, $prefix, $user);
-    }
-    
-    /**
-	 * Creates an usage string for any command.
-	 * @param string                               $command    A command + string of arguments for the command.
-	 * @param string|null                          $prefix     Prefix to use for the prefixed command format.
-	 * @param \CharlotteDunois\Yasmin\Models\User  $user       User to use for the mention command format.
-	 * @return string
-	 */
-    function anyUsage(string $command, string $prefix = null, \CharlotteDunois\Yasmin\Models\User $user = $this->client->user) {
-        if($prefix === null) {
-            $prefix = $this->client->commandPrefix;
-			if($this->message->guild && $this->client->provider) {
-                $prefix = ($this->client->provider->get($this->message->guild, 'commandPrefix') ?: $prefix);
-			}
-		}
-        
-        return \CharlotteDunois\Livia\Commands\Command::buildUsage($command, $prefix, $user);
-    }
-    
-    /**
 	 * Parses the argString into usable arguments, based on the argsType and argsCount of the command.
 	 * @return string|string[]
 	 */
@@ -223,6 +187,10 @@ class CommandMessage {
             
             \React\Promise\all($promises)->then(function () use ($args) {
                 $promise = $this->command->run($this, $args, ((bool) $args));
+                if(!($promise instanceof \React\Promise\PromiseInterface)) {
+                    $promise = \React\Promise\resolve($promise);
+                }
+                
                 $this->client->emit('commandRun', $this->command, $promise, $this, $args, ((bool) $args));
                 
                 return $promise->then(function($response) {
