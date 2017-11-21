@@ -18,8 +18,6 @@ namespace CharlotteDunois\Livia\Commands;
  * @property string                                    $name           The name of the group.
  * @property bool                                      $guarded        Whether this group is guarded against disabling.
  * @property \CharlotteDunois\Yasmin\Utils\Collection  $commands       The commands that the group contains.
- * @property bool                                      $globalEnabled  Whether the group is globally enabled.
- * @property array<string, bool>                       $guildEnabled   An array containing guildID => bool pairs, which determine the enabled state.
  */
 class CommandGroup {
     protected $client;

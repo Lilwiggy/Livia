@@ -13,9 +13,29 @@ namespace CharlotteDunois\Livia\Commands;
 /**
  * A command that can be run in a client.
  *
- * @property \CharlotteDunois\Livia\CommandClient      $client    The client which initiated the instance.
- * @property bool                                      $globalEnabled  Whether the group is globally enabled.
- * @property array                                     $guildEnabled   An array containing guildID => bool pairs, which determine the enabled state.
+ * @property \CharlotteDunois\Livia\CommandClient               $client             The client which initiated the instance.
+ * @property string                                             $name               The name of the command.
+ * @property string[]                                           $aliases            Aliases of the command.
+ * @property \CharlotteDunois\Livia\Commands\CommandGroup|null  $group              The group the command belongs to, assigned upon registration.
+ * @property string                                             $groupID            ID of the command group the command is part of.
+ * @property string                                             $description        A short description of the command.
+ * @property string|null                                        $details            A longer description of the command.
+ * @property string                                             $format             Usage format string of the command.
+ * @property string[]                                           $examples           Examples of and for the command.
+ * @property bool                                               $guildOnly          Whether the command can only be triggered in a guild channel.
+ * @property bool                                               $ownerOnly          Whether the command can only be triggered by the bot owner (requires default hasPermission method).
+ * @property string[]|null                                      $clientPermissions  An array containing the required permissions for the client user to make the command work.
+ * @property string[]|null                                      $userPermissions    An array containing the required permissions for the user.
+ * @property bool                                               $nsfw               Whether the command can only be run in NSFW channels.
+ * @property array                                              $throttling         Options for throttling command usages.
+ * @property bool                                               $defaultHandling    Whether the command gets handled normally.
+ * @property array                                              $args               An array containing the command arguments.
+ * @property int|double                                         $argsPromptLimit    How many times the user gets prompted for an argument.
+ * @property bool                                               $argsSingleQuotes   Whether single quotes are allowed to encapsulate an argument.
+ * @property string                                             $argsType           How the arguments are split when passed to the command's run method.
+ * @property int                                                $argsCount          Maximum number of arguments that will be split.
+ * @property string[]                                           $patterns           Regular expression triggers.
+ * @property bool                                               $guarded            Whether the command is protected from being disabled.
  */
 class Command {
     protected $client;
@@ -25,7 +45,7 @@ class Command {
     protected $groupID;
     protected $description;
     protected $details;
-    protected $format;
+    protected $format = '';
     protected $examples = array();
     protected $guildOnly = false;
     protected $ownerOnly = false;
@@ -36,9 +56,9 @@ class Command {
     protected $defaultHandling = true;
     protected $args = array();
     protected $argsPromptLimit = \INF;
+    protected $argsSingleQuotes = true;
     protected $argsType = 'single';
     protected $argsCount = 0;
-    protected $argsSingleQuotes = true;
     protected $patterns = array();
     protected $guarded = false;
     
@@ -214,9 +234,9 @@ class Command {
             throw new \InvalidArgumentException('Command argsPromptLimit must be an integer (or INF) and greater than 0');
         }
         
+        $this->argsSingleQuotes = (bool) ($info['argsSingleQuotes'] ?? $this->argsSingleQuotes);
         $this->argsType = $info['argsType'] ?? $this->argsType;
         $this->argsPromptLimit = $info['argsPromptLimit'] ?? $this->argsPromptLimit;
-        $this->argsSingleQuotes = (bool) ($info['argsSingleQuotes'] ?? $this->argsSingleQuotes);
         
         if(isset($info['argsCount']) && $this->argsType === 'multiple' && ((int) $info['argsCount']) < 2) {
             throw new \InvalidArgumentException('Command argsCount must be at least 2');
