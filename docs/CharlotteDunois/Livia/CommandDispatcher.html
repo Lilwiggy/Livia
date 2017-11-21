@@ -122,7 +122,7 @@
                 <div class="col-md-8 type">
                     <a href="#method_addInhibitor">addInhibitor</a>(callable $inhibitor)
         
-                                            <p>Adds an inhibitor. The inhibitor is supposed to return false, if the command should not be blocked. Otherwise it should return a string (as reason) or an array, containing as first element the reason and as second element a Promise or Message instance.</p>                </div>
+                                            <p>Adds an inhibitor. The inhibitor is supposed to return false, if the command should not be blocked. Otherwise it should return a string (as reason) or an array, containing as first element the reason and as second element a Promise (which resolves to a Message), a Message instance or null. The inhibitor can return a Promise (for async computation).</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -163,7 +163,7 @@
     
 
                     <div class="method-description">
-                                    <p>Adds an inhibitor. The inhibitor is supposed to return false, if the command should not be blocked. Otherwise it should return a string (as reason) or an array, containing as first element the reason and as second element a Promise or Message instance.</p>                                                </div>
+                                    <p>Adds an inhibitor. The inhibitor is supposed to return false, if the command should not be blocked. Otherwise it should return a string (as reason) or an array, containing as first element the reason and as second element a Promise (which resolves to a Message), a Message instance or null. The inhibitor can return a Promise (for async computation).</p>                                                </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 

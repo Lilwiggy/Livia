@@ -110,6 +110,14 @@
                 <td></td>
             </tr>
                     <tr>
+                <td class="type" id="property_emptyChecker">
+                                                                                callable|null
+                </td>
+                <td>$emptyChecker</td>
+                <td class="last">Empty checker function for the argument. {see \CharlotteDunois\Livia\Types\ArgumentType::isEmpty}</td>
+                <td></td>
+            </tr>
+                    <tr>
                 <td class="type" id="property_infinite">
                                                                                 bool
                 </td>
@@ -154,7 +162,7 @@
                                                                                 callable|null
                 </td>
                 <td>$parse</td>
-                <td class="last">Parser function to parse a value for the argument.</td>
+                <td class="last">Parser function to parse a value for the argument. {see \CharlotteDunois\Livia\Types\ArgumentType::parse}</td>
                 <td></td>
             </tr>
                     <tr>
@@ -178,7 +186,7 @@
                                                                                 callable|null
                 </td>
                 <td>$validate</td>
-                <td class="last">Validator function for validating a value for the argument.</td>
+                <td class="last">Validator function for validating a value for the argument. {see \CharlotteDunois\Livia\Types\ArgumentType::validate}</td>
                 <td></td>
             </tr>
                     <tr>
@@ -215,16 +223,6 @@
                                             <p>Prompts the user and obtains the value for the argument. Resolves with an array of ('value' => mixed, 'cancelled' => string|null, 'prompts' => Message[], 'answers' => Message[]). Cancelled can be one of user, time and promptLimit.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    <abbr title="React\Promise\Promise">Promise</abbr>
-                </div>
-                <div class="col-md-8 type">
-                    <a href="#method_obtainInfinite">obtainInfinite</a>(<a href="../../../CharlotteDunois/Livia/CommandMessage.html"><abbr title="CharlotteDunois\Livia\CommandMessage">CommandMessage</abbr></a> $message, array $values = array(), $promptLimit = \INF, array $prompts = array(), array $answers = array(), int $currentVal)
-        
-                                            <p>Prompts the user infinitely and obtains the values for the argument. Resolves with an array of ('values' => mixed, 'cancelled' => string|null, 'prompts' => Message[], 'answers' => Message[]). Cancelled can be one of user, time and promptLimit.</p>                </div>
-                <div class="col-md-2"></div>
-            </div>
             </div>
 
 
@@ -233,7 +231,7 @@
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/Arguments/Argument.php#L65">line 65</a></div>
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/Arguments/Argument.php#L68">line 68</a></div>
         <code>                    
     <strong>__construct</strong>(<a href="../../../CharlotteDunois/Livia/CommandClient.html"><abbr title="CharlotteDunois\Livia\CommandClient">CommandClient</abbr></a> $client, array $info)
         </code>
@@ -254,6 +252,7 @@
      'infinite' => bool, (Infinite argument collecting, defaults to false)                                                                     <br />
      'validate' => callable, (Validator function for the argument, optional)                                                                   <br />
      'parse' => callable, (Parser function for the argument, optional)                                                                         <br />
+     'isEmpty' => callable, (Empty checker function for the argument, optional)                                                                <br />
      'wait' => int (How long to wait for input (in seconds)                                                                                    <br />
  )</p>                            </div>
                 <div class="tags">
@@ -290,7 +289,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_obtain">
-        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/Arguments/Argument.php#L119">line 119</a></div>
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/Arguments/Argument.php#L123">line 123</a></div>
         <code>                    <abbr title="React\Promise\Promise">Promise</abbr>
     <strong>obtain</strong>(<a href="../../../CharlotteDunois/Livia/CommandMessage.html"><abbr title="CharlotteDunois\Livia\CommandMessage">CommandMessage</abbr></a> $message, $value, $promptLimit = \INF, array $prompts = array(), array $answers = array(), $valid = null)
         </code>
@@ -333,71 +332,6 @@
                     <tr>
                 <td></td>
                 <td>$valid</td>
-                <td></td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td><abbr title="React\Promise\Promise">Promise</abbr></td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_obtainInfinite">
-        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/Arguments/Argument.php#L223">line 223</a></div>
-        <code>                    <abbr title="React\Promise\Promise">Promise</abbr>
-    <strong>obtainInfinite</strong>(<a href="../../../CharlotteDunois/Livia/CommandMessage.html"><abbr title="CharlotteDunois\Livia\CommandMessage">CommandMessage</abbr></a> $message, array $values = array(), $promptLimit = \INF, array $prompts = array(), array $answers = array(), int $currentVal)
-        </code>
-    </h3>
-    <div class="details">
-            
-    
-
-                    <div class="method-description">
-                                    <p>Prompts the user infinitely and obtains the values for the argument. Resolves with an array of ('values' => mixed, 'cancelled' => string|null, 'prompts' => Message[], 'answers' => Message[]). Cancelled can be one of user, time and promptLimit.</p>                                                </div>
-                <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td><a href="../../../CharlotteDunois/Livia/CommandMessage.html"><abbr title="CharlotteDunois\Livia\CommandMessage">CommandMessage</abbr></a></td>
-                <td>$message</td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td>array</td>
-                <td>$values</td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td></td>
-                <td>$promptLimit</td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td>array</td>
-                <td>$prompts</td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td>array</td>
-                <td>$answers</td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td>int</td>
-                <td>$currentVal</td>
                 <td></td>
             </tr>
             </table>
