@@ -48,7 +48,7 @@ class CommandGroup {
         $this->commands = new \CharlotteDunois\Yasmin\Utils\Collection();
         if(!empty($commands)) {
             foreach($commands as $command) {
-                $this->command->set($command->name, $command);
+                $this->commands->set($command->name, $command);
             }
         }
     }

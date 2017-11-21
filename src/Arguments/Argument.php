@@ -57,7 +57,7 @@ class Argument {
      *      'infinite' => bool, (Infinite argument collecting, defaults to false)                                                                     <br />
      *      'validate' => callable, (Validator function for the argument, optional)                                                                   <br />
      *      'parse' => callable, (Parser function for the argument, optional)                                                                         <br />
-     *      'isEmpty' => callable, (Empty checker function for the argument, optional)                                                                <br />
+     *      'emptyChecker' => callable, (Empty checker function for the argument, optional)                                                                <br />
      *      'wait' => int (How long to wait for input (in seconds)                                                                                    <br />
      *  )
      *
@@ -97,7 +97,7 @@ class Argument {
         $this->infinite = (!empty($info['infinite']));
         $this->validate = (!empty($info['validate']) && \is_callable($info['validate']) ? $info['validate'] : null);
         $this->parse = (!empty($info['parse']) && \is_callable($info['parse']) ? $info['parse'] : null);;
-        $this->emptyChecker = (!empty($info['isEmpty']) && \is_callable($info['isEmpty']) ? $info['isEmpty'] : null);
+        $this->emptyChecker = (!empty($info['emptyChecker']) && \is_callable($info['emptyChecker']) ? $info['emptyChecker'] : null);
         $this->wait = (int) ($info['wait'] ?? 30);
     }
     
@@ -122,7 +122,7 @@ class Argument {
      */
     function obtain(\CharlotteDunois\Livia\CommandMessage $message, $value, $promptLimit = \INF, array $prompts = array(), array $answers = array(), $valid = null) {
         return (new \React\Promise\Promise(function (callable $resolve, callable $reject) use ($message, $value, $promptLimit, $prompts, $answers, $valid) {
-            $empty = ($this->emptyChecker ? $this->emptyChecker($value, $message, $this) : $this->type->isEmpty($value, $message, $this));
+            $empty = ($this->emptyChecker !== null ? $this->emptyChecker($value, $message, $this) : $this->type->isEmpty($value, $message, $this));
             if($empty && $this->default) {
                 return $resolve(array(
                     'value' => $this->default,

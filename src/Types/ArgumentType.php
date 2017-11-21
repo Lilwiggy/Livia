@@ -60,12 +60,12 @@ class ArgumentType {
     
     /**
 	 * Checks whether a value is considered to be empty. This determines whether the default value for an argument should be used and changes the response to the user under certain circumstances.
-	 * @param string                                     $value  Value to check.
+	 * @param mixed                                      $value  Value to check.
 	 * @param \CharlotteDunois\Livia\CommandMessage      $msg    Message the value was obtained from.
 	 * @param \CharlotteDUnois\Livia\Arguments\Argument  $arg    Argument the value obtained from.
      * @return bool
      */
-    function isEmpty(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg) {
+    function isEmpty($value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg) {
         return empty($value);
     }
 }
