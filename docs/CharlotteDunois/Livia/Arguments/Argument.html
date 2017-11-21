@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow, all" />
+    <title>CharlotteDunois\Livia\Arguments\Argument | Livia</title>
+
+            <link rel="stylesheet" type="text/css" href="../../../css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../../../css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="../../../css/sami.css">
+        <script src="../../../js/jquery-1.11.1.min.js"></script>
+        <script src="../../../js/bootstrap.min.js"></script>
+        <script src="../../../js/typeahead.min.js"></script>
+        <script src="../../../sami.js"></script>
+        <meta name="MobileOptimized" content="width">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+    
+    
+    </head>
+
+    <body id="class" data-name="class:CharlotteDunois_Livia_Arguments_Argument" data-root-path="../../../">
+            <div id="content">
+        <div id="left-column">
+                <div id="control-panel">
+                <script>
+            $('option[data-version="'+window.projectVersion+'"]').prop('selected', true);
+        </script>
+        <form id="search-form" action="../../../search.html" method="GET">
+            <span class="glyphicon glyphicon-search"></span>
+            <input name="search"
+                   class="typeahead form-control"
+                   type="search"
+                   placeholder="Search">
+        </form>
+    </div>
+
+                <div id="api-tree"></div>
+
+        </div>
+        <div id="right-column">
+                <nav id="site-nav" class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-elements">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../../../index.html">Livia</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-elements">
+                <ul class="nav navbar-nav">
+                    <li><a href="../../../classes.html">Classes</a></li>
+                                            <li><a href="../../../namespaces.html">Namespaces</a></li>
+                                        <li><a href="../../../interfaces.html">Interfaces</a></li>
+                    <li><a href="../../../traits.html">Traits</a></li>
+                    <li><a href="../../../doc-index.html">Index</a></li>
+                    <li><a href="../../../search.html">Search</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+                        <div class="namespace-breadcrumbs">
+            <ol class="breadcrumb">
+                <li><span class="label label-default">class</span></li>
+                        <li><a href="../../../CharlotteDunois.html">CharlotteDunois</a></li><li class="backslash">\</li><li><a href="../../../CharlotteDunois/Livia.html">Livia</a></li><li class="backslash">\</li><li><a href="../../../CharlotteDunois/Livia/Arguments.html">Arguments</a></li><li class="backslash">\</li><li>Argument</li>
+            </ol>
+        </div>
+                <div id="page-content">
+                
+    <div class="page-header">
+        <h1>
+            Argument
+                
+        </h1>
+    </div>
+
+    <p>    class
+    <strong>Argument</strong>        (<a href="https://github.com/CharlotteDunois/Livia/blob/master/src/Arguments/Argument.php">View source</a>)
+</p>
+
+        
+    
+
+            <div class="description">
+            <p>A fancy argument.</p>                                </div>
+    
+    
+    
+            <h2>Properties</h2>
+
+            <table class="table table-condensed">
+                    <tr>
+                <td class="type" id="property_client">
+                                                                                <a href="../../../CharlotteDunois/Livia/CommandClient.html"><abbr title="CharlotteDunois\Livia\CommandClient">CommandClient</abbr></a>
+                </td>
+                <td>$client</td>
+                <td class="last">The client which initiated the instance.</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_default">
+                                                                                mixed|null
+                </td>
+                <td>$default</td>
+                <td class="last">The default value for the argument.</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_emptyChecker">
+                                                                                callable|null
+                </td>
+                <td>$emptyChecker</td>
+                <td class="last">Empty checker function for the argument. {see \CharlotteDunois\Livia\Types\ArgumentType::isEmpty}</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_infinite">
+                                                                                bool
+                </td>
+                <td>$infinite</td>
+                <td class="last">Whether the argument accepts an infinite number of values.</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_key">
+                                                                                string
+                </td>
+                <td>$key</td>
+                <td class="last">Key for the argument.</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_label">
+                                                                                string
+                </td>
+                <td>$label</td>
+                <td class="last">Label for the argument.</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_max">
+                                                                                int|float|null
+                </td>
+                <td>$max</td>
+                <td class="last">If type is integer or float, this is the maximum value of the number. If type is string, this is the maximum length of the string.</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_min">
+                                                                                int|float|null
+                </td>
+                <td>$min</td>
+                <td class="last">If type is integer or float, this is the minimum value of the number. If type is string, this is the minimum length of the string.</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_parse">
+                                                                                callable|null
+                </td>
+                <td>$parse</td>
+                <td class="last">Parser function to parse a value for the argument. {see \CharlotteDunois\Livia\Types\ArgumentType::parse}</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_prompt">
+                                                                                string
+                </td>
+                <td>$prompt</td>
+                <td class="last">Question prompt for the argument.</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_type">
+                                                                                <a href="../../../CharlotteDunois/Livia/Types/ArgumentType.html"><abbr title="CharlotteDunois\Livia\Types\ArgumentType">ArgumentType</abbr></a>
+                </td>
+                <td>$type</td>
+                <td class="last">Type of the argument.</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_validate">
+                                                                                callable|null
+                </td>
+                <td>$validate</td>
+                <td class="last">Validator function for validating a value for the argument. {see \CharlotteDunois\Livia\Types\ArgumentType::validate}</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_wait">
+                                                                                int
+                </td>
+                <td>$wait</td>
+                <td class="last">How long to wait for input (in seconds).</td>
+                <td></td>
+            </tr>
+            </table>
+
+    
+            <h2>Methods</h2>
+
+            <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method___construct">__construct</a>(<a href="../../../CharlotteDunois/Livia/CommandClient.html"><abbr title="CharlotteDunois\Livia\CommandClient">CommandClient</abbr></a> $client, array $info)
+        
+                                            <p>Constructs a new Argument. Info is an array as following:</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <abbr title="React\Promise\Promise">Promise</abbr>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_obtain">obtain</a>(<a href="../../../CharlotteDunois/Livia/CommandMessage.html"><abbr title="CharlotteDunois\Livia\CommandMessage">CommandMessage</abbr></a> $message, $value, $promptLimit = \INF, array $prompts = array(), array $answers = array(), $valid = null)
+        
+                                            <p>Prompts the user and obtains the value for the argument. Resolves with an array of ('value' => mixed, 'cancelled' => string|null, 'prompts' => Message[], 'answers' => Message[]). Cancelled can be one of user, time and promptLimit.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+            </div>
+
+
+        <h2>Details</h2>
+
+            <div id="method-details">
+                    <div class="method-item">
+                    <h3 id="method___construct">
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/Arguments/Argument.php#L68">line 68</a></div>
+        <code>                    
+    <strong>__construct</strong>(<a href="../../../CharlotteDunois/Livia/CommandClient.html"><abbr title="CharlotteDunois\Livia\CommandClient">CommandClient</abbr></a> $client, array $info)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Constructs a new Argument. Info is an array as following:</p>                    <p>array(                                                                                                                                        <br />
+     'key' => string, (Key for the argument)                                                                                                   <br />
+     'label' => string, (Label for the argument, defaults to key)                                                                              <br />
+     'prompt' => string, (First prompt for the argument when it wasn't specified)                                                              <br />
+     'type' => string, (Type of the argument, must be the ID of one of the registered argument types)                                          <br />
+     'max' => int|float, (If type is integer or float this is the maximum value, if type is string this is the maximum length, optional)       <br />
+     'min' => int|float, (If type is integer or float this is the minimum value, if type is string this is the minimum length, optional)       <br />
+     'default' => mixed, (Default value for the argumen, must not be null, optional)                                                           <br />
+     'infinite' => bool, (Infinite argument collecting, defaults to false)                                                                     <br />
+     'validate' => callable, (Validator function for the argument, optional)                                                                   <br />
+     'parse' => callable, (Parser function for the argument, optional)                                                                         <br />
+     'emptyChecker' => callable, (Empty checker function for the argument, optional)                                                                <br />
+     'wait' => int (How long to wait for input (in seconds)                                                                                    <br />
+ )</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../CharlotteDunois/Livia/CommandClient.html"><abbr title="CharlotteDunois\Livia\CommandClient">CommandClient</abbr></a></td>
+                <td>$client</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$info</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a target="_blank" href="http://php.net/InvalidArgumentException">InvalidArgumentException</a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_obtain">
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/Arguments/Argument.php#L123">line 123</a></div>
+        <code>                    <abbr title="React\Promise\Promise">Promise</abbr>
+    <strong>obtain</strong>(<a href="../../../CharlotteDunois/Livia/CommandMessage.html"><abbr title="CharlotteDunois\Livia\CommandMessage">CommandMessage</abbr></a> $message, $value, $promptLimit = \INF, array $prompts = array(), array $answers = array(), $valid = null)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Prompts the user and obtains the value for the argument. Resolves with an array of ('value' => mixed, 'cancelled' => string|null, 'prompts' => Message[], 'answers' => Message[]). Cancelled can be one of user, time and promptLimit.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../CharlotteDunois/Livia/CommandMessage.html"><abbr title="CharlotteDunois\Livia\CommandMessage">CommandMessage</abbr></a></td>
+                <td>$message</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td></td>
+                <td>$value</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td></td>
+                <td>$promptLimit</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$prompts</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$answers</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td></td>
+                <td>$valid</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><abbr title="React\Promise\Promise">Promise</abbr></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+            </div>
+
+    
+            </div>
+                <div id="footer">
+        Generated by <a href="http://sami.sensiolabs.org/">Sami, the API Documentation Generator</a>.
+    </div>
+
+        </div>
+    </div>
+    </body>
+
+</html>
