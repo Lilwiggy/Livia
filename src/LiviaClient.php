@@ -15,10 +15,10 @@ namespace CharlotteDunois\Livia;
  * @property \CharlotteDunois\Livia\CommandDispatcher                 $dispatcher     The client's command dispatcher.
  * @property \CharlotteDunois\Livia\CommandRegistry                   $registry       The client's command registry.
  * @property \CharlotteDunois\Livia\Providers\SettingProvider|null    $provider       The client's setting provider.
- * @property string|null                                              $commandPrefix  The global command prefix. {@see CommandClient::setCommandPrefix}
- * @property \CharlotteDunois\Yasmin\\Models\User[]                   $owners         Owners of the bot, set by the client option owners. If you simply need to check if a user is an owner of the bot, please use CommandClient::isOwner instead. {@see \CharlotteDunois\Livia\CommandClient:isOwner}
+ * @property string|null                                              $commandPrefix  The global command prefix. {@see LiviaClient::setCommandPrefix}
+ * @property \CharlotteDunois\Yasmin\\Models\User[]                   $owners         Owners of the bot, set by the client option owners. If you simply need to check if a user is an owner of the bot, please use LiviaClient::isOwner instead. {@see \CharlotteDunois\Livia\LiviaClient:isOwner}
  */
-class CommandClient extends \CharlotteDunois\Yasmin\Client {
+class LiviaClient   extends \CharlotteDunois\Yasmin\Client {
     protected $dispatcher;
     protected $registry;
     protected $provider;

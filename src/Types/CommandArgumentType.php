@@ -18,7 +18,7 @@ class CommandArgumentType extends ArgumentType {
     /**
      * @internal
      */
-    function __construct(\CharlotteDunois\Livia\CommandClient $client) {
+    function __construct(\CharlotteDunois\Livia\LiviaClient $client) {
         parent::__construct($client, 'command');
     }
     

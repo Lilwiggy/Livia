@@ -13,7 +13,7 @@ namespace CharlotteDunois\Livia;
 /**
  * Handles parsing messages and running commands from them.
  *
- * @property \CharlotteDunois\Livia\CommandClient      $client      The client which initiated the instance.
+ * @property \CharlotteDunois\Livia\LiviaClient        $client      The client which initiated the instance.
  * @property array                                     $inhibitors  Functions that can block commands from running.
  */
 class CommandDispatcher {
@@ -28,7 +28,7 @@ class CommandDispatcher {
     /**
      * @internal
      */
-    function __construct(\CharlotteDunois\Livia\CommandClient $client) {
+    function __construct(\CharlotteDunois\Livia\LiviaClient $client) {
         $this->client = $client;
         
         $this->results = new \CharlotteDunois\Yasmin\Utils\Collection();

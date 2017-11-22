@@ -13,7 +13,7 @@ namespace CharlotteDunois\Livia\Commands;
 /**
  * A group for commands.
  *
- * @property \CharlotteDunois\Livia\CommandClient      $client         The client which initiated the instance.
+ * @property \CharlotteDunois\Livia\LiviaClient        $client         The client which initiated the instance.
  * @property string                                    $id             The ID of the group.
  * @property string                                    $name           The name of the group.
  * @property bool                                      $guarded        Whether this group is guarded against disabling.
@@ -32,13 +32,13 @@ class CommandGroup {
     
     /**
      * Constructs a new Command Group.
-     * @param \CharlotteDunois\Livia\CommandClient  $client
+     * @param \CharlotteDunois\Livia\LiviaClient    $client
      * @param string                                $id
      * @param string                                $name
      * @param bool                                  $guarded
      * @param array|null                            $commands
      */
-    function __construct(\CharlotteDunois\Livia\CommandClient $client, string $id, string $name, bool $guarded = false, array $commands = null) {
+    function __construct(\CharlotteDunois\Livia\LiviaClient $client, string $id, string $name, bool $guarded = false, array $commands = null) {
         $this->client = $client;
         
         $this->id = $id;

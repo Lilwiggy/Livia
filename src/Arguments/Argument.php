@@ -13,7 +13,7 @@ namespace CharlotteDunois\Livia\Arguments;
 /**
  * A fancy argument.
  *
- * @property \CharlotteDunois\Livia\CommandClient        $client        The client which initiated the instance.
+ * @property \CharlotteDunois\Livia\LiviaClient          $client        The client which initiated the instance.
  * @property string                                      $key           Key for the argument.
  * @property string                                      $label         Label for the argument.
  * @property string                                      $prompt        Question prompt for the argument.
@@ -61,11 +61,11 @@ class Argument {
      *      'wait' => int (How long to wait for input (in seconds)                                                                                    <br />
      *  )
      *
-     * @param \CharlotteDunois\Livia\CommandClient  $client
+     * @param \CharlotteDunois\Livia\LiviaClient    $client
      * @param array                                 $info
      * @throws \InvalidArgumentException
      */
-    function __construct(\CharlotteDunois\Livia\CommandClient $client, array $info) {
+    function __construct(\CharlotteDunois\Livia\LiviaClient $client, array $info) {
         $this->client = $client;
         
         if(empty($info['key'])) {

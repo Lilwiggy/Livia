@@ -13,7 +13,7 @@ namespace CharlotteDunois\Livia\Types;
 /**
  * An argument type that can be used for argument collecting.
  *
- * @property \CharlotteDunois\Livia\CommandClient      $client    The client which initiated the instance.
+ * @property \CharlotteDunois\Livia\LiviaClient        $client    The client which initiated the instance.
  * @property string                                    $id        The argument type ID.
  */
 class ArgumentType {
@@ -23,7 +23,7 @@ class ArgumentType {
     /**
      * @internal
      */
-    function __construct(\CharlotteDunois\Livia\CommandClient $client, string $id) {
+    function __construct(\CharlotteDunois\Livia\LiviaClient $client, string $id) {
         $this->client = $client;
         $this->id = $id;
     }

@@ -28,11 +28,11 @@ abstract class SettingProvider {
     abstract function destroy();
     
     /**
-     * Initializes the provider by connecting to databases and/or caching all data in memory. CommandClient::setProvider will automatically call this once the client is ready.
-     * @param \CharlotteDunois\Livia\CommandClient  $client
+     * Initializes the provider by connecting to databases and/or caching all data in memory. LiviaClient::setProvider will automatically call this once the client is ready.
+     * @param \CharlotteDunois\Livia\LiviaClient    $client
      * @return \React\Promise\Promise
      */
-    abstract function init(\CharlotteDunois\Livia\CommandClient $client);
+    abstract function init(\CharlotteDunois\Livia\LiviaClient   $client);
     
     /**
      * Gets a setting from a guild.

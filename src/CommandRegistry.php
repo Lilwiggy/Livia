@@ -12,7 +12,7 @@ namespace CharlotteDunois\Livia;
 /**
  * Handles registration and searching of commands and groups.
  *
- * @property \CharlotteDunois\Livia\CommandClient      $client        The client which initiated the instance.
+ * @property \CharlotteDunois\Livia\LiviaClient        $client        The client which initiated the instance.
  * @property \CharlotteDunois\Yasmin\Utils\Collection  $commands      Registered commands, mapped by their name.
  * @property string|null                               $commandsPath  Fully resolved path to the bot's commands directory.
  * @property \CharlotteDunois\Yasmin\Utils\Collection  $groups        Registered command groups, mapped by their name.
@@ -29,7 +29,7 @@ class CommandRegistry {
     /**
      * @internal
      */
-    function __construct(\CharlotteDunois\Livia\CommandClient $client) {
+    function __construct(\CharlotteDunois\Livia\LiviaClient $client) {
         $this->client = $client;
         
         $this->commands = new \CharlotteDunois\Yasmin\Utils\Collection();

@@ -13,7 +13,7 @@ namespace CharlotteDunois\Livia\Commands;
 /**
  * A command that can be run in a client.
  *
- * @property \CharlotteDunois\Livia\CommandClient               $client             The client which initiated the instance.
+ * @property \CharlotteDunois\Livia\LiviaClient                 $client             The client which initiated the instance.
  * @property string                                             $name               The name of the command.
  * @property string[]                                           $aliases            Aliases of the command.
  * @property \CharlotteDunois\Livia\Commands\CommandGroup|null  $group              The group the command belongs to, assigned upon registration.
@@ -95,11 +95,11 @@ class Command {
      *      'guarded' => bool, (defaults to false)                                                                                         <br />
      *  )
      *
-     * @param \CharlotteDunois\Livia\CommandClient  $client
+     * @param \CharlotteDunois\Livia\LiviaClient    $client
      * @param array                                 $info
      * @throws \InvalidArgumentException
      */
-    function __construct(\CharlotteDunois\Livia\CommandClient $client, array $info) {
+    function __construct(\CharlotteDunois\Livia\LiviaClient $client, array $info) {
         $this->client = $client;
         
         if(empty($info['name']) || !\is_string($info['name'])) {

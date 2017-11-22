@@ -13,7 +13,7 @@ namespace CharlotteDunois\Livia;
 /**
  * A command message.
  *
- * @property \CharlotteDunois\Livia\CommandClient          $client          The client which initiated the instance.
+ * @property \CharlotteDunois\Livia\LiviaClient            $client          The client which initiated the instance.
  * @property \CharlotteDunois\Yasmin\Models\Message        $message         The message that triggers the command.
  * @property \CharlotteDunois\Livia\Commands\Command|null  $command         The command that got triggered, if any.
  *
@@ -34,7 +34,7 @@ class CommandMessage {
     /**
      * @internal
      */
-    function __construct(\CharlotteDunois\Livia\CommandClient $client, \CharlotteDunois\Yasmin\Models\Message $message, \CharlotteDunois\Livia\Commands\Command $command, string $argString = null, array $patternMatches = null) {
+    function __construct(\CharlotteDunois\Livia\LiviaClient $client, \CharlotteDunois\Yasmin\Models\Message $message, \CharlotteDunois\Livia\Commands\Command $command, string $argString = null, array $patternMatches = null) {
         $this->client = $client;
         $this->message = $message;
         $this->command = $message;
