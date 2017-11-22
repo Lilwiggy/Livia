@@ -42,7 +42,7 @@ class Prefix extends \CharlotteDunois\Livia\Commands\Command {
         return (new \React\Promise\Promise(function (callable $resolve, callable $reject) use ($message, $args) {
             if(empty($args['prefix'])) {
                 $prefix = $this->client->getGuildPrefix($message->message->guild);
-                $msg = ($prefix !== null ? 'The command prefix is '.$prefix.'.' : 'There is no command prefix set.').PHP_EOL.'To run commands, use '.\CharlotteDunois\Livia\Commands\Command::anyUsage('command', $prefix, $message->message->author).'.';
+                $msg = ($prefix !== null ? 'The command prefix is '.$prefix.'.' : 'There is no command prefix set.').PHP_EOL.'To run commands, use '.\CharlotteDunois\Livia\Commands\Command::anyUsage('command', $prefix, $this->client->user).'.';
                 return $message->channel->send($msg)->then($resolve, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
             }
             
@@ -77,7 +77,7 @@ class Prefix extends \CharlotteDunois\Livia\Commands\Command {
                 $response = ($prefix ? 'Set the command prefix to `'.$prefix.'`.' : 'Removed the command prefix entirely.');
             }
             
-            $message->reply($response.'To run commands use '.\CharlotteDunois\Livia\Commands\Command::anyUsage('command'))->then($resolve, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
+            $message->reply($response.'To run commands use '.\CharlotteDunois\Livia\Commands\Command::anyUsage('command', $prefix, $this->client->user))->then($resolve, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
         }));
     }
 }

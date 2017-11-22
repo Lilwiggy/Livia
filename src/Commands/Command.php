@@ -468,17 +468,13 @@ abstract class Command {
         
         $prStr = null;
         if(!empty($prefix)) {
-            if($prefix[(\strlen($prefix) - 1)] !== ' ') {
-                $prefix .= ' ';
-            }
-            
             $prefix = \str_replace(' ', "\u{00A0}", $prefix);
             $prStr = '`'.\CharlotteDunois\Yasmin\Utils\DataHelpers::escapeMarkdown($prefix.$command).'`';
         }
         
         $meStr = null;
         if($user !== null) {
-            $meStr = '`'.\CharlotteDunois\Yasmin\Utils\DataHelpers::escapeMarkdown(\str_replace(' ', "\u{00A0}", $user->tag)."\u{00A0}".$command).'`';
+            $meStr = '`@'.\CharlotteDunois\Yasmin\Utils\DataHelpers::escapeMarkdown(\str_replace(' ', "\u{00A0}", $user->tag)."\u{00A0}".$command).'`';
         }
         
         return ($prStr ?? '').(!empty($prefix) && $user !== null ? ' or ' : '').($meStr ?? '');
