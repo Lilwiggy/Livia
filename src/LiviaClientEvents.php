@@ -7,7 +7,7 @@
  * License: https://github.com/CharlotteDunois/Yasmin/blob/master/LICENSE
 */
 
-namespace CharlotteDunois\Yasmin;
+namespace CharlotteDunois\Livia;
 
 /**
  * Documents all LiviaClient events (exlucing events from Yasmin).
