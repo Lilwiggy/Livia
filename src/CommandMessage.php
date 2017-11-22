@@ -186,7 +186,7 @@ class CommandMessage {
             $typingCount = $this->message->channel->typingCount();
             
             \React\Promise\all($promises)->then(function () use ($args) {
-                $promise = $this->command->run($this, $args, ($this->patternMatches !== null));
+                $promise = $this->command->run($this, (array) $args, ($this->patternMatches !== null));
                 if(!($promise instanceof \React\Promise\PromiseInterface)) {
                     $promise = \React\Promise\resolve($promise);
                 }
@@ -211,7 +211,7 @@ class CommandMessage {
                     return \React\Promise\all($response);
                 });
             })->otherwise(function ($error) use ($typingCount) {
-                $this->client->emit('commandError', $this->command, $error, $this, $args, ($this->patternMatches !== null));
+                $this->client->emit('commandError', $this->command, $error, $this, (array) $args, ($this->patternMatches !== null));
                 
                 if($this->message->channel->typingCount() > $typingCount) {
                     $this->message->channel->stopTyping();
