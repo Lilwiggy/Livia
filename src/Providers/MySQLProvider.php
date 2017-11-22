@@ -28,7 +28,7 @@ class MySQLProvider extends SettingProvider {
      * @param int                             $port
      */
     function __construct(\React\EventLoop\LoopInterface $loop, string $host, string $user, string $password, string $database, int $port = 3306) {
-        $this->db = new React\MySQL\Connection($loop, array(
+        $this->db = new \React\MySQL\Connection($loop, array(
             'host' => $host,
             'user' => $user,
             'passwd' => $password,
