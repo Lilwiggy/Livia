@@ -23,8 +23,6 @@ class LiviaClient extends \CharlotteDunois\Yasmin\Client {
     protected $registry;
     protected $provider;
     
-    protected $commandPrefix;
-    
     /**
      * Constructs a new Command Client. Additional available Client Options are as following:
      *
@@ -102,7 +100,7 @@ class LiviaClient extends \CharlotteDunois\Yasmin\Client {
                 return $this->$name;
             break;
             case 'commandPrefix':
-                return $this->commandPrefix;
+                return $this->options['commandPrefix'];
             break;
             case 'owners':
                 $owners = array();
@@ -125,7 +123,9 @@ class LiviaClient extends \CharlotteDunois\Yasmin\Client {
      * @return $this
 	 */
     function setCommandPrefix($prefix) {
-        $this->commandPrefix = $prefix;
+        $this->options['commandPrefix'] = $prefix;
+        
+        $this->client->emit('commandPrefixChange', null, $prefix);
         return $this;
     }
     
@@ -171,10 +171,43 @@ class LiviaClient extends \CharlotteDunois\Yasmin\Client {
     }
     
     /**
+     * Get the guild's prefix - or the default prefix. Null means only mentions.
+     * @param \CharlotteDunois\Yasmin\Models\Guild|null  $guild
+     * @return string|null
+     */
+    function getGuildPrefix(\CharlotteDunois\Yasmin\Models\Guild $guild = null) {
+        if($guild !== null && $this->provider !== null) {
+            $prefix = $this->provider->get($guild, 'commandPrefix', 404);
+            if($prefix !== 404) {
+                return $prefix;
+            }
+        }
+        
+        return $this->commandPrefix;
+    }
+    
+    /**
+     * Set the guild's prefix. Null means only mentions. Return value indicates if the prefix has been sent to the provider or there was no provider to set it.
+     * @param \CharlotteDunois\Yasmin\Models\Guild|null  $guild
+     * @param string|null                                $prefix
+     * @return bool
+     */
+    function setGuildPrefix(\CharlotteDunois\Yasmin\Models\Guild $guild, string $prefix = null) {
+        if($this->client->provider !== null) {
+            $this->client->provider->set($guild, 'commandPrefix', $prefix);
+            
+            $this->client->emit('commandPrefixChange', $guild, $prefix);
+            return true;
+        }
+        
+        return false;
+    }
+    
+    /**
      * @internal
      */
-    function destroy(...$args) {
-        return parent::destroy(...$args)->then(function () {
+    function destroy(bool $destroyUtils = true) {
+        return parent::destroy($destroyUtils)->then(function () {
             if($this->provider) {
                 return $this->provider->destroy();
             }

@@ -13,7 +13,7 @@ namespace CharlotteDunois\Livia\Types;
  * @inheritDoc
  * @internal
  */
-class CommandOrGroupArgumentType extends ArgumentType {
+class GroupArgumentType extends ArgumentType {
     /**
      * @internal
      */

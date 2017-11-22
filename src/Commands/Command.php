@@ -36,7 +36,7 @@ namespace CharlotteDunois\Livia\Commands;
  * @property string[]                                           $patterns           Regular expression triggers.
  * @property bool                                               $guarded            Whether the command is protected from being disabled.
  */
-class Command {
+abstract class Command {
     protected $client;
     
     protected $name;
@@ -216,12 +216,12 @@ class Command {
             $this->argsCollector = new \CharlotteDunois\Livia\Arguments\ArgumentCollector($this->client, $this->args, $this->argsPromptLimit);
             
             if(empty($this->format)) {
-                $this->format = \array_reduce(function ($prev, $arg) {
+                $this->format = \array_reduce($this->argsCollector->args, function ($prev, $arg) {
                     $wrapL = ($arg->default !== null ? '[' : '<');
-                    $wrapR = ($arg->default !== null ? '[' : '<');
+                    $wrapR = ($arg->default !== null ? ']' : '>');
                     
-                    return $prev.($prev ? ' ' : '').$wrapL.$arg->label.($arg->infinite ? '...' : '').$wrapR;
-                }, $this->argsCollector->args);
+                    return $prev.($prev ? ' ' : '').$wrapL.$arg->label.(!empty($arg->infinite) ? '...' : '').$wrapR;
+                }, null);
             }
         }
         
@@ -344,7 +344,7 @@ class Command {
         $class = \explode('\\', \get_class($this));
         $name = \array_pop($class);
         
-        $this->client->registry->reregisterCommand($GLOBALS['OLD_NAMESPACE_'.\strtoupper($name)], $this);
+        $this->client->registry->reregisterCommand($GLOBALS['OLD_NAMESPACE_'.\strtoupper($name)].'\\'.$name, $this);
     }
     
     /**
@@ -362,7 +362,8 @@ class Command {
      */
     function &throttle(string $userID) {
         if($this->throttling === null || $this->client->isOwner($userID)) {
-            return null;
+            $null = null;
+            return $null;
         }
         
         if(!$this->throttles->has($userID)) {
@@ -436,13 +437,17 @@ class Command {
 	 * Creates a usage string for the command.
 	 * @param string                               $argString  A string of arguments for the command.
 	 * @param string|null                          $prefix     Prefix to use for the prefixed command format.
-	 * @param \CharlotteDunois\Yasmin\Models\User  $user       User to use for the mention command format.
+	 * @param \CharlotteDunois\Yasmin\Models\User  $user       User to use for the mention command format. Defaults to client user.
 	 * @return string
 	 */
-    function usage(string $argString, string $prefix = null, \CharlotteDunois\Yasmin\Models\User $user = $this->client->user) {
+    function usage(string $argString, string $prefix = null, \CharlotteDunois\Yasmin\Models\User $user = null) {
         if($prefix === null) {
             $prefix = $this->client->commandPrefix;
 		}
+        
+        if($user === null) {
+            $user = $this->client->user;
+        }
         
         return self::anyUsage($argString, $prefix, $user);
     }

@@ -33,10 +33,10 @@ class CommandMessage {
     /**
      * @internal
      */
-    function __construct(\CharlotteDunois\Livia\LiviaClient $client, \CharlotteDunois\Yasmin\Models\Message $message, \CharlotteDunois\Livia\Commands\Command $command, string $argString = null, array $patternMatches = null) {
+    function __construct(\CharlotteDunois\Livia\LiviaClient $client, \CharlotteDunois\Yasmin\Models\Message $message, \CharlotteDunois\Livia\Commands\Command $command = null, string $argString = null, array $patternMatches = null) {
         $this->client = $client;
         $this->message = $message;
-        $this->command = $message;
+        $this->command = $command;
         
         $this->argString = $argString;
         $this->patternMatches = $patternMatches;
@@ -69,7 +69,7 @@ class CommandMessage {
         switch($this->command->argsType) {
 			case 'single':
                 $args = \trim($this->argString);
-                return \preg_replace(($this->command->argsSingleQuotes ? '/^("|\')(.*)\1$/g' : '/^(")(.*)"$/g'), '$2', $args);
+                return \preg_replace(($this->command->argsSingleQuotes ? '/^("|\')(.*)\1$/u' : '/^(")(.*)"$/u'), '$2', $args);
 			case 'multiple':
 				return self::parseArgs(\trim($this->argString), $this->command->argsCount, $this->command->argsSingleQuotes);
 			default:
@@ -161,8 +161,8 @@ class CommandMessage {
             $countArgs = \count($this->command->args);
             
             if(!$args && $countArgs > 0) {
-                $count = ($this->command->args[($countArgs - 1)]->infinite ? \INF : $countArgs);
-                $provided = self::parseArgs(\trim($this->argString()), $count, $this->command->argsSingleQuotes);
+                $count = (!empty($this->command->args[($countArgs - 1)]['infinite']) ? \INF : $countArgs);
+                $provided = self::parseArgs(\trim($this->parseCommandArgs()), $count, $this->command->argsSingleQuotes);
                 
                 $promises[] = $this->command->argsCollector->obtain($this, $provided)->then(function ($result) use (&$args) {
                     if($result['cancelled']) {
@@ -170,7 +170,7 @@ class CommandMessage {
                             throw new \CharlotteDunois\Livia\Exceptions\CommandFormatException($this);
                         }
                         
-                        throw new \BadMethodCallException('Cancelled Command.');
+                        throw new \CharlotteDunois\Livia\Exceptions\FriendlyException('Cancelled Command.');
                     }
                     
                     $args = $result['values'];
@@ -184,7 +184,7 @@ class CommandMessage {
             
             $typingCount = $this->message->channel->typingCount();
             
-            \React\Promise\all($promises)->then(function () use ($args) {
+            \React\Promise\all($promises)->then(function () use (&$args) {
                 $promise = $this->command->run($this, (array) $args, ($this->patternMatches !== null));
                 if(!($promise instanceof \React\Promise\PromiseInterface)) {
                     $promise = \React\Promise\resolve($promise);
@@ -209,15 +209,15 @@ class CommandMessage {
                     
                     return \React\Promise\all($response);
                 });
-            })->otherwise(function ($error) use ($typingCount) {
+            })->otherwise(function ($error) use ($args, $typingCount) {
                 $this->client->emit('commandError', $this->command, $error, $this, (array) $args, ($this->patternMatches !== null));
                 
                 if($this->message->channel->typingCount() > $typingCount) {
                     $this->message->channel->stopTyping();
                 }
                 
-                if($error instanceof \BadMethodCallException || $error instanceof \CharlotteDunois\Livia\Exceptions\FriendlyException) {
-                    return $this->reply($error->message);
+                if($error instanceof \CharlotteDunois\Livia\Exceptions\FriendlyException) {
+                    return $this->reply($error->getMessage());
                 }
                 
                 $owners = $this->client->owners;
@@ -232,7 +232,7 @@ class CommandMessage {
                     $owners = 'the bot owner';
                 }
                 
-                return $this->reply('An error occurred while running the command: `'.\get_class($error).': '.$error->message.PHP_EOL.
+                return $this->reply('An error occurred while running the command: `'.\get_class($error).': '.$error->getMessage().PHP_EOL.
                         'You shouldn\'t ever receive an error like this.'.PHP_EOL.
                         'Please contact '.$owners.($this->client->getOption('invite') ? ' in this server: '.$this->client->getOption('invite') : '.'));
             })->then($resolve, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
@@ -246,7 +246,7 @@ class CommandMessage {
      * @param array   $options
      * @param bool    $fromEdit
      * @return \React\Promise\Promise
-     * @throws \RangeException
+     * @throws \RangeException|\InvalidArgumentException
      */
     protected function respond(string $type, string $content, array $options = array(), bool $fromEdit = false) {
         $shouldEdit = ($this->responses && !$fromEdit && empty($options['files']));
@@ -487,7 +487,7 @@ class CommandMessage {
             $val = (!empty($matches[2][$key]) ? $matches[2][$key] : $matches[3][$key]);
             $results[] = $val;
             
-            $content = \preg_replace(\preg_quote($val, '/'), '', $content, 1);
+             $content = \preg_replace('/'.\preg_quote($val, '/').'/u', '', $content, 1);
         }
         
         

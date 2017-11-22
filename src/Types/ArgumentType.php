@@ -15,7 +15,7 @@ namespace CharlotteDunois\Livia\Types;
  * @property \CharlotteDunois\Livia\LiviaClient        $client    The client which initiated the instance.
  * @property string                                    $id        The argument type ID.
  */
-class ArgumentType {
+abstract class ArgumentType {
     protected $client;
     protected $id;
     

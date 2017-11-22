@@ -19,7 +19,7 @@ class CommandFormatException extends FriendlyException {
      * @internal
      */
     function __construct($message) {
-        $prefix = ($message->message->guild && $message->client->provider ? $message->client->provider->get($message->message->guild, 'commandPrefix') : $this->client->commandPrefix);
+        $prefix = $message->client->getGuildPrefix($message->message->guild);
         
         parent::__construct('Invalid command usage. The `'.$message->command->name.'` command\'s accepted format is: '.
         $message->command->usage($message->command->format, $prefix).'. Use '.\CharlotteDunois\Livia\Commands\Command::anyUsage('help '.$message->command->name, $prefix).' for more information.');

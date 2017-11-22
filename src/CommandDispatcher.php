@@ -20,7 +20,11 @@ class CommandDispatcher {
     
     protected $inhibitors = array();
     
-    protected $awaiting = array();
+    /**
+     * @internal
+     */
+    public $awaiting = array();
+    
     protected $commandPatterns = array();
     protected $results;
     
@@ -79,88 +83,99 @@ class CommandDispatcher {
      */
     function handleMessage(\CharlotteDunois\Yasmin\Models\Message $message, \CharlotteDunois\Yasmin\Models\Message $oldMessage = null) {
         return (new \React\Promise\Promise(function (callable $resolve) use ($message, $oldMessage) {
-            if($this->shouldHandleMessage($message, $oldMessage) === false) {
-                return $resolve();
-            }
-            
-            $cmdMessage = null;
-            $oldCmdMessage = null;
-            
-            if($oldMessage !== null) {
-                $oldCmdMessage = $this->results->get($oldMessage->id);
-                if($oldCmdMessage === null && !$this->client->getOption('nonCommandEditable')) {
+            try {
+                if($this->shouldHandleMessage($message, $oldMessage) === false) {
                     return $resolve();
                 }
                 
-                $cmdMessage = $this->parseMessage($message);
-                if($cmdMessage && $oldCmdMessage) {
-                    $cmdMessage->respones = $oldCmdMessage->responses;
-                    $cmdMessage->responsePositions = $oldCmdMessage->responsePositions;
-                }
-            } else {
-                $cmdMessage = $this->parseMessage($message);
-            }
-            
-            if($cmdMessage) {
-                $this->inhibit($cmdMessage)->then(function () use ($message, $oldMessage, $cmdMessage, $resolve) {
-                    if($cmdMessage->command) {
-                        if($cmdMessage->isEnabledIn($message->guild)) {
-                            $cmdMessage->run()->then(function ($responses = null) use ($message, $oldMessage, $cmdMessage, $resolve) {
-                                if($responses !== null && !\is_array($responses)) {
-                                    $responses = array($responses);
-                                }
-                                
-                                $this->cacheCommandMessage($message, $oldMessage, $cmdMessage, $responses);
-                                $resolve();
-                            })->done(null, array($this->client, 'handlePromiseRejection'));
-                        } else {
-                            $message->reply('The command `'.$cmdMessage->command->name.'` is disabled.')->then(function ($response) use ($message, $oldMessage, $cmdMessage, $resolve) {
-                                $responses = array($response);
-                                $cmdMessage->finalize($responses);
-                                $this->cacheCommandMessage($message, $oldMessage, $cmdMessage, $responses);
-                                $resolve();
-                            })->done(null, array($this->client, 'handlePromiseRejection'));
-                        }
-                    } else {
-                        $this->client->emit('unknownCommand', $cmdMessage);
-                        if(((bool) $this->client->getOption('unknownCommandResponse'))) {
-                            $message->reply('Unknown command. Use '.$cmdMessage->anyUsage('help'))->then(function ($response) use ($message, $oldMessage, $cmdMessage, $resolve) {
-                                $responses = array($response);
-                                $cmdMessage->finalize($responses);
-                                $this->cacheCommandMessage($message, $oldMessage, $cmdMessage, $responses);
-                                $resolve();
-                            })->done(null, array($this->client, 'handlePromiseRejection'));
-                        }
-                    }
-                }, function ($inhibited) use ($message, $oldMessage, $cmdMessage, $resolve) {
-                    if(!\is_array($inhibited)) {
-                        $inhibited = array($inhibited, null);
+                $cmdMessage = null;
+                $oldCmdMessage = null;
+                
+                if($oldMessage !== null) {
+                    $oldCmdMessage = $this->results->get($oldMessage->id);
+                    if($oldCmdMessage === null && !$this->client->getOption('nonCommandEditable')) {
+                        return $resolve();
                     }
                     
-                    $this->client->emit('commandBlocked', $cmdMessage, $inhibited[0]);
-                    
-                    if(!($inhibited[1] instanceof \React\Promise\PromiseInterface)) {
-                        $inhibited[1] = \React\Promise\resolve($inhibited[1]);
+                    $cmdMessage = $this->parseMessage($message);
+                    if($cmdMessage && $oldCmdMessage) {
+                        $cmdMessage->respones = $oldCmdMessage->responses;
+                        $cmdMessage->responsePositions = $oldCmdMessage->responsePositions;
                     }
-                    
-                    $inhibited[1]->then(function ($responses) use ($message, $oldMessage, $cmdMessage, $resolve) {
-                        if($responses !== null) {
-                            $responses = array($responses);
-                        }
-                        
-                        $cmdMessage->finalize($responses);
-                        $this->cacheCommandMessage($message, $oldMessage, $cmdMessage, $responses);
-                        $resolve();
-                    })->done(null, array($this->client, 'handlePromiseRejection'));
-                });
-            } elseif($oldCmdMessage) {
-                $oldCmdMessage->finalize(null);
-                if(!$this->client->getOption('nonCommandEditable')) {
-                    $this->results->delete($message->id);
+                } else {
+                    $cmdMessage = $this->parseMessage($message);
                 }
                 
-                $this->cacheCommandMessage($message, $oldMessage, $cmdMessage, array());
-                $resolve();
+                if($cmdMessage) {
+                    $this->inhibit($cmdMessage)->then(function () use ($message, $oldMessage, $cmdMessage, $resolve) {
+                        if($cmdMessage->command) {
+                            if($cmdMessage->command->isEnabledIn($message->guild)) {
+                                $cmdMessage->run()->then(function ($responses = null) use ($message, $oldMessage, $cmdMessage, $resolve) {
+                                    if($responses !== null && !\is_array($responses)) {
+                                        $responses = array($responses);
+                                    }
+                                    
+                                    $this->cacheCommandMessage($message, $oldMessage, $cmdMessage, $responses);
+                                    $resolve();
+                                })->done(null, array($this->client, 'handlePromiseRejection'));
+                            } else {
+                                $message->reply('The command `'.$cmdMessage->command->name.'` is disabled.')->then(function ($response) use ($message, $oldMessage, $cmdMessage, $resolve) {
+                                    $responses = array($response);
+                                    $cmdMessage->finalize($responses);
+                                    $this->cacheCommandMessage($message, $oldMessage, $cmdMessage, $responses);
+                                    $resolve();
+                                })->done(null, array($this->client, 'handlePromiseRejection'));
+                            }
+                        } else {
+                            $this->client->emit('unknownCommand', $cmdMessage);
+                            if(((bool) $this->client->getOption('unknownCommandResponse'))) {
+                                $message->reply('Unknown command. Use '.$cmdMessage->anyUsage('help'))->then(function ($response) use ($message, $oldMessage, $cmdMessage, $resolve) {
+                                    $responses = array($response);
+                                    $cmdMessage->finalize($responses);
+                                    $this->cacheCommandMessage($message, $oldMessage, $cmdMessage, $responses);
+                                    $resolve();
+                                })->done(null, array($this->client, 'handlePromiseRejection'));
+                            }
+                        }
+                    }, function ($inhibited) use ($message, $oldMessage, $cmdMessage, $resolve) {
+                        if(!\is_array($inhibited)) {
+                            $inhibited = array($inhibited, null);
+                        }
+                        
+                        $this->client->emit('commandBlocked', $cmdMessage, $inhibited[0]);
+                        
+                        if(!($inhibited[1] instanceof \React\Promise\PromiseInterface)) {
+                            $inhibited[1] = \React\Promise\resolve($inhibited[1]);
+                        }
+                        
+                        $inhibited[1]->then(function ($responses) use ($message, $oldMessage, $cmdMessage, $resolve) {
+                            if($responses !== null) {
+                                $responses = array($responses);
+                            }
+                            
+                            $cmdMessage->finalize($responses);
+                            $this->cacheCommandMessage($message, $oldMessage, $cmdMessage, $responses);
+                            $resolve();
+                        })->done(null, array($this->client, 'handlePromiseRejection'));
+                    })->done(null, array($this->client, 'handlePromiseRejection'));
+                } elseif($oldCmdMessage) {
+                    $oldCmdMessage->finalize(null);
+                    if(!$this->client->getOption('nonCommandEditable')) {
+                        $this->results->delete($message->id);
+                    }
+                    
+                    $this->cacheCommandMessage($message, $oldMessage, $cmdMessage, array());
+                    $resolve();
+                }
+            } catch(\Throwable $error) {
+                $this->client->emit('error', $error);
+                throw $error;
+            } catch(\Exception $error) {
+                $this->client->emit('error', $error);
+                throw $error;
+            } catch(\ErrorException $error) {
+                $this->client->emit('error', $error);
+                throw $error;
             }
         }));
     }
@@ -256,19 +271,19 @@ class CommandDispatcher {
     protected function parseMessage(\CharlotteDunois\Yasmin\Models\Message $message) {
         // Find the command to run by patterns
         foreach($this->client->registry->commands as $command) {
-            if($command->pattern === null) {
+            if($command->patterns === null) {
                 continue;
             }
             
-            foreach($command->pattern as $ptrn) {
+            foreach($command->patterns as $ptrn) {
                 \preg_match($ptrn, $message->content, $matches);
                 if(!empty($matches)) {
-                    return (new \CharlotteDunois\Livia\CommandMessage($message, $command, null, null, $matches));
+                    return (new \CharlotteDunois\Livia\CommandMessage($this->client, $message, $command, null, null, $matches));
                 }
             }
         }
         
-        $prefix = ($message->guild && $this->client->provider ? $this->client->provider->get($message->guild, 'commandPrefix') : $this->client->commandPrefix);
+        $prefix = $this->client->getGuildPrefix($message->guild);
         if(empty($this->commandPatterns[$prefix])) {
             $this->buildCommandPattern($prefix);
         }
@@ -307,8 +322,9 @@ class CommandDispatcher {
 	 * Creates a regular expression to match the command prefix and name in a message.
 	 * @param string|null  $prefix
 	 * @return string
+     * @internal
 	 */
-    protected function buildCommandPattern(string $prefix = null) {
+    function buildCommandPattern(string $prefix = null) {
         $pattern = '';
         if($prefix !== null) {
             $escapedPrefix = \preg_quote($prefix, '/');
@@ -319,7 +335,7 @@ class CommandDispatcher {
         
         $this->commandPatterns[$prefix] = $pattern;
         
-        $this->client->emit('debug', 'Built command pattern for prefix "'.$prefix.'": '.$pattern.'');
+        $this->client->emit('debug', 'Built command pattern for prefix "'.$prefix.'": '.$pattern);
         return $pattern;
     }
 }

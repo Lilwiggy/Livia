@@ -162,7 +162,7 @@ class CommandRegistry {
         foreach($command as $cmd) {
             if(!($cmd instanceof \CharlotteDunois\Livia\Commands\Command)) {
                 $cmd = $this->handleCommandSpacing($cmd);
-                $cmd = new $cmd($this);
+                $cmd = new $cmd($this->client);
             }
             
             $this->commands->set($cmd->name, $cmd);
@@ -197,8 +197,8 @@ class CommandRegistry {
         
         foreach($files as $file) {
             if($ignoreSameLevelFiles === true) {
-                $filepath = \ltrim(str_replace(array($path, '\\'), array('', '/'), $file), '/');
-                if(\substr_count($filepath, '/') > 0) {
+                $filepath = \ltrim(\str_replace(array($path, '\\'), array('', '/'), $file), '/');
+                if(\substr_count($filepath, '/') === 0) {
                     continue;
                 }
             } elseif(!empty($ignoreSameLevelFiles) && \stripos($file, $ignoreSameLevelFiles) !== false) {
@@ -215,7 +215,7 @@ class CommandRegistry {
             $name = \trim(\explode('implements', \explode('extends', $matches[1])[0])[0]);
             $command = $this->handleCommandSpacingFile($name, $code);
             
-            $cmd = new $command($this);
+            $cmd = new $command($this->client);
             
             if(!($cmd instanceof \CharlotteDunois\Livia\Commands\Command)) {
                 throw new \Exception($name.' is not an instance of Command');
@@ -252,6 +252,7 @@ class CommandRegistry {
             }
             
             $this->groups->set($gr->id, $gr);
+            
             $this->client->emit('debug', 'Registered group '.$gr->id);
             $this->client->emit('groupRegister', $gr, $this);
         }
@@ -270,15 +271,16 @@ class CommandRegistry {
             $oldT = $t;
             
             if(!($t instanceof \CharlotteDunois\Livia\Types\ArgumentType)) {
-                $t = new $t($this);
+                $t = new $t($this->client);
             }
             
             if(!($t instanceof \CharlotteDunois\Livia\Types\ArgumentType)) {
                 throw new \Exception($oldT.' is not an instance of Type');
             }
             
-            $this->types->set($t->name, $t);
-            $this->client->emit('debug', 'Registered type '.$t->name);
+            $this->types->set($t->id, $t);
+            
+            $this->client->emit('debug', 'Registered type '.$t->id);
             $this->client->emit('typeRegister', $t, $this);
         }
         
@@ -301,12 +303,15 @@ class CommandRegistry {
         $files = \CharlotteDunois\Livia\Utils\FileHelpers::recursiveFileSearch($path, '*.php');
         foreach($files as $file) {
             if($ignoreSameLevelFiles === true) {
-                $filepath = \ltrim(str_replace(array($path, '\\'), array('', '/'), $file), '/');
-                if(\substr_count($filepath, '/') > 0) {
+                $filepath = \ltrim(\str_replace(array($path, '\\'), array('', '/'), $file), '/');
+                if(\substr_count($filepath, '/') === 0) {
                     continue;
                 }
-            } elseif(!empty($ignoreSameLevelFiles) && \stripos($file, $ignoreSameLevelFiles) !== false) {
-                continue;
+            } elseif(!empty($ignoreSameLevelFiles)) {
+                $filepath = \ltrim(\str_replace(array($path, '\\'), array('', '/'), $file), '/');
+                if(\stripos($filepath, $ignoreSameLevelFiles) === 0) {
+                    continue;
+                }
             }
             
             $code = \file_get_contents($file);
@@ -317,11 +322,19 @@ class CommandRegistry {
             }
             
             $namespace = \trim($matches[1]);
+            
+            preg_match('/class(.*?){/i', $code, $matches);
+            if(empty($matches[1])) {
+                $this->client->emit('error', $file.' is not a valid type file');
+            }
+            
             $name = \trim(\explode('implements', \explode('extends', $matches[1])[0])[0]);
             $fqn = '\\'.$namespace.'\\'.$name;
             
-            $type = new $fqn($this);
-            $this->types->set($type->name, $type);
+            $type = new $fqn($this->client);
+            $this->types->set($type->id, $type);
+            
+            $this->client->emit('debug', 'Registered type '.$type->id);
             $this->client->emit('typeRegister', $type, $this);
         }
         
@@ -332,8 +345,8 @@ class CommandRegistry {
      * Registers the default argument types, groups, and commands.
      */
     function registerDefaults() {
-        $this->registerDefaultGroups();
         $this->registerDefaultTypes();
+        $this->registerDefaultGroups();
         $this->registerDefaultCommands();
     }
     
@@ -370,15 +383,15 @@ class CommandRegistry {
     function reregisterCommand($command, \CharlotteDunois\Livia\Commands\Command $oldCommand) {
         if(!($command instanceof \CharlotteDunois\Livia\Commands\Command)) {
             $command = $this->handleCommandSpacing($command);
-            $command = new $command($this);
+            $command = new $command($this->client);
         }
         
         $this->commands->set($command->name, $command);
         $group = $this->resolveGroup($command->groupID);
         $group->commands->set($command->name, $command);
         
-        $this->client->emit('commandReregister', $command, $oldCommand, $this);
         $this->client->emit('debug', 'Reregistered command '.$command->groupID.':'.$command->name);
+        $this->client->emit('commandReregister', $command, $oldCommand, $this);
     }
     
     /**
@@ -391,8 +404,8 @@ class CommandRegistry {
         $group->commands->delete($command->name);
         $this->commands->delete($command->name);
         
-        $this->client->emit('commandUnregister', $command, $this);
         $this->client->emit('debug', 'Unregistered command '.$command->groupID.':'.$command->name);
+        $this->client->emit('commandUnregister', $command, $this);
     }
         
     protected function handleCommandSpacing(string $command) {
@@ -409,7 +422,7 @@ class CommandRegistry {
     }
     
     protected function handleCommandSpacingFile(string $name, string $code) {
-        $timestamp = time();
+        $timestamp = \preg_replace('/[0-9]/', '', \bin2hex(\random_bytes(16)));
         $namespace = 'CharlotteDunois\\Livia\\Commands\\Spacing\\'.$timestamp;
         $oldnamespace = "";
         
@@ -424,6 +437,7 @@ class CommandRegistry {
             }
         }
         
+        $code = \implode(PHP_EOL, $code);
         $GLOBALS['OLD_NAMESPACE_'.\strtoupper($name)] = $oldnamespace;
         
         $php = <<<CMD
@@ -431,9 +445,10 @@ class CommandRegistry {
 /**
  * Livia - Commands Namespacing
  */
+
 namespace {$namespace};
 
-{\implode(PHP_EOL, $code)}
+{$code}
 CMD;
         
         $path = \sys_get_temp_dir().'/php-livia-command-'.$timestamp.'-'.$name.'.php';

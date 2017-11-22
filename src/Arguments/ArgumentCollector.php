@@ -36,7 +36,7 @@ class ArgumentCollector {
         $hasInfinite = false;
         $hasOptional = false;
         foreach($args as $arg) {
-            if($arg['infinite']) {
+            if(!empty($arg['infinite'])) {
                 $hasInfinite = true;
             } elseif($hasInfinite) {
                 throw new \InvalidArgumentException('No other argument may come after an infinite argument');
@@ -72,7 +72,11 @@ class ArgumentCollector {
      * @param int|double                             $promptLimit
      * @return \React\Promise\Promise
      */
-    function obtain(\CharlotteDunois\Livia\CommandMessage $message, $provided = array(), $promptLimit = $this->promptLimit) {
+    function obtain(\CharlotteDunois\Livia\CommandMessage $message, $provided = array(), $promptLimit = null) {
+        if($promptLimit === null) {
+            $promptLimit = $this->promptLimit;
+        }
+        
         return (new \React\Promise\Promise(function (callable $resolve) use ($message, $provided, $promptLimit) {
             $this->client->dispatcher->awaiting[] = $message->message->author->id.$message->message->channel->id;
             
@@ -80,13 +84,13 @@ class ArgumentCollector {
             $results = array();
             
             try {
-                $this->obtainNext($message, $provided, $promptLimit, $values, $results, 0)->then(function ($result = null) use ($message, $values, $results, $resolve) {
+                $this->obtainNext($message, $provided, $promptLimit, $values, $results, 0)->then(function ($result = null) use ($message, &$values, &$results, $resolve) {
                     $key = \array_search($message->message->author->id.$message->message->channel->id, $this->client->dispatcher->awaiting);
                     if($key !== false) {
                         unset($this->client->dispatcher->awaiting[$key]);
                     }
                     
-                    if($result) {
+                    if($result !== null) {
                         return $resolve($result);
                     }
                     
@@ -134,7 +138,7 @@ class ArgumentCollector {
             return \React\Promise\resolve();
         }
         
-        return $this->args[$current]->obtain($message, (!empty($provided[$current]) ? ($promptLimit === \INF ? \array_slice($provided, $current) : $provided[$current]) : null), $promptLimit)->then(function ($result) use ($message, &$provided, $promptLimit, &$values, &$results, $current)  {
+        return $this->args[$current]->obtain($message, (!empty($provided[$current]) ? (!empty($this->args[$current]->infinite) ? \array_slice($provided, $current) : $provided[$current]) : null), $promptLimit)->then(function ($result) use ($message, &$provided, $promptLimit, &$values, &$results, $current)  {
             $results[] = $result;
             
             if($result['cancelled']) {
