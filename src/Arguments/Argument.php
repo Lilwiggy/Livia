@@ -122,7 +122,7 @@ class Argument {
     function obtain(\CharlotteDunois\Livia\CommandMessage $message, $value, $promptLimit = \INF, array $prompts = array(), array $answers = array(), $valid = null) {
         return (new \React\Promise\Promise(function (callable $resolve, callable $reject) use ($message, $value, $promptLimit, $prompts, $answers, $valid) {
             $empty = ($this->emptyChecker !== null ? $this->emptyChecker($value, $message, $this) : $this->type->isEmpty($value, $message, $this));
-            if($empty && $this->default) {
+            if($empty && $this->default !== null) {
                 return $resolve(array(
                     'value' => $this->default,
                     'cancelled' => null,
