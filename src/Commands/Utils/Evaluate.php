@@ -63,6 +63,8 @@ class Evaluate extends \CharlotteDunois\Livia\Commands\Command {
                         $endtime = microtime(true);
                     }
                     
+                    $this->lastResult = $result;
+                    
                     \ob_start('mb_output_handler');
                     
                     $old = \ini_get('xdebug.var_display_max_depth');
@@ -77,8 +79,6 @@ class Evaluate extends \CharlotteDunois\Livia\Commands\Command {
                     $result = \implode(PHP_EOL, $result);
                     
                     while(@\ob_end_clean());
-                    
-                    $this->lastResult = $result;
                     
                     $len = \strlen($result);
                     $maxlen = 1850 - \strlen($code);
