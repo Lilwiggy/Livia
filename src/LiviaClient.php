@@ -125,7 +125,7 @@ class LiviaClient extends \CharlotteDunois\Yasmin\Client {
     function setCommandPrefix($prefix) {
         $this->options['commandPrefix'] = $prefix;
         
-        $this->client->emit('commandPrefixChange', null, $prefix);
+        $this->emit('commandPrefixChange', null, $prefix);
         return $this;
     }
     
@@ -193,10 +193,10 @@ class LiviaClient extends \CharlotteDunois\Yasmin\Client {
      * @return bool
      */
     function setGuildPrefix(\CharlotteDunois\Yasmin\Models\Guild $guild, string $prefix = null) {
-        if($this->client->provider !== null) {
-            $this->client->provider->set($guild, 'commandPrefix', $prefix);
+        if($this->provider !== null) {
+            $this->provider->set($guild, 'commandPrefix', $prefix);
             
-            $this->client->emit('commandPrefixChange', $guild, $prefix);
+            $this->emit('commandPrefixChange', $guild, $prefix);
             return true;
         }
         
