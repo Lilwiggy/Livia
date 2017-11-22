@@ -153,7 +153,7 @@ class CommandRegistry {
     }
     
     /**
-     * Registers a command.
+     * Registers a command. Emits a commandRegister event.
      * @param string|\CharlotteDunois\Livia\Commands\Command  $command  The full qualified class name or an initiated instance of it.
      * @return $this
      * @throws \Exception
@@ -173,13 +173,14 @@ class CommandRegistry {
             }
             
             $this->client->emit('debug', 'Registered command '.$command->groupID.':'.$command->name);
+            $this->client->emit('commandRegister', $cmd, $this);
         }
         
         return $this;
     }
     
     /**
-     * Registers all commands in a directory.
+     * Registers all commands in a directory. Emits a commandRegister event.
      * @param string        $path
      * @param bool|string   $ignoreSameLevelFiles  Ignores files in the specified directory and only includes files in sub directories. As string it will ignore the file if the filename matches with the string.
      * @return $this
@@ -226,13 +227,14 @@ class CommandRegistry {
             $group->commands->set($cmd->name, $cmd);
             
             $this->client->emit('debug', 'Registered command '.$cmd->groupID.':'.$cmd->name);
+            $this->client->emit('commandRegister', $cmd, $this);
         }
         
         return $this;
     }
     
     /**
-     *  Registers a group.
+     * Registers a group.
      * @param \CharlotteDunois\Livia\Commands\CommandGroup|array  $group  An instance of CommandGroup or an associative array ('id', 'name')
      * @return $this
      * @throws \Exception
@@ -251,6 +253,7 @@ class CommandRegistry {
             
             $this->groups->set($gr->id, $gr);
             $this->client->emit('debug', 'Registered group '.$gr->id);
+            $this->client->emit('groupRegister', $gr, $this);
         }
         
         return $this;
@@ -276,6 +279,7 @@ class CommandRegistry {
             
             $this->types->set($t->name, $t);
             $this->client->emit('debug', 'Registered type '.$t->name);
+            $this->client->emit('typeRegister', $t, $this);
         }
         
         return $this;
@@ -318,6 +322,7 @@ class CommandRegistry {
             
             $type = new $fqn($this);
             $this->types->set($type->name, $type);
+            $this->client->emit('typeRegister', $type, $this);
         }
         
         return $this;
@@ -372,7 +377,7 @@ class CommandRegistry {
         $group = $this->resolveGroup($command->groupID);
         $group->commands->set($command->name, $command);
         
-        $this->client->emit('commandReregister', $command, $oldCommand);
+        $this->client->emit('commandReregister', $command, $oldCommand, $this);
         $this->client->emit('debug', 'Reregistered command '.$command->groupID.':'.$command->name);
     }
     
@@ -386,7 +391,7 @@ class CommandRegistry {
         $group->commands->delete($command->name);
         $this->commands->delete($command->name);
         
-        $this->client->emit('commandUnregister', $command);
+        $this->client->emit('commandUnregister', $command, $this);
         $this->client->emit('debug', 'Unregistered command '.$command->groupID.':'.$command->name);
     }
         
