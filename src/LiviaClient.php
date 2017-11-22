@@ -18,7 +18,7 @@ namespace CharlotteDunois\Livia;
  * @property string|null                                              $commandPrefix  The global command prefix. {@see LiviaClient::setCommandPrefix}
  * @property \CharlotteDunois\Yasmin\Models\User[]                    $owners         Owners of the bot, set by the client option owners. If you simply need to check if a user is an owner of the bot, please use LiviaClient::isOwner instead. {@see \CharlotteDunois\Livia\LiviaClient:isOwner}
  */
-class LiviaClient   extends \CharlotteDunois\Yasmin\Client {
+class LiviaClient extends \CharlotteDunois\Yasmin\Client {
     protected $dispatcher;
     protected $registry;
     protected $provider;

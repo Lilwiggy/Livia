@@ -9,7 +9,6 @@
 
 namespace CharlotteDunois\Livia\Arguments;
 
-
 /**
  * A fancy argument.
  *

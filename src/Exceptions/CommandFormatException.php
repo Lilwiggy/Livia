@@ -9,7 +9,6 @@
 
 namespace CharlotteDunois\Livia\Exceptions;
 
-
 /**
  * Has a descriptive message for a command not having proper format.
  *

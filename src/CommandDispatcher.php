@@ -9,7 +9,6 @@
 
 namespace CharlotteDunois\Livia;
 
-
 /**
  * Handles parsing messages and running commands from them.
  *

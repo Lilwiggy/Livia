@@ -9,7 +9,6 @@
 
 namespace CharlotteDunois\Livia\Arguments;
 
-
 /**
  * Obtains, validates, and prompts for argument values.
  *

@@ -9,7 +9,6 @@
 
 namespace CharlotteDunois\Livia\Types;
 
-
 /**
  * An argument type that can be used for argument collecting.
  *

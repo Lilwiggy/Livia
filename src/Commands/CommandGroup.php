@@ -9,7 +9,6 @@
 
 namespace CharlotteDunois\Livia\Commands;
 
-
 /**
  * A group for commands.
  *

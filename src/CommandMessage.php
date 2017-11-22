@@ -9,7 +9,6 @@
 
 namespace CharlotteDunois\Livia;
 
-
 /**
  * A command message.
  *

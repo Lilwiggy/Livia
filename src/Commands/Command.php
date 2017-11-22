@@ -9,7 +9,6 @@
 
 namespace CharlotteDunois\Livia\Commands;
 
-
 /**
  * A command that can be run in a client.
  *
