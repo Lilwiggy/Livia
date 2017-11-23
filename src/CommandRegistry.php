@@ -134,7 +134,7 @@ class CommandRegistry {
             }
         }
         
-        return \array_merge($exactMatches, $matches);
+        return $matches;
     }
     
     /**
