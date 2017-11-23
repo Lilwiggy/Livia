@@ -27,7 +27,7 @@ class DataHelpers {
         
         $itemList = \array_map(function ($item) use ($property) {
             if($property !== null) {
-                $item = (\is_array($item) ? $item[$property] : $item->property);
+                $item = (\is_array($item) ? $item[$property] : $item->$property);
             }
             
             return '`'.\str_replace(' ', "\u{00A0}", $item).'`';

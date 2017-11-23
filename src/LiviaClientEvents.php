@@ -12,7 +12,7 @@ namespace CharlotteDunois\Livia;
 /**
  * Documents all LiviaClient events (exlucing events from Yasmin).
  *
- * @method  commandBlocked(\CharlotteDunois\Livia\CommandMessage $message)                                                                                                                           Emitted when a command is prevented from running.
+ * @method  commandBlocked(\CharlotteDunois\Livia\CommandMessage $message, string reason)                                                                                                            Emitted when a command is prevented from running.
  * @method  commandError(\CharlotteDunois\Livia\Commands\Command $command, \Throwable $error, \CharlotteDunois\Livia\CommandMessage $message, array $args, bool $fromPattern)                        Emitted when a command produces an error while running.
  * @method  commandRun(\CharlotteDunois\Livia\Commands\Command $command, \React\Promise\PromiseInterface $promise, \CharlotteDunois\Livia\CommandMessage $message, array $args, bool $fromPattern)   Emitted when running a command.
  * @method  unknownCommand(\CharlotteDunois\Livia\CommandMessage $message)                                                                                                                           Emitted when an user tries to use an unknown command.

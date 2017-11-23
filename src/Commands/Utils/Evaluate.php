@@ -13,6 +13,7 @@ namespace CharlotteDunois\Livia\Commands\Utils;
  * @internal
  */
 class Evaluate extends \CharlotteDunois\Livia\Commands\Command {
+    protected $timeformats = array('s', 'ms', 'µs');
     protected $lastResult;
     
     function __construct(\CharlotteDunois\Livia\LiviaClient $client) {
@@ -30,7 +31,8 @@ class Evaluate extends \CharlotteDunois\Livia\Commands\Command {
                     'prompt' => 'What is the fancy code you wanna run?',
                     'type' => 'string'
                 )
-            )
+            ),
+            'guarded' => true
         ));
     }
     
@@ -87,17 +89,17 @@ class Evaluate extends \CharlotteDunois\Livia\Commands\Command {
                         $result = \substr($result, 0, $maxlen).PHP_EOL.'...';
                     }
                     
-                    $formats = array('s', 'ms', 'µs', 'ns');
+                    $sizeformat = \count($this->timeformats) - 1;
                     $format = 0;
                     
                     $exectime = $endtime - $time;
-                    while($exectime > 1.0 && $format < 3) {
-                        $exectime /= 1000;
+                    while($exectime < 1.0 && $format < $sizeformat) {
+                        $exectime *= 1000;
                         $format++;
                     }
                     $exectime = \ceil($exectime);
                     
-                    return $message->message->channel->send($message->message->author.'Executed in '.$exectime.$formats[$format].'.'.PHP_EOL.'Result:'.PHP_EOL.'```php'.PHP_EOL.$result.PHP_EOL.'```'.($len > $maxlen ? PHP_EOL.'Original length: '.$len : ''));
+                    return $message->message->channel->send($message->message->author.'Executed in '.$exectime.$this->timeformats[$format].'.'.PHP_EOL.PHP_EOL.'```php'.PHP_EOL.$result.PHP_EOL.'```'.($len > $maxlen ? PHP_EOL.'Original length: '.$len : ''));
                 });
             })->then(function ($pr) {
                 return $pr;

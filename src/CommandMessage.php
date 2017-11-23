@@ -58,6 +58,12 @@ class CommandMessage {
             break;
         }
         
+        try {
+            return $this->message->__get($name);
+        } catch(\Exception $e) {
+            /* Continue regardless of error */
+        }
+        
         throw new \Exception('Unknown property \CharlotteDunois\Livia\Commands\Command::'.$name);
     }
     
@@ -220,19 +226,26 @@ class CommandMessage {
                     return $this->reply($error->getMessage());
                 }
                 
+                $this->client->emit('error', $error);
+                
                 $owners = $this->client->owners;
-                if(\count($owners) > 0) {
-                    $ownersLength = \count($owners);
-                    $owners = \array_map(function ($user, $index) use ($ownersLength) {
-                        $or = ($index === ($ownersLength - 1) ? 'or ' : '');
+                $ownersLength = \count($owners);
+                
+                if($ownersLength > 0) {
+                    $index = 0;
+                    $owners = \array_map(function ($user) use ($index, $ownersLength) {
+                        $or = ($ownersLength > 1 && $index === ($ownersLength - 1) ? 'or ' : '');
+                        $index++;
+                        
                         return $or.\CharlotteDunois\Yasmin\Utils\DataHelpers::escapeMarkdown($user->tag);
                     }, $owners);
+                    
                     $owners = \implode((\count($owners) > 2 ? ', ' : ' '), $owners);
                 } else {
                     $owners = 'the bot owner';
                 }
                 
-                return $this->reply('An error occurred while running the command: `'.\get_class($error).': '.$error->getMessage().PHP_EOL.
+                return $this->reply('An error occurred while running the command: `'.\get_class($error).': '.$error->getMessage().'`'.PHP_EOL.
                         'You shouldn\'t ever receive an error like this.'.PHP_EOL.
                         'Please contact '.$owners.($this->client->getOption('invite') ? ' in this server: '.$this->client->getOption('invite') : '.'));
             })->then($resolve, $reject)->done(null, array($this->client, 'handlePromiseRejection'));

@@ -34,7 +34,8 @@ class Prefix extends \CharlotteDunois\Livia\Commands\Command {
                     'max' => 15,
                     'default' => ''
                 )
-            )
+            ),
+            'guarded' => true
         ));
     }
     

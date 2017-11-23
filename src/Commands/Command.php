@@ -85,7 +85,7 @@ abstract class Command {
      *      'nsfw' => bool, (defaults to false)                                                                                            <br />
      *      'throttling' => array, (associative array of array('usages' => int, 'duration' => int) - duration in seconds, optional)        <br />
      *      'defaultHandling' => bool, (defaults to true)                                                                                  <br />
-     *      'args' => array, ({@see \CharlotteDunois\Livia\Arguments\Argument}, optional)                                                  <br />
+     *      'args' => array, ({@see \CharlotteDunois\Livia\Arguments\Argument} - key can be the index instead, optional)                   <br />
      *      'argsPromptLimit' => int|\INF, (optional)                                                                                      <br />
      *      'argsType' => string, (one of 'single' or 'multiple', defaults to 'single')                                                    <br />
      *      'argsCount' => int, (optional)                                                                                                 <br />
@@ -281,20 +281,20 @@ abstract class Command {
     
     /**
 	 * Checks if the user has permission to use the command.
-	 * @param \CharlotteDunois\Livia\CommandMessage  $message
-	 * @param bool                                   $ownerOverride  Whether the bot owner(s) will always have permission.
+	 * @param \CharlotteDunois\Livia\CommandMessage|\CharlotteDunois\Yasmin\Models\Message  $message
+	 * @param bool                                                                          $ownerOverride  Whether the bot owner(s) will always have permission.
 	 * @return bool|string  Whether the user has permission, or an error message to respond with if they don't.
 	 */
-    function hasPermission(\CharlotteDunois\Livia\CommandMessage $message, bool $ownerOverride = true) {
-        if($this->ownerOnly === false && !$this->userPermission) {
+    function hasPermission($message, bool $ownerOverride = true) {
+        if($this->ownerOnly === false && empty($this->userPermissions)) {
             return true;
         }
         
-        if($ownerOverride && $this->client->isOwner($message->message->author)) {
+        if($ownerOverride && $this->client->isOwner($message->author)) {
             return true;
         }
         
-        if($this->ownerOnly && ($ownerOverride || !$this->client->isOwner($message->message->author))) {
+        if($this->ownerOnly && ($ownerOverride || !$this->client->isOwner($message->author))) {
             return 'The command `'.$this->name.'` can only be used by the bot owner.';
         }
         
@@ -383,6 +383,7 @@ abstract class Command {
 	 * Enables or disables the command in a guild (or globally).
 	 * @param string|\CharlotteDunois\Yasmin\Models\Guild|null  $guild  The guild instance or the guild ID.
 	 * @param bool                                              $enabled
+     * @return bool
      * @throws \BadMethodCallException|\InvalidArgumentException
 	 */
     function setEnabledIn($guild, bool $enabled) {
@@ -399,6 +400,9 @@ abstract class Command {
         } else {
             $this->globalEnabled = $enabled;
         }
+        
+        $this->client->emit('commandStatusChange', $guild, $this, $enabled);
+        return ($guild !== null ? $this->guildEnabled[$guild->id] : $this->globalEnabled);
     }
     
     /**
@@ -410,7 +414,7 @@ abstract class Command {
     function isEnabledIn($guild) {
         if($guild !== null) {
             $guild = $this->client->guilds->resolve($guild);
-            return (empty($this->guildEnabled[$guild->id]) || $this->guildEnabled[$guild->id]);
+            return (!\array_key_exists($guild->id, $this->guildEnabled) || $this->guildEnabled[$guild->id]);
         }
         
         return $this->globalEnabled;
@@ -418,10 +422,10 @@ abstract class Command {
     
     /**
 	 * Checks if the command is usable for a message.
-	 * @param \CharlotteDunois\Yasmin\Models\Message|null  $message
+	 * @param \CharlotteDunois\Livia\CommandMessage|\CharlotteDunois\Yasmin\Models\Message|null  $message
 	 * @return bool
 	 */
-    function isUsable(\CharlotteDunois\Yasmin\Models\Message $message = null) {
+    function isUsable($message = null) {
         if($message === null) {
             return $this->globalEnabled;
         }
@@ -449,7 +453,7 @@ abstract class Command {
             $user = $this->client->user;
         }
         
-        return self::anyUsage($argString, $prefix, $user);
+        return self::anyUsage($this->name.' '.$argString, $prefix, $user);
     }
     
     /**

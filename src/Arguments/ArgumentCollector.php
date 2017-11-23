@@ -35,7 +35,7 @@ class ArgumentCollector {
         
         $hasInfinite = false;
         $hasOptional = false;
-        foreach($args as $arg) {
+        foreach($args as $key => $arg) {
             if(!empty($arg['infinite'])) {
                 $hasInfinite = true;
             } elseif($hasInfinite) {
@@ -46,6 +46,10 @@ class ArgumentCollector {
                 $hasOptional = true;
             } elseif($hasOptional) {
                 throw new \InvalidArgumentException('Required arguments may not come after optional arguments');
+            }
+            
+            if(empty($arg['key']) && !empty($key)) {
+                $arg['key'] = $key;
             }
             
             $this->args[] = new \CharlotteDunois\Livia\Arguments\Argument($this->client, $arg);

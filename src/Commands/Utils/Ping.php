@@ -23,7 +23,8 @@ class Ping extends \CharlotteDunois\Livia\Commands\Command {
             'throttling' => array(
                 'usages' => 5,
                 'duration' => 10
-            )
+            ),
+            'guarded' => true
         ));
     }
     

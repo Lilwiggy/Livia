@@ -56,7 +56,9 @@ class CommandRegistry {
      * @return \CharlotteDunois\Livia\Commands\Command[]
      */
     function findCommands(string $searchString, bool $exact = false, \CharlotteDunois\Yasmin\Models\Message $message = null) {
+        $parts = array();
         $searchString = \strtolower($searchString);
+        
         if(\strpos($searchString, ':') !== false) {
             $parts = \explode(':', $searchString);
             $searchString = \array_pop($parts);
@@ -65,13 +67,31 @@ class CommandRegistry {
         $matches = array();
         foreach($this->commands as $command) {
             if($exact) {
-                if(\strtolower($command->name) === $searchString && ($message === null || $command->hasPermission($message) === true)) {
+                if(!empty($parts[0]) && $parts[0] === $command->groupID && ($command->name === $searchString || \in_array($searchString, $command->aliases)) && ($message === null || $command->hasPermission($message) === true)) {
+                    return array($command);
+                }
+                
+                if(($command->name === $searchString || \in_array($searchString, $command->aliases)) && ($message === null || $command->hasPermission($message) === true)) {
                     $matches[] = $command;
                 }
             } else {
+                if(!empty($parts[0]) && $parts[0] === $command->groupID && \stripos($command->name, $searchString) !== false && ($message === null || $command->hasPermission($message) === true)) {
+                    return array($command);
+                }
+                
                 if(\stripos($command->name, $searchString) !== false && ($message === null || $command->hasPermission($message) === true)) {
                     $matches[] = $command;
                 }
+            }
+        }
+        
+        if($exact) {
+            return $matches;
+        }
+        
+        foreach($matches as $command) {
+            if($command->name === $searchString || \in_array($searchString, $command->aliases)) {
+                return array($command);
             }
         }
         
@@ -94,7 +114,7 @@ class CommandRegistry {
         $matches = array();
         foreach($this->groups as $group) {
             if($exact) {
-                if(\strtolower($group->id) === $searchString || \strtolower($group->name) === $searchString) {
+                if($group->id === $searchString || \strtolower($group->name) === $searchString) {
                     $matches[] = $group;
                 }
             } else {
@@ -104,7 +124,17 @@ class CommandRegistry {
             }
         }
         
-        return $matches;
+        if($exact) {
+            return $matches;
+        }
+        
+        foreach($matches as $group) {
+            if($group->id === $searchString || \strtolower($group->name) === $searchString) {
+                return array($group);
+            }
+        }
+        
+        return \array_merge($exactMatches, $matches);
     }
     
     /**
@@ -167,12 +197,12 @@ class CommandRegistry {
             
             $this->commands->set($cmd->name, $cmd);
             
-            $group = $this->resolveGroup($command->groupID);
+            $group = $this->resolveGroup($cmd->groupID);
             if($group) {
-                $group->commands->set($command->name, $command);
+                $group->commands->set($cmd->name, $cmd);
             }
             
-            $this->client->emit('debug', 'Registered command '.$command->groupID.':'.$command->name);
+            $this->client->emit('debug', 'Registered command '.$cmd->groupID.':'.$cmd->name);
             $this->client->emit('commandRegister', $cmd, $this);
         }
         
@@ -407,10 +437,39 @@ class CommandRegistry {
         $this->client->emit('debug', 'Unregistered command '.$command->groupID.':'.$command->name);
         $this->client->emit('commandUnregister', $command, $this);
     }
+    
+    /**
+	 * Resolves a given group ID and command name to the path.
+	 * @param string  $groupID
+     * @param string  $command
+	 * @return string
+     * @throws \Exception
+	 */
+    function resolveCommandPath(string $groupID, string $command) {
+        $paths = array(__DIR__.'/Commands/'.\ucfirst($groupID), $this->commandsPath.'/'.\ucfirst($groupID));
+        
+        foreach($paths as $path) {
+            $file = $path.'/'.\ucfirst($command).'.php';
+            if(file_exists($file)) {
+                return $file;
+            }
+        }
+        
+        throw new \Exception('Unable to resolve command path');
+    }
         
     protected function handleCommandSpacing(string $command) {
-        $reflector = new \ReflectionClass($command);
-        $contents = \file_get_contents($reflector->getFileName());
+        $commanddot = \explode(':', $command);
+        if(\count($commanddot) === 2) {
+            $command = $this->resolveCommandPath($commanddot[0], $commanddot[1]);
+        }
+        
+        if(\realpath($command) !== false) {
+            $contents = \file_get_contents($command);
+        } else {
+            $reflector = new \ReflectionClass($command);
+            $contents = \file_get_contents($reflector->getFileName());
+        }
         
         preg_match('/class(.*?){/i', $contents, $matches);
         if(empty($matches[1])) {
@@ -457,7 +516,7 @@ CMD;
             throw new \Exception('Unable to write temporary class file');
         }
         
-        include_once($path);
+        include($path);
         return '\\'.$namespace.'\\'.$name;
     }
 }

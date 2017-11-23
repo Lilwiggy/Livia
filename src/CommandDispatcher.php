@@ -129,7 +129,7 @@ class CommandDispatcher {
                         } else {
                             $this->client->emit('unknownCommand', $cmdMessage);
                             if(((bool) $this->client->getOption('unknownCommandResponse'))) {
-                                $message->reply('Unknown command. Use '.$cmdMessage->anyUsage('help'))->then(function ($response) use ($message, $oldMessage, $cmdMessage, $resolve) {
+                                $message->reply('Unknown command. Use '.\CharlotteDunois\Livia\Commands\Command::anyUsage('help'))->then(function ($response) use ($message, $oldMessage, $cmdMessage, $resolve) {
                                     $responses = array($response);
                                     $cmdMessage->finalize($responses);
                                     $this->cacheCommandMessage($message, $oldMessage, $cmdMessage, $responses);

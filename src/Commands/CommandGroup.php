@@ -67,6 +67,7 @@ class CommandGroup {
 	 * Enables or disables the group in a guild.
 	 * @param string|\CharlotteDunois\Yasmin\Models\Guild|null  $guild  The guild instance or the guild ID.
 	 * @param bool                                              $enabled
+     * @return bool
      * @throws \BadMethodCallException|\InvalidArgumentException
 	 */
     function setEnabledIn($guild, bool $enabled) {
@@ -83,6 +84,9 @@ class CommandGroup {
         } else {
             $this->globalEnabled = $enabled;
         }
+        
+        $this->client->emit('groupStatusChange', $guild, $this, $enabled);
+        return ($guild !== null ? $this->guildEnabled[$guild->id] : $this->globalEnabled);
     }
     
     /**
@@ -94,7 +98,7 @@ class CommandGroup {
     function isEnabledIn($guild) {
         if($guild !== null) {
             $guild = $this->client->guilds->resolve($guild);
-            return (empty($this->guildEnabled[$guild->id]) || $this->guildEnabled[$guild->id]);
+            return (!\array_key_exists($guild->id, $this->guildEnabled) || $this->guildEnabled[$guild->id]);
         }
         
         return $this->globalEnabled;

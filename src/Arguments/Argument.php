@@ -12,19 +12,19 @@ namespace CharlotteDunois\Livia\Arguments;
 /**
  * A fancy argument.
  *
- * @property \CharlotteDunois\Livia\LiviaClient          $client        The client which initiated the instance.
- * @property string                                      $key           Key for the argument.
- * @property string                                      $label         Label for the argument.
- * @property string                                      $prompt        Question prompt for the argument.
- * @property \CharlotteDunois\Livia\Types\ArgumentType   $type          Type of the argument.
- * @property int|float|null                              $max           If type is integer or float, this is the maximum value of the number. If type is string, this is the maximum length of the string.
- * @property int|float|null                              $min           If type is integer or float, this is the minimum value of the number. If type is string, this is the minimum length of the string.
- * @property mixed|null                                  $default       The default value for the argument.
- * @property bool                                        $infinite      Whether the argument accepts an infinite number of values.
- * @property callable|null                               $validate      Validator function for validating a value for the argument. {@see \CharlotteDunois\Livia\Types\ArgumentType::validate}
- * @property callable|null                               $parse         Parser function to parse a value for the argument. {@see \CharlotteDunois\Livia\Types\ArgumentType::parse}
- * @property callable|null                               $emptyChecker  Empty checker function for the argument. {@see \CharlotteDunois\Livia\Types\ArgumentType::isEmpty}
- * @property int                                         $wait          How long to wait for input (in seconds).
+ * @property \CharlotteDunois\Livia\LiviaClient               $client        The client which initiated the instance.
+ * @property string                                           $key           Key for the argument.
+ * @property string                                           $label         Label for the argument.
+ * @property string                                           $prompt        Question prompt for the argument.
+ * @property \CharlotteDunois\Livia\Types\ArgumentType|null   $type          Type of the argument.
+ * @property int|float|null                                   $max           If type is integer or float, this is the maximum value of the number. If type is string, this is the maximum length of the string.
+ * @property int|float|null                                   $min           If type is integer or float, this is the minimum value of the number. If type is string, this is the minimum length of the string.
+ * @property mixed|null                                       $default       The default value for the argument.
+ * @property bool                                             $infinite      Whether the argument accepts an infinite number of values.
+ * @property callable|null                                    $validate      Validator function for validating a value for the argument. {@see \CharlotteDunois\Livia\Types\ArgumentType::validate}
+ * @property callable|null                                    $parse         Parser function to parse a value for the argument. {@see \CharlotteDunois\Livia\Types\ArgumentType::parse}
+ * @property callable|null                                    $emptyChecker  Empty checker function for the argument. {@see \CharlotteDunois\Livia\Types\ArgumentType::isEmpty}
+ * @property int                                              $wait          How long to wait for input (in seconds).
  */
 class Argument {
     protected $client;
@@ -73,10 +73,10 @@ class Argument {
         if(empty($info['prompt'])) {
             throw new \InvalidArgumentException('Prompt can not be empty');
         }
-        if(empty($info['type'])) {
-            throw new \InvalidArgumentException('Argument type can not be empty');
+        if(empty($info['type']) && (empty($info['validate']) || empty($info['parse']))) {
+            throw new \InvalidArgumentException('Argument type can not be empty if you don\'t implement and validate and parse function');
         }
-        if(!$this->client->registry->types->has($info['type'])) {
+        if(!empty($info['type']) && !$this->client->registry->types->has($info['type'])) {
             throw new \InvalidArgumentException('Argument type "'.$info['type'].'" is not registered');
         }
         if(isset($info['max']) && !\is_int($info['max']) && !\is_float($info['max'])) {
@@ -89,7 +89,7 @@ class Argument {
         $this->key = (string) $info['key'];
         $this->label = (!empty($info['label']) ? $info['label'] : $info['key']);
         $this->prompt = (string) $info['prompt'];
-        $this->type = $this->client->registry->types->get($info['type']);
+        $this->type = (!empty($info['type']) ? $this->client->registry->types->get($info['type']) : null);
         $this->max = $info['max'] ?? null;
         $this->min = $info['min'] ?? null;
         $this->default = $info['default'] ?? null;
@@ -112,6 +112,20 @@ class Argument {
     }
     
     /**
+     * @internal
+     */
+    function __call($name, $args) {
+        if(\property_exists($this, $name)) {
+            $callable = $this->$name;
+            if(\is_callable($callable)) {
+                return $callable(...$args);
+            }
+        }
+        
+        throw new \Exception('Unknown method \CharlotteDunois\Livia\Arguments\Argument::'.$name);
+    }
+    
+    /**
      * Prompts the user and obtains the value for the argument. Resolves with an array of ('value' => mixed, 'cancelled' => string|null, 'prompts' => Message[], 'answers' => Message[]). Cancelled can be one of user, time and promptLimit.
      * @param \CharlotteDunois\Livia\CommandMessage  $message      Message that triggered the command.
      * @param string|string[]                        $value        Pre-provided value(s).
@@ -121,7 +135,7 @@ class Argument {
      */
     function obtain(\CharlotteDunois\Livia\CommandMessage $message, $value, $promptLimit = \INF, array $prompts = array(), array $answers = array(), $valid = null) {
         return (new \React\Promise\Promise(function (callable $resolve, callable $reject) use ($message, $value, $promptLimit, $prompts, $answers, $valid) {
-            $empty = ($this->emptyChecker !== null ? $this->emptyChecker($value, $message, $this) : $this->type->isEmpty($value, $message, $this));
+            $empty = ($this->emptyChecker !== null ? $this->emptyChecker($value, $message, $this) : ($this->type !== null ? $this->type->isEmpty($value, $message, $this) : $value === null));
             if($empty && $this->default !== null) {
                 return $resolve(array(
                     'value' => $this->default,
@@ -131,13 +145,31 @@ class Argument {
                 ));
             }
             
-            if(!$empty) {
-                return $resolve(array(
-                    'value' => $value,
-                    'cancelled' => null,
-                    'prompts' => array(),
-                    'answers' => array()
-                ));
+            if(!$empty && $valid === null) {
+                $validate = ($this->validate ? array($this, 'validate') : array($this->type, 'validate'))($value, $message, $this);
+                if(!($validate instanceof \React\Promise\PromiseInterface)) {
+                    $validate = \React\Promise\resolve($validate);
+                }
+                
+                return $validate->then(function ($valid) use ($message, $value, $promptLimit, $prompts, $answers) {
+                    if($valid !== true) {
+                        return $this->obtain($message, $value, $promptLimit, $prompts, $answers, $valid);
+                    }
+                    
+                    $parse = ($this->parse ? array($this, 'parse') : array($this->type, 'parse'))($value, $message, $this);
+                    if(!($parse instanceof \React\Promise\PromiseInterface)) {
+                        $parse = \React\Promise\resolve($parse);
+                    }
+                    
+                    return $parse->then(function ($value) use ($prompts, $answers) {
+                        return array(
+                            'value' => $value,
+                            'cancelled' => null,
+                            'prompts' => $prompts,
+                            'answers' => $answers
+                        );
+                    });
+                })->then($resolve, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
             }
             
             if($this->infinite) {
@@ -154,7 +186,7 @@ class Argument {
                 ));
             }
             
-            if($empty) {
+            if($empty && $value === null) {
                 $reply = $message->reply($this->prompt.PHP_EOL.
                     'Please try again. Respond with `cancel` to cancel the command. The command will automatically be cancelled in  '.$this->wait.' seconds.');
             } elseif($valid === false) {
@@ -218,7 +250,7 @@ class Argument {
                                         $parse = \React\Promise\resolve($parse);
                                     }
                                     
-                                    return $parse->then(function ($value) use($prompts, $answers) {
+                                    return $parse->then(function ($value) use ($prompts, $answers) {
                                         return array(
                                             'value' => $value,
                                             'cancelled' => null,
