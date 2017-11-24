@@ -9,7 +9,7 @@
 
 return function ($client) {
     return (new class($client) extends \CharlotteDunois\Livia\Commands\Command {
-        protected $timeformats = array('s', 'ms', 'µs');
+        protected $timeformats = array('ms', 'µs');
         protected $lastResult;
         
         function __construct(\CharlotteDunois\Livia\LiviaClient $client) {

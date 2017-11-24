@@ -183,8 +183,8 @@ class CommandRegistry {
     }
     
     /**
-     * Registers a command. Emits a commandRegister event.
-     * @param string|\CharlotteDunois\Livia\Commands\Command  $command  The full qualified command name (groupID:name) or an initiated instance of it.
+     * Registers a command. Emits a commandRegister event for each command.
+     * @param string|\CharlotteDunois\Livia\Commands\Command  ...$command  The full qualified command name (groupID:name) or an initiated instance of it.
      * @return $this
      * @throws \Exception
      */
@@ -210,7 +210,7 @@ class CommandRegistry {
     }
     
     /**
-     * Registers all commands in a directory. The path gets saved as commands path. Emits a commandRegister event.
+     * Registers all commands in a directory. The path gets saved as commands path. Emits a commandRegister event for each command.
      * @param string        $path
      * @param bool|string   $ignoreSameLevelFiles  Ignores files in the specified directory and only includes files in sub directories. As string it will ignore the file if the filename matches with the string.
      * @return $this
@@ -255,8 +255,8 @@ class CommandRegistry {
     }
     
     /**
-     * Registers a group.
-     * @param \CharlotteDunois\Livia\Commands\CommandGroup|array  $group  An instance of CommandGroup or an associative array ('id', 'name')
+     * Registers a group. Emits a groupRegister event for each group.
+     * @param \CharlotteDunois\Livia\Commands\CommandGroup|array  ...$group  An instance of CommandGroup or an associative array ('id' => string, 'name' => string).
      * @return $this
      * @throws \Exception
      */
@@ -282,8 +282,8 @@ class CommandRegistry {
     }
     
     /**
-     * Registers a type.
-     * @param \CharlotteDunois\Livia\Types\ArgumentType|string  $type  The full qualified class name or an initiated instance of it.
+     * Registers a type. Emits a typeRegister event for each type.
+     * @param \CharlotteDunois\Livia\Types\ArgumentType|string  ...$type  The full qualified class name or an initiated instance of it.
      * @return $this
      * @throws \Exception
      */
@@ -309,7 +309,7 @@ class CommandRegistry {
     }
     
     /**
-     * Registers all types in a directory.
+     * Registers all types in a directory. Emits a typeRegister event for each type.
      * @param string       $path
      * @param bool|string  $ignoreSameLevelFiles  Ignores files in the specified directory and only includes files in sub directories. As string it will ignore the file if the filename matches with the string.
      * @return $this
