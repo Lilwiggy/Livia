@@ -27,7 +27,7 @@ class UserArgumentType extends ArgumentType {
     function validate(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg) {
         $prg = \preg_match(\CharlotteDunois\Yasmin\Models\MessageMentions::PATTERN_USERS, $value, $matches);
         if($prg === 1) {
-            return $message->message->fetchUser($matches[1])->then(function () {
+            return $message->client->fetchUser($matches[1])->then(function () {
                 return true;
             }, function () {
                 return false;
