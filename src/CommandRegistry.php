@@ -184,7 +184,7 @@ class CommandRegistry {
     
     /**
      * Registers a command. Emits a commandRegister event.
-     * @param string|\CharlotteDunois\Livia\Commands\Command  $command  The full qualified class name or an initiated instance of it.
+     * @param string|\CharlotteDunois\Livia\Commands\Command  $command  The full qualified command name (groupID:name) or an initiated instance of it.
      * @return $this
      * @throws \Exception
      */
@@ -192,7 +192,7 @@ class CommandRegistry {
         foreach($command as $cmd) {
             if(!($cmd instanceof \CharlotteDunois\Livia\Commands\Command)) {
                 $cmd = $this->handleCommandSpacing($cmd);
-                $cmd = new $cmd($this->client);
+                $cmd = $cmd($this->client);
             }
             
             $this->commands->set($cmd->name, $cmd);
@@ -210,7 +210,7 @@ class CommandRegistry {
     }
     
     /**
-     * Registers all commands in a directory. Emits a commandRegister event.
+     * Registers all commands in a directory. The path gets saved as commands path. Emits a commandRegister event.
      * @param string        $path
      * @param bool|string   $ignoreSameLevelFiles  Ignores files in the specified directory and only includes files in sub directories. As string it will ignore the file if the filename matches with the string.
      * @return $this
@@ -235,17 +235,8 @@ class CommandRegistry {
                 continue;
             }
             
-            $code = \file_get_contents($file);
-            
-            preg_match('/class(.*?){/i', $code, $matches);
-            if(empty($matches[1])) {
-                $this->client->emit('error', $file.' is not a valid command file');
-            }
-            
-            $name = \trim(\explode('implements', \explode('extends', $matches[1])[0])[0]);
-            $command = $this->handleCommandSpacingFile($name, $code);
-            
-            $cmd = new $command($this->client);
+            $command = include($file);
+            $cmd = $command($this->client);
             
             if(!($cmd instanceof \CharlotteDunois\Livia\Commands\Command)) {
                 throw new \Exception($name.' is not an instance of Command');
@@ -413,7 +404,7 @@ class CommandRegistry {
     function reregisterCommand($command, \CharlotteDunois\Livia\Commands\Command $oldCommand) {
         if(!($command instanceof \CharlotteDunois\Livia\Commands\Command)) {
             $command = $this->handleCommandSpacing($command);
-            $command = new $command($this->client);
+            $command = $command($this->client);
         }
         
         $this->commands->set($command->name, $command);
@@ -462,61 +453,16 @@ class CommandRegistry {
         $commanddot = \explode(':', $command);
         if(\count($commanddot) === 2) {
             $command = $this->resolveCommandPath($commanddot[0], $commanddot[1]);
+            $cmd = include($command);
+            return $cmd;
         }
         
-        if(\realpath($command) !== false) {
-            $contents = \file_get_contents($command);
-        } else {
-            $reflector = new \ReflectionClass($command);
-            $contents = \file_get_contents($reflector->getFileName());
+        $command = \realpath($command);
+        if($command !== false) {
+            $cmd = include($command);
+            return $cmd;
         }
         
-        preg_match('/class(.*?){/i', $contents, $matches);
-        if(empty($matches[1])) {
-            throw new \Exception('Invalid command file');
-        }
-        
-        $name = \trim(\explode('implements', \explode('extends', $matches[1])[0])[0]);
-        return $this->handleCommandSpacingFile($name, $contents);
-    }
-    
-    protected function handleCommandSpacingFile(string $name, string $code) {
-        $timestamp = \preg_replace('/[0-9]/', '', \bin2hex(\random_bytes(16)));
-        $namespace = 'CharlotteDunois\\Livia\\Commands\\Spacing\\'.$timestamp;
-        $oldnamespace = "";
-        
-        $code = \explode("\n", \str_replace("\r", "", $code));
-        foreach($code as $line => $lcode) {
-            if(\stripos($lcode, '<?php') !== false) {
-                unset($code[$line]);
-            } elseif(\stripos($lcode, 'namespace') !== false) {
-                $oldnamespace = \trim(\str_replace(array('namespace', ';'), '', $lcode));
-                unset($code[$line]);
-                break;
-            }
-        }
-        
-        $code = \implode(PHP_EOL, $code);
-        $GLOBALS['OLD_NAMESPACE_'.\strtoupper($name)] = $oldnamespace;
-        
-        $php = <<<CMD
-<?php
-/**
- * Livia - Commands Namespacing
- */
-
-namespace {$namespace};
-
-{$code}
-CMD;
-        
-        $path = \sys_get_temp_dir().'/php-livia-command-'.$timestamp.'-'.$name.'.php';
-        $state = \file_put_contents($path, $php);
-        if($state === false) {
-            throw new \Exception('Unable to write temporary class file');
-        }
-        
-        include($path);
-        return '\\'.$namespace.'\\'.$name;
+        throw new \Exception('Unable to resolve command');
     }
 }

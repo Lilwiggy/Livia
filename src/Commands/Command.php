@@ -341,10 +341,7 @@ abstract class Command {
      * Reloads the command.
      */
     function reload() {
-        $class = \explode('\\', \get_class($this));
-        $name = \array_pop($class);
-        
-        $this->client->registry->reregisterCommand($GLOBALS['OLD_NAMESPACE_'.\strtoupper($name)].'\\'.$name, $this);
+        $this->client->registry->reregisterCommand($this->groupID.':'.$this->name, $this);
     }
     
     /**
