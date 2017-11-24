@@ -8,7 +8,7 @@
 */
 
 return function ($client) {
-    return new class($client) extends \CharlotteDunois\Livia\Commands\Command {
+    return (new class($client) extends \CharlotteDunois\Livia\Commands\Command {
         protected $timeformats = array('s', 'ms', 'µs');
         protected $lastResult;
         
@@ -114,5 +114,5 @@ return function ($client) {
                 })->then($resolve, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
             }));
         }
-    };
+    });
 };

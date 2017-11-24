@@ -43,7 +43,8 @@ Example:
 
 // Livia will automatically call the anonymous function and pass the LiviaClient instance.
 return function ($client) {
-    return new class($client) extends \CharlotteDunois\Livia\Commands\Command {
+    // Extending is required
+    return (new class($client) extends \CharlotteDunois\Livia\Commands\Command {
         function __construct(\CharlotteDunois\Livia\LiviaClient $client) {
             parent::__construct($client, array(
                 'name' => 'ban',
@@ -65,7 +66,7 @@ return function ($client) {
             ));
         }
         
-        // Even if you don't use all arguments, you are forced to match use that method signature.
+        // Even if you don't use all arguments, you are forced to match that method signature.
         function run(\CharlotteDunois\Livia\CommandMessage $message, array $args,
                       bool $fromPattern) {
             // Do what the command has to do.
@@ -79,7 +80,7 @@ return function ($client) {
                 return $message->reply('The user got banned!');
             });
         }
-    };
+    });
 };
 ```
 

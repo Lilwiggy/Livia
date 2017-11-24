@@ -8,7 +8,7 @@
 */
 
 return function ($client) {
-    return new class($client) extends \CharlotteDunois\Livia\Commands\Command {
+    return (new class($client) extends \CharlotteDunois\Livia\Commands\Command {
         function __construct(\CharlotteDunois\Livia\LiviaClient $client) {
             parent::__construct($client, array(
                 'name' => 'ping',
@@ -38,5 +38,5 @@ return function ($client) {
                 }, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
             }));
         }
-    };
+    });
 };

@@ -8,7 +8,7 @@
 */
 
 return function ($client) {
-    return new class($client) extends \CharlotteDunois\Livia\Commands\Command {
+    return (new class($client) extends \CharlotteDunois\Livia\Commands\Command {
         function __construct(\CharlotteDunois\Livia\LiviaClient $client) {
             parent::__construct($client, array(
                 'name' => 'prefix',
@@ -77,5 +77,5 @@ return function ($client) {
                 $message->reply($response.'To run commands use '.\CharlotteDunois\Livia\Commands\Command::anyUsage('command', $prefix, $this->client->user))->then($resolve, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
             }));
         }
-    };
+    });
 };
