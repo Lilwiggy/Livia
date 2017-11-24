@@ -176,7 +176,7 @@
                 <div class="col-md-8 type">
                     <a href="#method_registerCommandsIn">registerCommandsIn</a>(string $path, bool $ignoreSameLevelFiles = false)
         
-                                            <p>Registers all commands in a directory. Emits a commandRegister event.</p>                </div>
+                                            <p>Registers all commands in a directory. The path gets saved as commands path. Emits a commandRegister event.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -256,7 +256,7 @@
                 <div class="col-md-8 type">
                     <a href="#method_reregisterCommand">reregisterCommand</a>(<a href="../../CharlotteDunois/Livia/Commands/Command.html"><abbr title="CharlotteDunois\Livia\Commands\Command">Command</abbr></a>|string $command, <a href="../../CharlotteDunois/Livia/Commands/Command.html"><abbr title="CharlotteDunois\Livia\Commands\Command">Command</abbr></a> $oldCommand)
         
-                                            <p>Reregisters a command (does not support changing name or group). Emits a commandReregister event.</p>                </div>
+                                            <p>Reregisters a command. Emits a commandReregister event.</p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -420,7 +420,7 @@
                     <tr>
                 <td>string|<a href="../../CharlotteDunois/Livia/Commands/Command.html"><abbr title="CharlotteDunois\Livia\Commands\Command">Command</abbr></a></td>
                 <td>$command</td>
-                <td>The full qualified class name or an initiated instance of it.</td>
+                <td>The full qualified command name (groupID:name) or an initiated instance of it.</td>
             </tr>
             </table>
 
@@ -461,7 +461,7 @@
     
 
                     <div class="method-description">
-                                    <p>Registers all commands in a directory. Emits a commandRegister event.</p>                                                </div>
+                                    <p>Registers all commands in a directory. The path gets saved as commands path. Emits a commandRegister event.</p>                                                </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -505,7 +505,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_registerDefaultCommands">
-        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L386">line 386</a></div>
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L377">line 377</a></div>
         <code>                    
     <strong>registerDefaultCommands</strong>()
         </code>
@@ -526,7 +526,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_registerDefaultGroups">
-        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L393">line 393</a></div>
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L384">line 384</a></div>
         <code>                    
     <strong>registerDefaultGroups</strong>()
         </code>
@@ -547,7 +547,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_registerDefaultTypes">
-        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L403">line 403</a></div>
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L394">line 394</a></div>
         <code>                    
     <strong>registerDefaultTypes</strong>()
         </code>
@@ -568,7 +568,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_registerDefaults">
-        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L377">line 377</a></div>
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L368">line 368</a></div>
         <code>                    
     <strong>registerDefaults</strong>()
         </code>
@@ -589,7 +589,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_registerGroup">
-        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L272">line 272</a></div>
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L263">line 263</a></div>
         <code>                    <abbr title="CharlotteDunois\Livia\$this">$this</abbr>
     <strong>registerGroup</strong>(<a href="../../CharlotteDunois/Livia/Commands/CommandGroup.html"><abbr title="CharlotteDunois\Livia\Commands\CommandGroup">CommandGroup</abbr></a>|array $group)
         </code>
@@ -638,7 +638,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_registerType">
-        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L299">line 299</a></div>
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L290">line 290</a></div>
         <code>                    <abbr title="CharlotteDunois\Livia\$this">$this</abbr>
     <strong>registerType</strong>(<a href="../../CharlotteDunois/Livia/Types/ArgumentType.html"><abbr title="CharlotteDunois\Livia\Types\ArgumentType">ArgumentType</abbr></a>|string $type)
         </code>
@@ -687,7 +687,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_registerTypesIn">
-        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L327">line 327</a></div>
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L318">line 318</a></div>
         <code>                    <abbr title="CharlotteDunois\Livia\$this">$this</abbr>
     <strong>registerTypesIn</strong>(string $path, bool|string $ignoreSameLevelFiles = false)
         </code>
@@ -741,7 +741,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_reregisterCommand">
-        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L413">line 413</a></div>
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L404">line 404</a></div>
         <code>                    
     <strong>reregisterCommand</strong>(<a href="../../CharlotteDunois/Livia/Commands/Command.html"><abbr title="CharlotteDunois\Livia\Commands\Command">Command</abbr></a>|string $command, <a href="../../CharlotteDunois/Livia/Commands/Command.html"><abbr title="CharlotteDunois\Livia\Commands\Command">Command</abbr></a> $oldCommand)
         </code>
@@ -751,7 +751,7 @@
     
 
                     <div class="method-description">
-                                    <p>Reregisters a command (does not support changing name or group). Emits a commandReregister event.</p>                                                </div>
+                                    <p>Reregisters a command. Emits a commandReregister event.</p>                                                </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -759,7 +759,7 @@
                     <tr>
                 <td><a href="../../CharlotteDunois/Livia/Commands/Command.html"><abbr title="CharlotteDunois\Livia\Commands\Command">Command</abbr></a>|string</td>
                 <td>$command</td>
-                <td>The full qualified class name or an initiated instance of it.</td>
+                <td>The full qualified command name (groupID:name) or an initiated instance of it.</td>
             </tr>
                     <tr>
                 <td><a href="../../CharlotteDunois/Livia/Commands/Command.html"><abbr title="CharlotteDunois\Livia\Commands\Command">Command</abbr></a></td>
@@ -835,7 +835,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_resolveCommandPath">
-        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L448">line 448</a></div>
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L441">line 441</a></div>
         <code>                    string
     <strong>resolveCommandPath</strong>(string $groupID, string $command)
         </code>
@@ -938,7 +938,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_unregisterCommand">
-        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L432">line 432</a></div>
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L425">line 425</a></div>
         <code>                    
     <strong>unregisterCommand</strong>(<a href="../../CharlotteDunois/Livia/Commands/Command.html"><abbr title="CharlotteDunois\Livia\Commands\Command">Command</abbr></a> $command)
         </code>
