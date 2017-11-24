@@ -97,6 +97,11 @@ $client = new \CharlotteDunois\Livia\LiviaClient(array(
 // Registers default commands, command groups and argument types
 $client->registry->registerDefaults();
 
+// Register our commands (this is an example path)
+$client->registry->registerCommandsIn(__DIR__.'/commands/');
+
+// If you have created a command, like the example above, you now have registered the command.
+
 $client->on('ready', function () use ($client) {
     echo 'Logged in as '.$client->user->tag.' created on '.
            $client->user->createdAt->format('d.m.Y H:i:s').PHP_EOL;
