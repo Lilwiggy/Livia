@@ -86,7 +86,7 @@ return function ($client) {
 # Example
 
 ```php
-require_once(IN_DIR.'/vendor/autoload.php');
+require_once(__DIR__.'/vendor/autoload.php');
 
 $loop = \React\EventLoop\Factory::create();
 $client = new \CharlotteDunois\Livia\LiviaClient(array(
