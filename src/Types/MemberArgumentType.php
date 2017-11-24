@@ -37,7 +37,7 @@ class MemberArgumentType extends ArgumentType {
         $search = \strtolower($value);
         
         $inexactMembers = $message->message->guild->members->filter(function ($member) use ($search) {
-            return (stripos($member->tag, $search) !== false || stripos($member->displayName, $search) !== false);
+            return (stripos($member->user->tag, $search) !== false || stripos($member->displayName, $search) !== false);
         });
         $inexactLength = $inexactMembers->count();
         
@@ -49,7 +49,7 @@ class MemberArgumentType extends ArgumentType {
         }
         
         $exactMembers = $message->message->guild->members->filter(function ($member) use ($search) {
-            return ($member->tag === $search || $member->displayName === $search);
+            return ($member->user->tag === $search || $member->displayName === $search);
         });
         $exactLength = $exactMembers->count();
         
@@ -68,7 +68,7 @@ class MemberArgumentType extends ArgumentType {
         }
         
         $escapedMembers = \array_map(function ($member) {
-            return \CharlotteDunois\Yasmin\Utils\DataHelpers::escapeMarkdown($member->tag);
+            return \CharlotteDunois\Yasmin\Utils\DataHelpers::escapeMarkdown($member->user->tag);
         }, $members->all());
         
         return \CharlotteDunois\Livia\Utils\DataHelpers::disambiguation($escapedMembers, 'members', null).PHP_EOL;
@@ -86,7 +86,7 @@ class MemberArgumentType extends ArgumentType {
         $search = \strtolower($value);
         
         $inexactMembers = $message->message->guild->members->filter(function ($member) use ($search) {
-            return (stripos($member->tag, $search) !== false || stripos($member->displayName, $search) !== false);
+            return (stripos($member->user->tag, $search) !== false || stripos($member->displayName, $search) !== false);
         });
         $inexactLength = $inexactMembers->count();
         
@@ -98,7 +98,7 @@ class MemberArgumentType extends ArgumentType {
         }
         
         $exactMembers = $message->message->guild->members->filter(function ($member) use ($search) {
-            return ($member->tag === $search || $member->displayName === $search);
+            return ($member->user->tag === $search || $member->displayName === $search);
         });
         $exactLength = $exactMembers->count();
         
