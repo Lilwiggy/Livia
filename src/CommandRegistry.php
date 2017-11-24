@@ -396,20 +396,22 @@ class CommandRegistry {
     }
     
     /**
-     * Reregisters a command (does not support changing name or group). Emits a commandReregister event.
-     * @param \CharlotteDunois\Livia\Commands\Command|string  $command     The full qualified class name or an initiated instance of it.
+     * Reregisters a command. Emits a commandReregister event.
+     * @param \CharlotteDunois\Livia\Commands\Command|string  $command     The full qualified command name (groupID:name) or an initiated instance of it.
      * @param \CharlotteDunois\Livia\Commands\Command         $oldCommand
      * @throws \Exception
      */
     function reregisterCommand($command, \CharlotteDunois\Livia\Commands\Command $oldCommand) {
+        $oldCommand->group->commands->delete($oldCommand->name);
+        $this->commands->delete($oldCommand->name);
+        
         if(!($command instanceof \CharlotteDunois\Livia\Commands\Command)) {
             $command = $this->handleCommandSpacing($command);
             $command = $command($this->client);
         }
         
         $this->commands->set($command->name, $command);
-        $group = $this->resolveGroup($command->groupID);
-        $group->commands->set($command->name, $command);
+        $command->group->commands->set($command->name, $command);
         
         $this->client->emit('debug', 'Reregistered command '.$command->groupID.':'.$command->name);
         $this->client->emit('commandReregister', $command, $oldCommand, $this);
