@@ -79,7 +79,7 @@ class CommandMessage {
 			case 'multiple':
 				return self::parseArgs(\trim($this->argString), $this->command->argsCount, $this->command->argsSingleQuotes);
 			default:
-				throw new RangeError(`Unknown argsType "${this.argsType}".`);
+				throw new RangeError('Unknown argsType "'.$this->command->argsType.'".');
         }
     }
     
@@ -168,7 +168,7 @@ class CommandMessage {
             
             if(!$args && $countArgs > 0) {
                 $count = (!empty($this->command->args[($countArgs - 1)]['infinite']) ? \INF : $countArgs);
-                $provided = self::parseArgs(\trim($this->parseCommandArgs()), $count, $this->command->argsSingleQuotes);
+                $provided = self::parseArgs(\trim($this->argString), $count, $this->command->argsSingleQuotes);
                 
                 $promises[] = $this->command->argsCollector->obtain($this, $provided)->then(function ($result) use (&$args) {
                     if($result['cancelled']) {
@@ -180,6 +180,10 @@ class CommandMessage {
                     }
                     
                     $args = $result['values'];
+                    
+                    if(!$args) {
+                        $args = $this->parseCommandArgs();
+                    }
                 });
             }
             
@@ -481,9 +485,9 @@ class CommandMessage {
     
     /**
 	 * Parses an argument string into an array of arguments.
-     * @param string  $argString
-     * @param int     $argCount
-     * @param bool    $allowSingleQuotes
+     * @param string    $argString
+     * @param int|null  $argCount
+     * @param bool      $allowSingleQuotes
      * @return string[]
      */
     static function parseArgs(string $argString, int $argCount = null, bool $allowSingleQuotes = true) {
@@ -497,17 +501,20 @@ class CommandMessage {
         $content = $argString;
         \preg_match_all($regex, $argString, $matches);
         foreach($matches[0] as $key => $val) {
+            $argCount--;
+            if($argCount === 0) {
+                break;
+            }
+            
             $val = (!empty($matches[2][$key]) ? $matches[2][$key] : $matches[3][$key]);
             $results[] = $val;
             
-             $content = \preg_replace('/'.\preg_quote($val, '/').'/u', '', $content, 1);
+            $content = \preg_replace('/'.\preg_quote($val, '/').'/u', '', $content, 1);
         }
         
-        
-		
 		// If text remains, push it to the array as-is (except for wrapping quotes, which are removed)
 		if(\strlen($content) > 0) {
-            $results[] = \preg_replace(($allowSingleQuote ? '/^("|\')(.*)\1$/u' : '/^(")(.*)"$/u'), '$2', $content);
+            $results[] = \preg_replace(($allowSingleQuotes ? '/^("|\')(.*)\1$/u' : '/^(")(.*)"$/u'), '$2', $content);
 		}
         
         return $results;

@@ -439,10 +439,10 @@ class CommandRegistry {
      * @throws \Exception
 	 */
     function resolveCommandPath(string $groupID, string $command) {
-        $paths = array(__DIR__.'/Commands/'.\ucfirst($groupID), $this->commandsPath.'/'.\ucfirst($groupID));
+        $paths = array(__DIR__.'/Commands/'.\strtolower($groupID), $this->commandsPath.'/'.\strtolower($groupID));
         
         foreach($paths as $path) {
-            $file = $path.'/'.\ucfirst($command).'.php';
+            $file = $path.'/'.\strtolower($command).'.php';
             if(file_exists($file)) {
                 return $file;
             }
