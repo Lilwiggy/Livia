@@ -1,7 +1,7 @@
 # Livia [![Build Status](https://scrutinizer-ci.com/g/CharlotteDunois/Livia/badges/build.png?b=master)](https://scrutinizer-ci.com/g/CharlotteDunois/Livia/build-status/master)
-Livia is a Discord Bot framework, which utilizes Yasmin, the Discord API library.
+Livia is a Discord Bot framework, which utilizes [Yasmin](https://github.com/CharlotteDunois/Yasmin), the Discord API library.
 
-Livia is designed after discord.js-Commando, as I think the design is great.
+Livia is designed after discord.js-Commando, as I think the design is well.
 
 # Built-in Argument Types
 Livia ships with a few argument types you can use for your command arguments. Here's a list:
@@ -111,6 +111,8 @@ $client->on('ready', function () use ($client) {
 $client->login('YOUR_TOKEN');
 $loop->run();
 ```
+# Issues
+If you think something is wrong, or not working as expected, then try to listen on the `error` event. This event gets emitted when an error inside the library (or event listener) gets caught. Make sure you also have a rejection handler for all promises, as unhandled promise rejections get swallowed. Feel free to open an issue with as much information as you can get.
 
 # Documentation
 https://charlottedunois.github.io/Livia/
