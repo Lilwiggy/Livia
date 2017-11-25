@@ -25,7 +25,7 @@ class MemberArgumentType extends ArgumentType {
 	 * @inheritDoc
      */
     function validate(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg) {
-        $prg = \preg_match(\CharlotteDunois\Yasmin\Models\MessageMentions::PATTERN_USERS, $value, $matches);
+        $prg = \preg_match('/(?:<@?)?(\d+)>?/', $value, $matches);
         if($prg === 1) {
             return $message->message->guild->fetchMember($matches[1])->then(function () {
                 return true;
@@ -78,7 +78,7 @@ class MemberArgumentType extends ArgumentType {
 	 * @inheritDoc
      */
     function parse(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg) {
-        $prg = \preg_match(\CharlotteDunois\Yasmin\Models\MessageMentions::PATTERN_USERS, $value, $matches);
+        $prg = \preg_match('/(?:<@?)?(\d+)>?/', $value, $matches);
         if($prg === 1) {
             return $message->message->guild->members->get($matches[1]);
         }
