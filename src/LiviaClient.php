@@ -208,7 +208,7 @@ class LiviaClient extends \CharlotteDunois\Yasmin\Client {
      */
     function destroy(bool $destroyUtils = true) {
         return parent::destroy($destroyUtils)->then(function () {
-            if($this->provider) {
+            if($this->provider !== null) {
                 return $this->provider->destroy();
             }
         });
