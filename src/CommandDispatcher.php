@@ -99,8 +99,7 @@ class CommandDispatcher {
                     
                     $cmdMessage = $this->parseMessage($message);
                     if($cmdMessage && $oldCmdMessage) {
-                        $cmdMessage->respones = $oldCmdMessage->responses;
-                        $cmdMessage->responsePositions = $oldCmdMessage->responsePositions;
+                        $cmdMessage->setResponses($oldCmdMessage->responses, $oldCmdMessage->responsePositions);
                     }
                 } else {
                     $cmdMessage = $this->parseMessage($message);

@@ -527,4 +527,12 @@ class CommandMessage {
 	function edit(string $content, array $options = array()) {
 		return $this->message->edit($content, $options);
     }
+    
+    /**
+     * @internal
+     */
+    function setResponses($responses, $responsePositions) {
+        $this->responses = $responses;
+        $this->responsePositions = $responsePositions;
+    }
 }
