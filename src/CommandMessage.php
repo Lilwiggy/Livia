@@ -230,8 +230,6 @@ class CommandMessage {
                     return $this->reply($error->getMessage());
                 }
                 
-                $this->client->emit('error', $error);
-                
                 $owners = $this->client->owners;
                 $ownersLength = \count($owners);
                 

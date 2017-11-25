@@ -307,7 +307,7 @@ class CommandDispatcher {
         \preg_match($pattern, $message->content, $matches);
         if(!empty($matches)) {
             $commands = $this->client->registry->findCommands($matches[$commandNameIndex], true);
-            if(\count($commands) !== 1 || !$commands[0]->defaultHandling) {
+            if(\count($commands) !== 1 || $commands[0]->defaultHandling === false) {
                 return (new \CharlotteDunois\Livia\CommandMessage($this->client, $message, null));
             }
             
