@@ -83,10 +83,6 @@ class CommandMessage {
      */
     function run() {
         return (new \React\Promise\Promise(function (callable $resolve, callable $reject) {
-            if($this->command === null) {
-                return $resolve(null);
-            }
-            
             $promises = array();
             
             // Obtain the member if we don't have it

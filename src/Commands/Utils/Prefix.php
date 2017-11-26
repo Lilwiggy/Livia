@@ -44,7 +44,7 @@ return function ($client) {
                 }
                 
                 if($message->message->guild !== null) {
-                    if($message->message->member->permissions->hasPermission('ADMINISTRATOR') === false && $this->client->isOwner($message->message->author) === false) {
+                    if($message->message->member->permissions->has('ADMINISTRATOR') === false && $this->client->isOwner($message->message->author) === false) {
                         return $message->reply('Only administrators may change the command prefix.')->then($resolve, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
                     }
                 } elseif($this->client->isOwner($message->message->author) === false) {
