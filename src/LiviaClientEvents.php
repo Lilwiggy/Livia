@@ -26,6 +26,8 @@ namespace CharlotteDunois\Livia;
  * @method  commandPrefixChange(\CharlotteDunois\Yasmin\Models\Guild|null $guild, string|null $newPrefix)                                                                                            Emitted whenever a guild's command prefix is changed. Guild will be null if the prefix is global. Prefix will be null if it is changed to default.
  * @method  commandStatusChange(\CharlotteDunois\Yasmin\Models\Guild|null $guild, \CharlotteDunois\Livia\Commands\Command $command, bool $enabled)                                                   Emitted whenever a command is enabled/disabled in a guild. Guild will be null if status is global.
  * @method  groupStatusChange(\CharlotteDunois\Yasmin\Models\Guild|null $guild, \CharlotteDunois\Livia\Commands\CommandGroup $group, bool $enabled)                                                  Emitted whenever a group is enabled/disabled in a guild. Guild will be null if status is global.
+ *
+ * @method  warn(string $message)                                                                                                                                                                    Emitted when something out of expectation occurres. A warning for you.
  */
 interface LiviaClientEvents {
     
