@@ -95,7 +95,7 @@ return function ($client) {
                         }
                         $exectime = \ceil($exectime);
                         
-                        return $message->message->channel->send($message->message->author.'Executed in '.$exectime.$this->timeformats[$format].'.'.PHP_EOL.PHP_EOL.'```php'.PHP_EOL.$result.PHP_EOL.'```'.($len > $maxlen ? PHP_EOL.'Original length: '.$len : ''));
+                        return $message->say($message->message->author.'Executed in '.$exectime.$this->timeformats[$format].'.'.PHP_EOL.PHP_EOL.'```php'.PHP_EOL.$result.PHP_EOL.'```'.($len > $maxlen ? PHP_EOL.'Original length: '.$len : ''));
                     });
                 })->then(function ($pr) {
                     return $pr;
@@ -110,7 +110,7 @@ return function ($client) {
                         $e = \substr($e, 0, $maxlen).PHP_EOL.'...';
                     }
                     
-                    return $message->message->channel->send($message->message->author.PHP_EOL.'```php'.PHP_EOL.$code.PHP_EOL.'```'.PHP_EOL.'Error: ```'.PHP_EOL.$e.PHP_EOL.'```');
+                    return $message->say($message->message->author.PHP_EOL.'```php'.PHP_EOL.$code.PHP_EOL.'```'.PHP_EOL.'Error: ```'.PHP_EOL.$e.PHP_EOL.'```');
                 })->then($resolve, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
             }));
         }

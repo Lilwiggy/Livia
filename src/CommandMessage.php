@@ -382,7 +382,7 @@ class CommandMessage {
         }
         $this->responsePositions[$id]++;
         
-        return $this->editResponse($this->responses[$id][$this->responsePositions[$id]], $type, $content, $options);
+        return $this->editResponse(($this->responses[$id][$this->responsePositions[$id]] ?? null), $type, $content, $options);
     }
     
     /**
