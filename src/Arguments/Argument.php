@@ -206,8 +206,8 @@ class Argument {
                             }
                             
                             // Get the user's response
-                            $message->channel->collectMessages(function ($msg) use ($message) {
-                                return ($msg->author->id === $message->author->id);
+                            $message->message->channel->collectMessages(function ($msg) use ($message) {
+                                return ($msg->author->id === $message->message->author->id);
                             }, array(
                                 'max' => 1,
                                 'time' => $this->wait
@@ -333,8 +333,8 @@ class Argument {
             }
             
             // Get the user's response
-            return $message->channel->collectMessages(function ($msg) use ($message) {
-                return ($msg->author->id === $message->author->id);
+            return $message->message->channel->collectMessages(function ($msg) use ($message) {
+                return ($msg->author->id === $message->message->author->id);
             }, array(
                 'max' => 1,
                 'time' => $this->wait

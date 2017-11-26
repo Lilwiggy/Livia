@@ -25,6 +25,10 @@ class MemberArgumentType extends ArgumentType {
      * @inheritDoc
      */
     function validate(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg) {
+        if($message->message->guild === null) {
+            return 'Invalid place (not a guild channel) for argument type.';
+        }
+        
         $prg = \preg_match('/(?:<@?)?(\d+)>?/', $value, $matches);
         if($prg === 1) {
             return $message->message->guild->fetchMember($matches[1])->then(function () {

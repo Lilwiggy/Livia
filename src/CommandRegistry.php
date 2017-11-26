@@ -239,7 +239,7 @@ class CommandRegistry {
             $cmd = $command($this->client);
             
             if(!($cmd instanceof \CharlotteDunois\Livia\Commands\Command)) {
-                throw new \Exception($name.' is not an instance of Command');
+                throw new \Exception('Anonymous function in file '.\str_replace($path, '', $file).' does not return an instance of Command');
             }
             
             $this->commands->set($cmd->name, $cmd);

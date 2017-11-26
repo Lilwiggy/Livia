@@ -277,7 +277,7 @@ class CommandDispatcher {
             foreach($command->patterns as $ptrn) {
                 \preg_match($ptrn, $message->content, $matches);
                 if(!empty($matches)) {
-                    return (new \CharlotteDunois\Livia\CommandMessage($this->client, $message, $command, null, null, $matches));
+                    return (new \CharlotteDunois\Livia\CommandMessage($this->client, $message, $command, null, $matches));
                 }
             }
         }

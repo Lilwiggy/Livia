@@ -52,12 +52,6 @@ class CommandMessage {
             return $this->message->$name;
         }
         
-        switch($name) {
-            case 'group':
-                return $this->client->registry->resolveGroup($this->groupID);
-            break;
-        }
-        
         try {
             return $this->message->__get($name);
         } catch(\Exception $e) {
@@ -79,7 +73,7 @@ class CommandMessage {
             case 'multiple':
                 return self::parseArgs(\trim($this->argString), $this->command->argsCount, $this->command->argsSingleQuotes);
             default:
-                throw new RangeError('Unknown argsType "'.$this->command->argsType.'".');
+                throw new \RangeException('Unknown argsType "'.$this->command->argsType.'".');
         }
     }
     
@@ -89,6 +83,10 @@ class CommandMessage {
      */
     function run() {
         return (new \React\Promise\Promise(function (callable $resolve, callable $reject) {
+            if($this->command === null) {
+                return $resolve(null);
+            }
+            
             $promises = array();
             
             // Obtain the member if we don't have it
@@ -360,7 +358,7 @@ class CommandMessage {
         } else {
             if(\is_array($response)) {
                 for($i = \count($response) - 1;  $i > 0; $i--) {
-                    $response[i]->delete()->done();
+                    $response[$i]->delete()->done();
                 }
                 
                 return $response[0]->edit($prepend.$content, $options);
