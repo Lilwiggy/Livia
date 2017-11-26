@@ -255,7 +255,7 @@ class CommandDispatcher {
             if($oldMessage === null) {
                 $this->client->addTimer($duration, function () use ($message) {
                     $this->results->delete($message->id);
-                }, true);
+                });
             }
         } else {
             $this->results->delete($message->id);

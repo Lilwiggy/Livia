@@ -369,7 +369,7 @@ abstract class Command {
                 'usages' => 0,
                 'timeout' => $this->client->addTimer($this->throttling['duration'], function () use ($userID) {
                     $this->throttles->delete($userID);
-                }, true)
+                })
             ));
         }
         
