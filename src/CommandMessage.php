@@ -258,7 +258,7 @@ class CommandMessage {
      * @throws \RangeException|\InvalidArgumentException
      */
     protected function respond(string $type, string $content, array $options = array(), bool $fromEdit = false) {
-        $shouldEdit = ($this->responses && !$fromEdit && empty($options['files']));
+        $shouldEdit = (!empty($this->responses) && $fromEdit === false && empty($options['files']));
         
         if($type === 'reply' && $this->message->channel->type === 'dm') {
             $type = 'plain';
@@ -421,7 +421,7 @@ class CommandMessage {
      * @internal
      */
     function finalize($responses) {
-        if($this->responses) {
+        if(!empty($this->responses)) {
             $this->deleteRemainingResponses();
         }
         
@@ -440,7 +440,7 @@ class CommandMessage {
                 
                 $this->responses[$id][] = $response;
             }
-        } elseif($responses) {
+        } elseif($responses !== null) {
             $id = $this->getChannelIDOrDM($responses->channel);
             $this->responses[$id] = array($responses);
             $this->responsePositions[$id] = -1;

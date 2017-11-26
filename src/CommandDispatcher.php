@@ -114,6 +114,7 @@ class CommandDispatcher {
                                         $responses = array($responses);
                                     }
                                     
+                                    $cmdMessage->finalize($responses);
                                     $this->cacheCommandMessage($message, $oldMessage, $cmdMessage, $responses);
                                     $resolve();
                                 })->done(null, array($this->client, 'handlePromiseRejection'));
@@ -121,16 +122,18 @@ class CommandDispatcher {
                                 $message->reply('The command `'.$cmdMessage->command->name.'` is disabled.')->then(function ($response) use ($message, $oldMessage, $cmdMessage, $resolve) {
                                     $responses = array($response);
                                     $cmdMessage->finalize($responses);
+                                    
                                     $this->cacheCommandMessage($message, $oldMessage, $cmdMessage, $responses);
                                     $resolve();
                                 })->done(null, array($this->client, 'handlePromiseRejection'));
                             }
                         } else {
                             $this->client->emit('unknownCommand', $cmdMessage);
-                            if(((bool) $this->client->getOption('unknownCommandResponse'))) {
+                            if(((bool) $this->client->getOption('unknownCommandResponse', true))) {
                                 $message->reply('Unknown command. Use '.\CharlotteDunois\Livia\Commands\Command::anyUsage('help'))->then(function ($response) use ($message, $oldMessage, $cmdMessage, $resolve) {
                                     $responses = array($response);
                                     $cmdMessage->finalize($responses);
+                                    
                                     $this->cacheCommandMessage($message, $oldMessage, $cmdMessage, $responses);
                                     $resolve();
                                 })->done(null, array($this->client, 'handlePromiseRejection'));
