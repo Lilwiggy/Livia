@@ -22,7 +22,7 @@ class CommandArgumentType extends ArgumentType {
     }
     
     /**
-	 * @inheritDoc
+     * @inheritDoc
      */
     function validate(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg) {
         $commands = $this->client->registry->findCommands($value);
@@ -38,7 +38,7 @@ class CommandArgumentType extends ArgumentType {
     }
     
     /**
-	 * @inheritDoc
+     * @inheritDoc
      */
     function parse(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg) {
         $commands = $this->client->registry->findCommands($value);

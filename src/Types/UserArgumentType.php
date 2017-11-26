@@ -22,7 +22,7 @@ class UserArgumentType extends ArgumentType {
     }
     
     /**
-	 * @inheritDoc
+     * @inheritDoc
      */
     function validate(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg) {
         $prg = \preg_match('/(?:<@?)?(\d+)>?/', $value, $matches);
@@ -75,7 +75,7 @@ class UserArgumentType extends ArgumentType {
     }
     
     /**
-	 * @inheritDoc
+     * @inheritDoc
      */
     function parse(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg) {
         $prg = \preg_match('/(?:<@?)?(\d+)>?/', $value, $matches);

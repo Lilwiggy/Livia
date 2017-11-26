@@ -22,7 +22,7 @@ class StringArgumentType extends ArgumentType {
     }
     
     /**
-	 * @inheritDoc
+     * @inheritDoc
      */
     function validate(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg) {
         if(\strlen($value) === 0) {
@@ -41,7 +41,7 @@ class StringArgumentType extends ArgumentType {
     }
     
     /**
-	 * @inheritDoc
+     * @inheritDoc
      */
     function parse(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg) {
         return $value;

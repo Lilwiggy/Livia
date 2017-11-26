@@ -21,29 +21,29 @@ class FileHelpers {
      */
     static function recursiveFileSearch(string $path, $searchmask = '*') {
         $path = \rtrim($path, '/');
-		
-		$files = array();
-		if(is_array($searchmask)) {
+        
+        $files = array();
+        if(is_array($searchmask)) {
             $csearchmask = \count($searchmask);
             
-			for($i = 0; $i < $csearchmask; $i++) {
-				$files = \array_merge($files, \glob($path.'/'.$searchmask[$i]));
-			}
+            for($i = 0; $i < $csearchmask; $i++) {
+                $files = \array_merge($files, \glob($path.'/'.$searchmask[$i]));
+            }
             
-			\sort($files);
-		} else {
-			$files = \glob($path.'/'.$searchmask);
-		}
-		
-		
-		$dirs = \glob($path.'/*', GLOB_ONLYDIR);
-		foreach($dirs as $dir) {
-			if(\is_dir($dir)) {
-				$files = \array_merge($files, self::recursiveFileSearch($dir, $searchmask));
-			}
-		}
-		
-		\sort($files);
-		return $files;
+            \sort($files);
+        } else {
+            $files = \glob($path.'/'.$searchmask);
+        }
+        
+        
+        $dirs = \glob($path.'/*', GLOB_ONLYDIR);
+        foreach($dirs as $dir) {
+            if(\is_dir($dir)) {
+                $files = \array_merge($files, self::recursiveFileSearch($dir, $searchmask));
+            }
+        }
+        
+        \sort($files);
+        return $files;
     }
 }

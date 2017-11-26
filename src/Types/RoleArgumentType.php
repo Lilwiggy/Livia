@@ -22,7 +22,7 @@ class RoleArgumentType extends ArgumentType {
     }
     
     /**
-	 * @inheritDoc
+     * @inheritDoc
      */
     function validate(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg) {
         $prg = \preg_match(\CharlotteDunois\Yasmin\Models\MessageMentions::PATTERN_ROLES, $value, $matches);
@@ -71,7 +71,7 @@ class RoleArgumentType extends ArgumentType {
     }
     
     /**
-	 * @inheritDoc
+     * @inheritDoc
      */
     function parse(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg) {
         $prg = \preg_match(\CharlotteDunois\Yasmin\Models\MessageMentions::PATTERN_CHANNELS, $value, $matches);

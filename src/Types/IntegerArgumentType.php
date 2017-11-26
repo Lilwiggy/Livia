@@ -22,7 +22,7 @@ class IntegerArgumentType extends ArgumentType {
     }
     
     /**
-	 * @inheritDoc
+     * @inheritDoc
      */
     function validate(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg) {
         if(!\filter_var($value, FILTER_VALIDATE_INT)) {
@@ -43,7 +43,7 @@ class IntegerArgumentType extends ArgumentType {
     }
     
     /**
-	 * @inheritDoc
+     * @inheritDoc
      */
     function parse(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg) {
         return ((int) $value);

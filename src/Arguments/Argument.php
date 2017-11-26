@@ -309,7 +309,7 @@ class Argument {
             
             $reply = $message->reply('You provided an invalid '.$this->label.','.PHP_EOL.
                 '"'.(\strlen($escaped) < 1850 ? $escaped : '[too long to show]').'".'.PHP_EOL.
-				'Please try again.');
+                'Please try again.');
         } elseif(\is_string($valid)) {
             $reply = $message->reply($valid.PHP_EOL.
                 'Respond with `cancel` to cancel the command, or `finish` to finish entry up to this point.'.PHP_EOL.

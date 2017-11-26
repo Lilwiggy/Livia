@@ -280,11 +280,11 @@ abstract class Command {
     }
     
     /**
-	 * Checks if the user has permission to use the command.
-	 * @param \CharlotteDunois\Livia\CommandMessage|\CharlotteDunois\Yasmin\Models\Message  $message
-	 * @param bool                                                                          $ownerOverride  Whether the bot owner(s) will always have permission.
-	 * @return bool|string  Whether the user has permission, or an error message to respond with if they don't.
-	 */
+     * Checks if the user has permission to use the command.
+     * @param \CharlotteDunois\Livia\CommandMessage|\CharlotteDunois\Yasmin\Models\Message  $message
+     * @param bool                                                                          $ownerOverride  Whether the bot owner(s) will always have permission.
+     * @return bool|string  Whether the user has permission, or an error message to respond with if they don't.
+     */
     function hasPermission($message, bool $ownerOverride = true) {
         if($this->ownerOnly === false && empty($this->userPermissions)) {
             return true;
@@ -329,12 +329,12 @@ abstract class Command {
     }
     
     /**
-	 * Runs the command.
-	 * @param \CharlotteDunois\Livia\CommandMessage $message      The message the command is being run for
-	 * @param mixed[]                               $args         The arguments for the command, or the matches from a pattern. If args is specified on the command, thise will be the argument values object. If argsType is single, then only one string will be passed. If multiple, an array of strings will be passed. When fromPattern is true, this is the matches array from the pattern match.
-	 * @param bool                                  $fromPattern  Whether or not the command is being run from a pattern match
-	 * @return \React\Promise\Promise
-	 */
+     * Runs the command.
+     * @param \CharlotteDunois\Livia\CommandMessage $message      The message the command is being run for
+     * @param mixed[]                               $args         The arguments for the command, or the matches from a pattern. If args is specified on the command, thise will be the argument values object. If argsType is single, then only one string will be passed. If multiple, an array of strings will be passed. When fromPattern is true, this is the matches array from the pattern match.
+     * @param bool                                  $fromPattern  Whether or not the command is being run from a pattern match
+     * @return \React\Promise\Promise
+     */
     abstract function run(\CharlotteDunois\Livia\CommandMessage $message, array $args, bool $fromPattern);
     
     /**
@@ -352,8 +352,8 @@ abstract class Command {
     }
     
     /**
-	 * Creates/obtains the throttle object for a user, if necessary (owners are excluded).
-	 * @param string  $userID
+     * Creates/obtains the throttle object for a user, if necessary (owners are excluded).
+     * @param string  $userID
      * @return array|null
      * @internal
      */
@@ -377,12 +377,12 @@ abstract class Command {
     }
     
     /**
-	 * Enables or disables the command in a guild (or globally).
-	 * @param string|\CharlotteDunois\Yasmin\Models\Guild|null  $guild  The guild instance or the guild ID.
-	 * @param bool                                              $enabled
+     * Enables or disables the command in a guild (or globally).
+     * @param string|\CharlotteDunois\Yasmin\Models\Guild|null  $guild  The guild instance or the guild ID.
+     * @param bool                                              $enabled
      * @return bool
      * @throws \BadMethodCallException|\InvalidArgumentException
-	 */
+     */
     function setEnabledIn($guild, bool $enabled) {
         if($guild !== null) {
             $guild = $this->client->guilds->resolve($guild);
@@ -403,11 +403,11 @@ abstract class Command {
     }
     
     /**
-	 * Checks if the command is enabled in a guild (or globally).
-	 * @param string|\CharlotteDunois\Yasmin\Models\Guild|null  $guild  The guild instance or the guild ID.
+     * Checks if the command is enabled in a guild (or globally).
+     * @param string|\CharlotteDunois\Yasmin\Models\Guild|null  $guild  The guild instance or the guild ID.
      * @return bool
      * @throws \InvalidArgumentException
-	 */
+     */
     function isEnabledIn($guild) {
         if($guild !== null) {
             $guild = $this->client->guilds->resolve($guild);
@@ -418,10 +418,10 @@ abstract class Command {
     }
     
     /**
-	 * Checks if the command is usable for a message.
-	 * @param \CharlotteDunois\Livia\CommandMessage|\CharlotteDunois\Yasmin\Models\Message|null  $message
-	 * @return bool
-	 */
+     * Checks if the command is usable for a message.
+     * @param \CharlotteDunois\Livia\CommandMessage|\CharlotteDunois\Yasmin\Models\Message|null  $message
+     * @return bool
+     */
     function isUsable($message = null) {
         if($message === null) {
             return $this->globalEnabled;
@@ -435,16 +435,16 @@ abstract class Command {
     }
     
     /**
-	 * Creates a usage string for the command.
-	 * @param string                               $argString  A string of arguments for the command.
-	 * @param string|null                          $prefix     Prefix to use for the prefixed command format.
-	 * @param \CharlotteDunois\Yasmin\Models\User  $user       User to use for the mention command format. Defaults to client user.
-	 * @return string
-	 */
+     * Creates a usage string for the command.
+     * @param string                               $argString  A string of arguments for the command.
+     * @param string|null                          $prefix     Prefix to use for the prefixed command format.
+     * @param \CharlotteDunois\Yasmin\Models\User  $user       User to use for the mention command format. Defaults to client user.
+     * @return string
+     */
     function usage(string $argString, string $prefix = null, \CharlotteDunois\Yasmin\Models\User $user = null) {
         if($prefix === null) {
             $prefix = $this->client->commandPrefix;
-		}
+        }
         
         if($user === null) {
             $user = $this->client->user;
@@ -454,12 +454,12 @@ abstract class Command {
     }
     
     /**
-	 * Creates a usage string for any command.
-	 * @param string                                    $command    A command + arguments string.
-	 * @param string|null                               $prefix     Prefix to use for the prefixed command format.
-	 * @param \CharlotteDunois\Yasmin\Models\User|null  $user       User to use for the mention command format.
-	 * @return string
-	 */
+     * Creates a usage string for any command.
+     * @param string                                    $command    A command + arguments string.
+     * @param string|null                               $prefix     Prefix to use for the prefixed command format.
+     * @param \CharlotteDunois\Yasmin\Models\User|null  $user       User to use for the mention command format.
+     * @return string
+     */
     static function anyUsage(string $command, string $prefix = null, \CharlotteDunois\Yasmin\Models\User $user = null) {
         $command = \str_replace(' ', "\u{00A0}", $command);
         

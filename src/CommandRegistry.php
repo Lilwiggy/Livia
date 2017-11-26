@@ -138,11 +138,11 @@ class CommandRegistry {
     }
     
     /**
-	 * Resolves a given command, command name or command message to the command.
-	 * @param string|\CharlotteDunois\Livia\Commands\Command|\CharlotteDunois\Livia\CommandMessage  $resolvable
-	 * @return \CharlotteDunois\Livia\Commands\Command
+     * Resolves a given command, command name or command message to the command.
+     * @param string|\CharlotteDunois\Livia\Commands\Command|\CharlotteDunois\Livia\CommandMessage  $resolvable
+     * @return \CharlotteDunois\Livia\Commands\Command
      * @throws \Exception
-	 */
+     */
     function resolveCommand($resolvable) {
         if($resolvable instanceof \CharlotteDunois\Livia\Commands\Command) {
             return $resolvable;
@@ -160,11 +160,11 @@ class CommandRegistry {
         throw new \Exception('Unable to resolve command');
     }
     /**
-	 * Resolves a given commandgroup, command group name or command message to the command group.
-	 * @param string|\CharlotteDunois\Livia\Commands\CommandGroup|\CharlotteDunois\Livia\CommandMessage  $resolvable
-	 * @return \CharlotteDunois\Livia\Commands\CommandGroup
+     * Resolves a given commandgroup, command group name or command message to the command group.
+     * @param string|\CharlotteDunois\Livia\Commands\CommandGroup|\CharlotteDunois\Livia\CommandMessage  $resolvable
+     * @return \CharlotteDunois\Livia\Commands\CommandGroup
      * @throws \Exception
-	 */
+     */
     function resolveGroup($resolvable) {
         if($resolvable instanceof \CharlotteDunois\Livia\Commands\CommandGroup) {
             return $resolvable;
@@ -432,12 +432,12 @@ class CommandRegistry {
     }
     
     /**
-	 * Resolves a given group ID and command name to the path.
-	 * @param string  $groupID
+     * Resolves a given group ID and command name to the path.
+     * @param string  $groupID
      * @param string  $command
-	 * @return string
+     * @return string
      * @throws \Exception
-	 */
+     */
     function resolveCommandPath(string $groupID, string $command) {
         $paths = array(__DIR__.'/Commands/'.\strtolower($groupID), $this->commandsPath.'/'.\strtolower($groupID));
         

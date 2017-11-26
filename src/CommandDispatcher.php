@@ -237,12 +237,12 @@ class CommandDispatcher {
     }
     
     /**
-	 * Caches a command message to be editable.
-	 * @param \CharlotteDunois\Yasmin\Models\Message         $message     Triggering message.
-	 * @param \CharlotteDunois\Yasmin\Models\Message|null    $oldMessage  Triggering message's old version.
-	 * @param \CharlotteDunois\Livia\CommandMessage|null     $cmdMsg      Command message to cache.
-	 * @param \CharlotteDunois\Yasmin\Models\Message[]|null  $responses   Responses to the message.
-	 */
+     * Caches a command message to be editable.
+     * @param \CharlotteDunois\Yasmin\Models\Message         $message     Triggering message.
+     * @param \CharlotteDunois\Yasmin\Models\Message|null    $oldMessage  Triggering message's old version.
+     * @param \CharlotteDunois\Livia\CommandMessage|null     $cmdMsg      Command message to cache.
+     * @param \CharlotteDunois\Yasmin\Models\Message[]|null  $responses   Responses to the message.
+     */
     protected function cacheCommandMessage($message, $oldMessage, $cmdMsg, $responses) {
         $duration = (int) $this->client->getOption('commandEditableDuration', 0);
         
@@ -263,10 +263,10 @@ class CommandDispatcher {
     }
     
     /**
-	 * Parses a message to find details about command usage in it.
-	 * @param \CharlotteDunois\Yasmin\Models\Message  $message
-	 * @return \CharlotteDunois\Livia\CommandMessage|null
-	 */
+     * Parses a message to find details about command usage in it.
+     * @param \CharlotteDunois\Yasmin\Models\Message  $message
+     * @return \CharlotteDunois\Livia\CommandMessage|null
+     */
     protected function parseMessage(\CharlotteDunois\Yasmin\Models\Message $message) {
         // Find the command to run by patterns
         foreach($this->client->registry->commands as $command) {
@@ -296,12 +296,12 @@ class CommandDispatcher {
     }
     
     /**
-	 * Matches a message against a guild command pattern.
-	 * @param \CharlotteDunois\Yasmin\Models\Message  $message
-	 * @param string                                  $pattern           The pattern to match against.
-	 * @param int                                     $commandNameIndex  The index of the command name in the pattern matches.
-	 * @return \CharlotteDunois\Livia\CommandMessage|null
-	 */
+     * Matches a message against a guild command pattern.
+     * @param \CharlotteDunois\Yasmin\Models\Message  $message
+     * @param string                                  $pattern           The pattern to match against.
+     * @param int                                     $commandNameIndex  The index of the command name in the pattern matches.
+     * @return \CharlotteDunois\Livia\CommandMessage|null
+     */
     protected function matchDefault(\CharlotteDunois\Yasmin\Models\Message $message, string $pattern, int $commandNameIndex = 1) {
         \preg_match($pattern, $message->content, $matches);
         if(!empty($matches)) {
@@ -318,11 +318,11 @@ class CommandDispatcher {
     }
     
     /**
-	 * Creates a regular expression to match the command prefix and name in a message.
-	 * @param string|null  $prefix
-	 * @return string
+     * Creates a regular expression to match the command prefix and name in a message.
+     * @param string|null  $prefix
+     * @return string
      * @internal
-	 */
+     */
     function buildCommandPattern(string $prefix = null) {
         $pattern = '';
         if($prefix !== null) {

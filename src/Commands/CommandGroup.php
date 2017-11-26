@@ -64,12 +64,12 @@ class CommandGroup {
     }
     
     /**
-	 * Enables or disables the group in a guild.
-	 * @param string|\CharlotteDunois\Yasmin\Models\Guild|null  $guild  The guild instance or the guild ID.
-	 * @param bool                                              $enabled
+     * Enables or disables the group in a guild.
+     * @param string|\CharlotteDunois\Yasmin\Models\Guild|null  $guild  The guild instance or the guild ID.
+     * @param bool                                              $enabled
      * @return bool
      * @throws \BadMethodCallException|\InvalidArgumentException
-	 */
+     */
     function setEnabledIn($guild, bool $enabled) {
         if($guild !== null) {
             $guild = $this->client->guilds->resolve($guild);
@@ -90,11 +90,11 @@ class CommandGroup {
     }
     
     /**
-	 * Checks if the group is enabled in a guild.
-	 * @param string|\CharlotteDunois\Yasmin\Models\Guild|null  $guild  The guild instance or the guild ID.
+     * Checks if the group is enabled in a guild.
+     * @param string|\CharlotteDunois\Yasmin\Models\Guild|null  $guild  The guild instance or the guild ID.
      * @return bool
      * @throws \InvalidArgumentException
-	 */
+     */
     function isEnabledIn($guild) {
         if($guild !== null) {
             $guild = $this->client->guilds->resolve($guild);

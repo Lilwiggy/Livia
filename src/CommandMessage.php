@@ -68,25 +68,25 @@ class CommandMessage {
     }
     
     /**
-	 * Parses the argString into usable arguments, based on the argsType and argsCount of the command.
-	 * @return string|string[]
-	 */
+     * Parses the argString into usable arguments, based on the argsType and argsCount of the command.
+     * @return string|string[]
+     */
     function parseCommandArgs() {
         switch($this->command->argsType) {
-			case 'single':
+            case 'single':
                 $args = \trim($this->argString);
                 return \preg_replace(($this->command->argsSingleQuotes ? '/^("|\')(.*)\1$/u' : '/^(")(.*)"$/u'), '$2', $args);
-			case 'multiple':
-				return self::parseArgs(\trim($this->argString), $this->command->argsCount, $this->command->argsSingleQuotes);
-			default:
-				throw new RangeError('Unknown argsType "'.$this->command->argsType.'".');
+            case 'multiple':
+                return self::parseArgs(\trim($this->argString), $this->command->argsCount, $this->command->argsSingleQuotes);
+            default:
+                throw new RangeError('Unknown argsType "'.$this->command->argsType.'".');
         }
     }
     
     /**
-	 * Runs the command. Resolves with an instance of Message or an array of Message instances.
-	 * @return \React\Promise\Promise
-	 */
+     * Runs the command. Resolves with an instance of Message or an array of Message instances.
+     * @return \React\Promise\Promise
+     */
     function run() {
         return (new \React\Promise\Promise(function (callable $resolve, callable $reject) {
             $promises = array();
@@ -155,8 +155,8 @@ class CommandMessage {
             // Throttle the command
             $throttle = &$this->command->throttle($this->message->author->id);
             if($throttle && ($throttle['usages'] + 1) > ($this->command->throttling['usages'])) {
-    			$remaining = $throttle['start'] + $this->command->throttling['duration'] - \time();
-    			$this->client->emit('commandBlocked', $this, 'throttling');
+                $remaining = $throttle['start'] + $this->command->throttling['duration'] - \time();
+                $this->client->emit('commandBlocked', $this, 'throttling');
                 
                 $this->message->reply('You may not use the `'.$this->command->name.'` command again for another '.$remaining.' seconds.')->then($resolve, $reject);
                 return;
@@ -255,7 +255,7 @@ class CommandMessage {
     }
     
     /**
-	 * Responds to the command message
+     * Responds to the command message
      * @param string  $type      One of plain, reply or direct.
      * @param string  $content
      * @param array   $options
@@ -313,7 +313,7 @@ class CommandMessage {
     }
     
     /**
-	 * Edits a response to the command message. Resolves with an instance of Message or an array of Message instances.
+     * Edits a response to the command message. Resolves with an instance of Message or an array of Message instances.
      * @param \CharlotteDunois\Yasmin\Models\Message|\CharlotteDunois\Yasmin\Models\Message[]  $response
      * @param string                                                                           $type
      * @param string                                                                           $content
@@ -333,7 +333,7 @@ class CommandMessage {
         }
         
         $prepend = '';
-		if($type === 'reply') {
+        if($type === 'reply') {
             $prepend = $this->message->author->__toString().\CharlotteDunois\Yasmin\Models\Message::$replySeparator;
         }
         
@@ -371,12 +371,12 @@ class CommandMessage {
     }
     
     /**
-	 * Edits the current response.
-	 * @param string  $id       The ID of the channel the response is in ("DM" for direct messages).
+     * Edits the current response.
+     * @param string  $id       The ID of the channel the response is in ("DM" for direct messages).
      * @param string  $type
      * @param string  $content
      * @param array   $options
-	 * @return \React\Promise\Promise
+     * @return \React\Promise\Promise
      */
     protected function editCurrentResponse(string $id, string $type, string $content, array $options = array()) {
         if(empty($this->responses[$id])) {
@@ -392,7 +392,7 @@ class CommandMessage {
     }
     
     /**
-	 * Responds with a plain message. Resolves with an instance of Message or an array of Message instances.
+     * Responds with a plain message. Resolves with an instance of Message or an array of Message instances.
      * @param string  $content
      * @param array   $options  Message Options.
      * @return \React\Promise\Promise
@@ -402,7 +402,7 @@ class CommandMessage {
     }
     
     /**
-	 * Responds with a reply message. Resolves with an instance of Message or an array of Message instances.
+     * Responds with a reply message. Resolves with an instance of Message or an array of Message instances.
      * @param string  $content
      * @param array   $options  Message Options.
      * @return \React\Promise\Promise
@@ -412,7 +412,7 @@ class CommandMessage {
     }
     
     /**
-	 * Responds with a direct message. Resolves with an instance of Message or an array of Message instances.
+     * Responds with a direct message. Resolves with an instance of Message or an array of Message instances.
      * @param string  $content
      * @param array   $options  Message Options.
      * @return \React\Promise\Promise
@@ -454,9 +454,9 @@ class CommandMessage {
     }
     
     /**
-	 * Deletes any prior responses that haven't been updated.
-	 * @internal
-	 */
+     * Deletes any prior responses that haven't been updated.
+     * @internal
+     */
     function deleteRemainingResponses() {
         foreach($this->responses as $id => $msg) {
             $cmsg = \count($msg);
@@ -478,11 +478,11 @@ class CommandMessage {
             return $channel->id;
         }
         
-	    return 'dm';
+        return 'dm';
     }
     
     /**
-	 * Parses an argument string into an array of arguments.
+     * Parses an argument string into an array of arguments.
      * @param string    $argString
      * @param int|null  $argCount
      * @param bool      $allowSingleQuotes
@@ -510,22 +510,22 @@ class CommandMessage {
             $content = \preg_replace('/'.\preg_quote($val, '/').'/u', '', $content, 1);
         }
         
-		// If text remains, push it to the array as-is (except for wrapping quotes, which are removed)
-		if(\strlen($content) > 0) {
+        // If text remains, push it to the array as-is (except for wrapping quotes, which are removed)
+        if(\strlen($content) > 0) {
             $results[] = \preg_replace(($allowSingleQuotes ? '/^("|\')(.*)\1$/u' : '/^(")(.*)"$/u'), '$2', $content);
-		}
+        }
         
         return $results;
     }
     
-	/**
-	 * Shortcut to $this->message->edit.
-	 * @param string  $content
-	 * @param array   $options  Message Options.
-	 * @return \React\Promise\Promise
-	 */
-	function edit(string $content, array $options = array()) {
-		return $this->message->edit($content, $options);
+    /**
+     * Shortcut to $this->message->edit.
+     * @param string  $content
+     * @param array   $options  Message Options.
+     * @return \React\Promise\Promise
+     */
+    function edit(string $content, array $options = array()) {
+        return $this->message->edit($content, $options);
     }
     
     /**

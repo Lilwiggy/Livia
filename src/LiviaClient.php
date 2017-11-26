@@ -116,12 +116,12 @@ class LiviaClient extends \CharlotteDunois\Yasmin\Client {
     }
     
     /**
-	 * Sets the global command prefix. An empty string indicates that there is no default prefix, and only mentions will be used.
-	 * Setting to `null` means that the default prefix from ClientOptions will be used instead.
+     * Sets the global command prefix. An empty string indicates that there is no default prefix, and only mentions will be used.
+     * Setting to `null` means that the default prefix from ClientOptions will be used instead.
      * Emits a commandPrefixChange event.
-	 * @param string|null  $prefix
+     * @param string|null  $prefix
      * @return $this
-	 */
+     */
     function setCommandPrefix($prefix) {
         $this->options['commandPrefix'] = $prefix;
         
@@ -130,10 +130,10 @@ class LiviaClient extends \CharlotteDunois\Yasmin\Client {
     }
     
     /**
-	 * Checks whether an user is an owner of the bot.
-	 * @param string|\CharlotteDunois\Yasmin\Models\User|\CharlotteDunois\Yasmin\Models\GuildMember  $user
-	 * @return bool
-	 */
+     * Checks whether an user is an owner of the bot.
+     * @param string|\CharlotteDunois\Yasmin\Models\User|\CharlotteDunois\Yasmin\Models\GuildMember  $user
+     * @return bool
+     */
     function isOwner($user) {
         if($user instanceof \CharlotteDunois\Yasmin\Models\User || $user instanceof \CharlotteDunois\Yasmin\Models\GuildMember) {
             $user = $user->id;
@@ -143,10 +143,10 @@ class LiviaClient extends \CharlotteDunois\Yasmin\Client {
     }
     
     /**
-	 * Sets the setting provider to use, and initializes it once the client is ready
-	 * @param \CharlotteDunois\Livia\Providers\SettingProvider  $provider
-	 * @return \React\Promise\Promise
-	 */
+     * Sets the setting provider to use, and initializes it once the client is ready
+     * @param \CharlotteDunois\Livia\Providers\SettingProvider  $provider
+     * @return \React\Promise\Promise
+     */
     function setProvider(\CharlotteDunois\Livia\Providers\SettingProvider $provider) {
         $this->provider = $provider;
         
@@ -155,7 +155,7 @@ class LiviaClient extends \CharlotteDunois\Yasmin\Client {
             
             if($this->readyTimestamp !== null) {
                 $this->emit('debug', 'Provider set to '.$classname.' - initializing...');
-			    $this->provider->init($this)->then($resolve, $reject);
+                $this->provider->init($this)->then($resolve, $reject);
                 return;
             }
             
