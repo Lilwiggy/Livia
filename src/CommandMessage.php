@@ -207,14 +207,14 @@ class CommandMessage {
                         throw new \RuntimeException('Command '.$this->command->name.'\'s run() resolved with an unknown type ('.\gettype($response).'). Command run methods must return a Promise that resolve with a Message, an array of Messages, or null.');
                     }
                     
-                    if(\is_array($response)) {
-                        foreach($response as &$val) {
-                            if(!($val instanceof \React\Promise\PromiseInterface)) {
-                                $val = \React\Promise\resolve($val);
-                            }
+                    if(!\is_array($response)) {
+                        return $response;
+                    }
+                    
+                    foreach($response as &$val) {
+                        if(!($val instanceof \React\Promise\PromiseInterface)) {
+                            $val = \React\Promise\resolve($val);
                         }
-                        
-                        unset($val);
                     }
                     
                     return \React\Promise\all($response);
