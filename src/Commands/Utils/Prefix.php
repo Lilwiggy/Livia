@@ -40,7 +40,7 @@ return function ($client) {
                 if(empty($args['prefix'])) {
                     $prefix = $this->client->getGuildPrefix($message->message->guild);
                     $msg = ($prefix !== null ? 'The command prefix is '.$prefix.'.' : 'There is no command prefix set.').PHP_EOL.'To run commands, use '.\CharlotteDunois\Livia\Commands\Command::anyUsage('command', $prefix, $this->client->user).'.';
-                    return $message->channel->send($msg)->then($resolve, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
+                    return $message->say($msg)->then($resolve, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
                 }
                 
                 if($message->message->guild !== null) {
