@@ -24,7 +24,7 @@ class FloatArgumentType extends ArgumentType {
     /**
      * @inheritDoc
      */
-    function validate(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg) {
+    function validate(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg = null) {
         if(!\filter_var($value, FILTER_VALIDATE_FLOAT)) {
             return false;
         }
@@ -45,7 +45,7 @@ class FloatArgumentType extends ArgumentType {
     /**
      * @inheritDoc
      */
-    function parse(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg) {
+    function parse(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg = null) {
         return ((float) $value);
     }
 }

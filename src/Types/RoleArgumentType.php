@@ -24,7 +24,7 @@ class RoleArgumentType extends ArgumentType {
     /**
      * @inheritDoc
      */
-    function validate(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg) {
+    function validate(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg = null) {
         $prg = \preg_match(\CharlotteDunois\Yasmin\Models\MessageMentions::PATTERN_ROLES, $value, $matches);
         if($prg === 1) {
             return $message->message->guild->roles->has($matches[1]);
@@ -73,7 +73,7 @@ class RoleArgumentType extends ArgumentType {
     /**
      * @inheritDoc
      */
-    function parse(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg) {
+    function parse(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg = null) {
         $prg = \preg_match(\CharlotteDunois\Yasmin\Models\MessageMentions::PATTERN_CHANNELS, $value, $matches);
         if($prg === 1) {
             return $message->message->guild->roles->get($matches[1]);

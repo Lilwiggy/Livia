@@ -24,7 +24,7 @@ class CommandArgumentType extends ArgumentType {
     /**
      * @inheritDoc
      */
-    function validate(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg) {
+    function validate(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg = null) {
         $commands = $this->client->registry->findCommands($value);
         if(\count($commands) === 1) {
             return true;
@@ -40,7 +40,7 @@ class CommandArgumentType extends ArgumentType {
     /**
      * @inheritDoc
      */
-    function parse(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg) {
+    function parse(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg = null) {
         $commands = $this->client->registry->findCommands($value);
         if(\count($commands) > 0) {
             return $commands[0];

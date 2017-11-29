@@ -24,7 +24,7 @@ class CommandOrGroupArgumentType extends ArgumentType {
     /**
      * @inheritDoc
      */
-    function validate(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg) {
+    function validate(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg = null) {
         $groups = $this->client->registry->findGroups($value);
         if(\count($groups) === 1) {
             return true;
@@ -45,7 +45,7 @@ class CommandOrGroupArgumentType extends ArgumentType {
     /**
      * @inheritDoc
      */
-    function parse(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg) {
+    function parse(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg = null) {
         $groups = $this->client->registry->findGroups($value);
         if(\count($groups) > 0) {
             return $groups[0];

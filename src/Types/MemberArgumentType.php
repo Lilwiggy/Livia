@@ -24,7 +24,7 @@ class MemberArgumentType extends ArgumentType {
     /**
      * @inheritDoc
      */
-    function validate(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg) {
+    function validate(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg = null) {
         if($message->message->guild === null) {
             return 'Invalid place (not a guild channel) for argument type.';
         }
@@ -81,7 +81,7 @@ class MemberArgumentType extends ArgumentType {
     /**
      * @inheritDoc
      */
-    function parse(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg) {
+    function parse(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg = null) {
         $prg = \preg_match('/(?:<@?)?(\d+)>?/', $value, $matches);
         if($prg === 1) {
             return $message->message->guild->members->get($matches[1]);

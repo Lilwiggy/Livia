@@ -42,29 +42,29 @@ abstract class ArgumentType {
      * Validates a value against the type.
      * @param string                                     $value  Value to validate.
      * @param \CharlotteDunois\Livia\CommandMessage      $msg    Message the value was obtained from.
-     * @param \CharlotteDUnois\Livia\Arguments\Argument  $arg    Argument the value obtained from.
+     * @param \CharlotteDUnois\Livia\Arguments\Argument|null  $arg    Argument the value obtained from.
      * @return bool|string|\React\Promise\Promise
      */
-    abstract function validate(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg);
+    abstract function validate(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg = null);
     
     /**
      * Parses a value into an usable value.
-     * @param string                                     $value  Value to parse.
-     * @param \CharlotteDunois\Livia\CommandMessage      $msg    Message the value was obtained from.
-     * @param \CharlotteDUnois\Livia\Arguments\Argument  $arg    Argument the value obtained from.
+     * @param string                                          $value  Value to parse.
+     * @param \CharlotteDunois\Livia\CommandMessage           $msg    Message the value was obtained from.
+     * @param \CharlotteDUnois\Livia\Arguments\Argument|null  $arg    Argument the value obtained from.
      * @return mixed|null
      * @throws \RangeException
      */
-    abstract function parse(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg);
+    abstract function parse(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg = null);
     
     /**
      * Checks whether a value is considered to be empty. This determines whether the default value for an argument should be used and changes the response to the user under certain circumstances.
-     * @param mixed                                      $value  Value to check.
-     * @param \CharlotteDunois\Livia\CommandMessage      $msg    Message the value was obtained from.
-     * @param \CharlotteDUnois\Livia\Arguments\Argument  $arg    Argument the value obtained from.
+     * @param mixed                                           $value  Value to check.
+     * @param \CharlotteDunois\Livia\CommandMessage           $msg    Message the value was obtained from.
+     * @param \CharlotteDUnois\Livia\Arguments\Argument|null  $arg    Argument the value obtained from.
      * @return bool
      */
-    function isEmpty($value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg) {
+    function isEmpty($value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg = null) {
         return empty($value);
     }
 }
