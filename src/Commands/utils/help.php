@@ -43,6 +43,18 @@ return function ($client) {
                 if(!empty($args['command']) && !$showAll) {
                     $countCommands = \count($commands);
                     
+                    if($countCommands === 0) {
+                        return $resolve($message->reply('Unable to identify command. Use '.$this->usage('', ($message->message->channel->type === 'dm' ? null : $this->client->getGuildPrefix($message->message->guild)), ($message->message->channel->type === 'dm' ? null : $this->client->user)).' to view the list of all commands.'));
+                    }
+                    
+                    foreach($commands as $key => $cmd) {
+                        if(!empty($cmd->ownerOnly) && $cmd->hasPermission($message) !== true) {
+                            unset($commands[$key]);
+                        }
+                    }
+                    
+                    $countCommands = \count($commands);
+                    
                     if($countCommands === 1) {
                         $command = $commands[0];
                         
@@ -70,8 +82,6 @@ return function ($client) {
                         $resolve($message->reply('Multiple commands found. Please be more specific.'));
                     } elseif($countCommands > 1) {
                         $resolve($message->reply(\CharlotteDunois\Livia\Utils\DataHelpers::disambiguation($commands, 'commands', 'name')));
-                    } else {
-                        $resolve($message->reply('Unable to identify command. Use '.$this->usage('', ($message->message->channel->type === 'dm' ? null : $this->client->getGuildPrefix($message->message->guild)), ($message->message->channel->type === 'dm' ? null : $this->client->user)).' to view the list of all commands.'));
                     }
                 } else {
                     $help = 'To run a command in '.($message->message->guild !== null ? $message->message->guild->name : 'any server').', use '.
