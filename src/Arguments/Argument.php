@@ -146,6 +146,7 @@ class Argument {
             }
             
             if(!$empty && $valid === null) {
+                $value = \trim($value);
                 $validate = ($this->validate ? array($this, 'validate') : array($this->type, 'validate'))($value, $message, $this);
                 if(!($validate instanceof \React\Promise\PromiseInterface)) {
                     $validate = \React\Promise\resolve($validate);

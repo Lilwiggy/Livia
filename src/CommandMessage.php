@@ -498,7 +498,7 @@ class CommandMessage {
                 break;
             }
             
-            $val = (!empty($matches[2][$key]) ? $matches[2][$key] : $matches[3][$key]);
+            $val = \trim((!empty($matches[2][$key]) ? $matches[2][$key] : $matches[3][$key]));
             $results[] = $val;
             
             $content = \preg_replace('/'.\preg_quote($val, '/').'/u', '', $content, 1);
