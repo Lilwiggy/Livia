@@ -12,7 +12,7 @@
     "minimum-stability": "stable",
     "require": {
         "php": ">=7.0",
-        "charlottedunois/yasmin": "^0.1.1"
+        "charlottedunois/yasmin": "^0.1.1|dev-master"
     },
     "suggest": {
         "react/mysql": "Required for MySQL Provider"
