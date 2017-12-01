@@ -145,6 +145,11 @@ class Argument {
                 ));
             }
             
+            if($this->infinite) {
+                $this->obtainInfinite($message, (\is_array($value) ? $value : array($value)), $promptLimit)->then($resolve, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
+                return;
+            }
+            
             if(!$empty && $valid === null) {
                 $value = \trim($value);
                 $validate = ($this->validate ? array($this, 'validate') : array($this->type, 'validate'))($value, $message, $this);
@@ -171,11 +176,6 @@ class Argument {
                         );
                     });
                 })->then($resolve, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
-            }
-            
-            if($this->infinite) {
-                $this->obtainInfinite($message, (\is_array($value) ? $value : array($value)), $promptLimit)->then($resolve, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
-                return;
             }
             
             if(\count($prompts) > $promptLimit) {
