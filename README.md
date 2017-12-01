@@ -67,7 +67,7 @@ return function ($client) {
         }
         
         // Even if you don't use all arguments, you are forced to match that method signature.
-        function run(\CharlotteDunois\Livia\CommandMessage $message, array $args,
+        function run(\CharlotteDunois\Livia\CommandMessage $message, \ArrayObject $args,
                       bool $fromPattern) {
             // Do what the command has to do.
             // You are free to return a Promise, or do all-synchronous tasks synchronously.

@@ -348,7 +348,7 @@
                     <abbr title="React\Promise\Promise">Promise</abbr>
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_run">run</a>(<a href="../../../CharlotteDunois/Livia/CommandMessage.html"><abbr title="CharlotteDunois\Livia\CommandMessage">CommandMessage</abbr></a> $message, array $args, bool $fromPattern)
+                    <a href="#method_run">run</a>(<a href="../../../CharlotteDunois/Livia/CommandMessage.html"><abbr title="CharlotteDunois\Livia\CommandMessage">CommandMessage</abbr></a> $message, <a target="_blank" href="http://php.net/ArrayObject">ArrayObject</a> $args, bool $fromPattern)
         
                                             <p>Runs the command. The method must return null, an array of Message instances or an instance of Message, a Promise that resolves to an instance of Message, or an array of Message instances. The array can contain Promises which each resolves to an instance of Message.</p>                </div>
                 <div class="col-md-2"></div>
@@ -665,7 +665,7 @@
                     <h3 id="method_run">
         <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/Commands/Command.php#L338">line 338</a></div>
         <code>    abstract                <abbr title="React\Promise\Promise">Promise</abbr>
-    <strong>run</strong>(<a href="../../../CharlotteDunois/Livia/CommandMessage.html"><abbr title="CharlotteDunois\Livia\CommandMessage">CommandMessage</abbr></a> $message, array $args, bool $fromPattern)
+    <strong>run</strong>(<a href="../../../CharlotteDunois/Livia/CommandMessage.html"><abbr title="CharlotteDunois\Livia\CommandMessage">CommandMessage</abbr></a> $message, <a target="_blank" href="http://php.net/ArrayObject">ArrayObject</a> $args, bool $fromPattern)
         </code>
     </h3>
     <div class="details">
@@ -684,7 +684,7 @@
                 <td>The message the command is being run for</td>
             </tr>
                     <tr>
-                <td>array</td>
+                <td><a target="_blank" href="http://php.net/ArrayObject">ArrayObject</a></td>
                 <td>$args</td>
                 <td>The arguments for the command, or the matches from a pattern. If args is specified on the command, thise will be the argument values object. If argsType is single, then only one string will be passed. If multiple, an array of strings will be passed. When fromPattern is true, this is the matches array from the pattern match.</td>
             </tr>

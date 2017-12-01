@@ -331,11 +331,11 @@ abstract class Command {
     /**
      * Runs the command. The method must return null, an array of Message instances or an instance of Message, a Promise that resolves to an instance of Message, or an array of Message instances. The array can contain Promises which each resolves to an instance of Message.
      * @param \CharlotteDunois\Livia\CommandMessage $message      The message the command is being run for
-     * @param mixed[]                               $args         The arguments for the command, or the matches from a pattern. If args is specified on the command, thise will be the argument values object. If argsType is single, then only one string will be passed. If multiple, an array of strings will be passed. When fromPattern is true, this is the matches array from the pattern match.
+     * @param \ArrayObject                          $args         The arguments for the command, or the matches from a pattern. If args is specified on the command, thise will be the argument values object. If argsType is single, then only one string will be passed. If multiple, an array of strings will be passed. When fromPattern is true, this is the matches array from the pattern match.
      * @param bool                                  $fromPattern  Whether or not the command is being run from a pattern match
      * @return \React\Promise\Promise
      */
-    abstract function run(\CharlotteDunois\Livia\CommandMessage $message, array $args, bool $fromPattern);
+    abstract function run(\CharlotteDunois\Livia\CommandMessage $message, \ArrayObject $args, bool $fromPattern);
     
     /**
      * Reloads the command.

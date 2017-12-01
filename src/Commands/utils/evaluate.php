@@ -32,7 +32,7 @@ return function ($client) {
             ));
         }
         
-        function run(\CharlotteDunois\Livia\CommandMessage $message, array $args, bool $fromPattern) {
+        function run(\CharlotteDunois\Livia\CommandMessage $message, \ArrayObject $args, bool $fromPattern) {
             return (new \React\Promise\Promise(function (callable $resolve, callable $reject) use ($message, $args) {
                 $code = $args['script'];
                 if(\substr($code, -1) !== ';') {
