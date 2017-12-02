@@ -488,6 +488,10 @@ class CommandMessage {
      * @return string[]
      */
     static function parseArgs(string $argString, $argCount = null, bool $allowSingleQuotes = true) {
+        if(empty($argString)) {
+            return array();
+        }
+        
         $regex = ($allowSingleQuotes ? '/\s*(?:("|\')(.*?)\1|(\S+))\s*/u' : '/\s*(?:(")(.*?)"|(\S+))\s*/u');
         $results = array();
         

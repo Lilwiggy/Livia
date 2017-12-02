@@ -146,7 +146,7 @@ class Argument {
             }
             
             if($this->infinite) {
-                $this->obtainInfinite($message, (\is_array($value) ? $value : array($value)), $promptLimit)->then($resolve, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
+                $this->obtainInfinite($message, ($value === null ? null : (\is_array($value) ? $value : array($value))), $promptLimit)->then($resolve, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
                 return;
             }
             
@@ -277,10 +277,9 @@ class Argument {
      * @param \CharlotteDunois\Livia\CommandMessage  $message      Message that triggered the command.
      * @param string[]                               $values       Pre-provided values.
      * @param int|double                             $promptLimit  Maximum number of times to prompt for the argument.
-     * @param int                                    $currentVal   Current value getting obtained.
      * @return \React\Promise\Promise
      */
-    protected function obtainInfinite(\CharlotteDunois\Livia\CommandMessage $message, array $values = array(), $promptLimit = \INF, array &$prompts = array(), array &$answers = array(), int $currentVal = 0) {
+    protected function obtainInfinite(\CharlotteDunois\Livia\CommandMessage $message, array $values = array(), $promptLimit = \INF, array &$prompts = array(), array &$answers = array()) {
         return (new \React\Promise\Promise(function (callable $resolve, callable $reject) use ($message, $values, $promptLimit, $prompts, $answers, $currentVal) {
             $value = null;
             if(!empty($values)) {
@@ -293,9 +292,7 @@ class Argument {
                 }
                 
                 $values[] = $value;
-                $currentVal++;
-                
-                return $this->obtainInfinite($message, $values, $promptLimit, $prompts, $answers, $currentVal);
+                return $this->obtainInfinite($message, $values, $promptLimit, $prompts, $answers);
             })->then($resolve, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
         }));
     }
