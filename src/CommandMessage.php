@@ -482,12 +482,12 @@ class CommandMessage {
     
     /**
      * Parses an argument string into an array of arguments.
-     * @param string    $argString
-     * @param int|null  $argCount
-     * @param bool      $allowSingleQuotes
+     * @param string          $argString
+     * @param int|float|null  $argCount           float = \INF
+     * @param bool            $allowSingleQuotes
      * @return string[]
      */
-    static function parseArgs(string $argString, int $argCount = null, bool $allowSingleQuotes = true) {
+    static function parseArgs(string $argString, $argCount = null, bool $allowSingleQuotes = true) {
         $regex = ($allowSingleQuotes ? '/\s*(?:("|\')(.*?)\1|(\S+))\s*/u' : '/\s*(?:(")(.*?)"|(\S+))\s*/u');
         $results = array();
         
