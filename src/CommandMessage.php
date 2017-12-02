@@ -219,8 +219,6 @@ class CommandMessage {
                     return \React\Promise\all($response);
                 });
             })->otherwise(function ($error) use (&$args, $typingCount) {
-                $this->client->emit('commandError', $this->command, $error, $this, $args, ($this->patternMatches !== null));
-                
                 if($this->message->channel->typingCount() > $typingCount) {
                     $this->message->channel->stopTyping();
                 }
@@ -228,6 +226,8 @@ class CommandMessage {
                 if($error instanceof \CharlotteDunois\Livia\Exceptions\FriendlyException) {
                     return $this->reply($error->getMessage());
                 }
+                
+                $this->client->emit('commandError', $this->command, $error, $this, $args, ($this->patternMatches !== null));
                 
                 $owners = $this->client->owners;
                 $ownersLength = \count($owners);
