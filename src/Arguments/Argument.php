@@ -146,7 +146,7 @@ class Argument {
             }
             
             if($this->infinite) {
-                $this->obtainInfinite($message, ($value === null ? null : (\is_array($value) ? $value : array($value))), $promptLimit)->then($resolve, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
+                $this->obtainInfinite($message, ($value === null ? array() : (\is_array($value) ? $value : array($value))), $promptLimit)->then($resolve, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
                 return;
             }
             
