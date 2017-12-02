@@ -177,9 +177,13 @@ class LiviaClient extends \CharlotteDunois\Yasmin\Client {
      */
     function getGuildPrefix(\CharlotteDunois\Yasmin\Models\Guild $guild = null) {
         if($guild !== null && $this->provider !== null) {
-            $prefix = $this->provider->get($guild, 'commandPrefix', 404);
-            if($prefix !== 404) {
-                return $prefix;
+            try {
+                $prefix = $this->provider->get($guild, 'commandPrefix', 404);
+                if($prefix !== 404) {
+                    return $prefix;
+                }
+            } catch(\BadMethodCallException $e) {
+                return $this->commandPrefix;
             }
         }
         

@@ -89,11 +89,11 @@ class MySQLProvider extends SettingProvider {
      * @return \React\Promise\Promise
      * @throws \InvalidArgumentException
      */
-    function create($guild, array $settings = array()) {
+    function create($guild, array &$settings = array()) {
         $guild = $this->getGuildID($guild);
         
-        return (new \React\Promise\Promise(function (callable $resolve, callable $reject) use ($guild, $settings) {
-            $this->settings->set($guild, &$settings);
+        return (new \React\Promise\Promise(function (callable $resolve, callable $reject) use ($guild, &$settings) {
+            $this->settings->set($guild, $settings);
             $this->runQuery('INSERT INTO `settings` (`guild`, `settings`) VALUES (?, ?)', array($guild, \json_encode($settings)))->then($resolve, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
         }));
     }
@@ -110,28 +110,24 @@ class MySQLProvider extends SettingProvider {
     /**
      * @inheritDoc
      */
-    function init(\CharlotteDunois\Livia\LiviaClient   $client) {
+    function init(\CharlotteDunois\Livia\LiviaClient $client) {
         $this->client = $client;
         
         return (new \React\Promise\Promise(function (callable $resolve, callable $reject) {
-            $promises = array();
-            
-            $promises[] = new \React\Promise\Promise(function (callable $resolve, $reject) {
+            (new \React\Promise\Promise(function (callable $resolve, $reject) {
                 $this->db->connect(function ($reason) use ($resolve, $reject) {
-                    if($reason !== null) {
+                    if($reason === null) {
                         $resolve();
                     } else {
                         $reject($reason);
                     }
                 });
-            });
-            
-            foreach($this->listeners as $event => $listener) {
-                $this->client->on($event, $listener);
-            }
-            
-            \React\Promise\all($promises)->then(function () use ($resolve, $reject) {
-                $this->runQuery('CREATE TABLE IF NOT EXISTS `settings` (`guild` VARCHAR(20) NOT NULL, `settings` TEXT NOT NULL, PRIMARY KEY (`guild`))')->otherwise($reject)->done(null, array($this->client, 'handlePromiseRejection'));
+            }))->then(function () use ($resolve, $reject) {
+                foreach($this->listeners as $event => $listener) {
+                    $this->client->on($event, $listener);
+                }
+                
+                $this->runQuery('CREATE TABLE IF NOT EXISTS `settings` (`guild` VARCHAR(20) NOT NULL, `settings` TEXT NOT NULL, PRIMARY KEY (`guild`))')->then(null, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
                 
                 $this->runQuery('SELECT * FROM `settings`')->then(function ($command) use ($resolve) {
                     foreach($command->resultRows as $row) {
@@ -145,7 +141,11 @@ class MySQLProvider extends SettingProvider {
                         $this->setupGuild($row['guild']);
                     }
                     
-                    $resolve();
+                    if($this->settings->has('global')) {
+                        return $resolve();
+                    }
+                    
+                    $this->create('global');
                 }, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
             }, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
         }));
@@ -218,7 +218,7 @@ class MySQLProvider extends SettingProvider {
         $settings = &$this->settings->get($guild);
         if(!$settings) {
             $settings = array();
-            $this->create($guild, &$settings)->done(null, array($this->client, 'handlePromiseRejection'));
+            $this->create($guild, $settings)->done(null, array($this->client, 'handlePromiseRejection'));
         }
         
         if($guild === 'global' && \array_key_exists('commandPrefix', $settings)) {
@@ -226,11 +226,11 @@ class MySQLProvider extends SettingProvider {
         }
         
         foreach($this->client->registry->commands as $command) {
-            $this->setupGuildCommand($guild, $command, &$settings);
+            $this->setupGuildCommand($guild, $command, $settings);
         }
         
         foreach($this->client->registry->groups as $group) {
-            $this->setupGuildGroup($guild, $group, &$settings);
+            $this->setupGuildGroup($guild, $group, $settings);
         }
     }
     
