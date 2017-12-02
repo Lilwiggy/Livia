@@ -30,11 +30,11 @@ class StringArgumentType extends ArgumentType {
         }
         
         if($arg->min !== null && \strlen($value) < $arg->min) {
-            return 'Please enter a number above or exactly '.$arg->min;
+            return 'Please enter something above or exactly '.$arg->min.' characters in length.';
         }
         
-        if($arg->max !== null && \strlen($value) < $arg->max) {
-            return 'Please enter a number below or exactly '.$arg->max;
+        if($arg->max !== null && \strlen($value) > $arg->max) {
+            return 'Please enter a number below or exactly '.$arg->max.' characters in length.';
         }
         
         return true;

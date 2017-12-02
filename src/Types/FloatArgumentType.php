@@ -32,11 +32,11 @@ class FloatArgumentType extends ArgumentType {
         $value = (float) $value;
         
         if($arg->min !== null && $value < $arg->min) {
-            return 'Please enter a number above or exactly '.$arg->min;
+            return 'Please enter a number above or exactly '.$arg->min.'.';
         }
         
-        if($arg->max !== null && $value < $arg->max) {
-            return 'Please enter a number below or exactly '.$arg->max;
+        if($arg->max !== null && $value > $arg->max) {
+            return 'Please enter a number below or exactly '.$arg->max.'.';
         }
         
         return true;
