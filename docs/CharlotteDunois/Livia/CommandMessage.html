@@ -164,7 +164,7 @@
                     static&nbsp;string[]
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_parseArgs">parseArgs</a>(string $argString, int $argCount = null, bool $allowSingleQuotes = true)
+                    <a href="#method_parseArgs">parseArgs</a>(string $argString, int|float|null $argCount = null, bool $allowSingleQuotes = true)
         
                                             <p>Parses an argument string into an array of arguments.</p>                </div>
                 <div class="col-md-2"></div>
@@ -262,7 +262,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_edit">
-        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandMessage.php#L526">line 526</a></div>
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandMessage.php#L530">line 530</a></div>
         <code>                    <abbr title="React\Promise\Promise">Promise</abbr>
     <strong>edit</strong>(string $content, array $options = array())
         </code>
@@ -309,7 +309,7 @@
                     <h3 id="method_parseArgs">
         <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandMessage.php#L490">line 490</a></div>
         <code>        static            string[]
-    <strong>parseArgs</strong>(string $argString, int $argCount = null, bool $allowSingleQuotes = true)
+    <strong>parseArgs</strong>(string $argString, int|float|null $argCount = null, bool $allowSingleQuotes = true)
         </code>
     </h3>
     <div class="details">
@@ -328,9 +328,9 @@
                 <td></td>
             </tr>
                     <tr>
-                <td>int</td>
+                <td>int|float|null</td>
                 <td>$argCount</td>
-                <td></td>
+                <td>float = \INF</td>
             </tr>
                     <tr>
                 <td>bool</td>
