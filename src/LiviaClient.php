@@ -170,7 +170,7 @@ class LiviaClient extends \CharlotteDunois\Yasmin\Client {
                 return;
             }
             
-            $this->emit('debug', 'Provider set to '.$classname.' - will initialize once ready.');
+            $this->emit('debug', 'Provider set to '.$classname.' - will initialize once ready');
             
             $this->once('ready', function () use ($resolve, $reject) {
                 $this->emit('debug', 'Initializing provider...');
