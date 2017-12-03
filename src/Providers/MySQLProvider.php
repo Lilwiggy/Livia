@@ -85,11 +85,11 @@ class MySQLProvider extends SettingProvider {
     /**
      * Creates a new table row in the db for the guild, if it doesn't exist already - otherwise loads the row.
      * @param string|\CharlotteDunois\Yasmin\Models\Guild  $guild
-     * @param array                                        $settings
+     * @param array|\ArrayObject                           $settings
      * @return \React\Promise\Promise
      * @throws \InvalidArgumentException
      */
-    function create($guild, array &$settings = array()) {
+    function create($guild, &$settings = array()) {
         $guild = $this->getGuildID($guild);
         
         return (new \React\Promise\Promise(function (callable $resolve, callable $reject) use ($guild, &$settings) {
@@ -185,18 +185,16 @@ class MySQLProvider extends SettingProvider {
             return $this->create($guild)->then(function () use ($guild, $key, $value) {
                 $settings = $this->settings->get($guild);
                 $settings[$key] = $value;
-                $this->settings->set($guild, $settings);
             
                 return $this->runQuery('UPDATE `settings` SET `settings` = ? WHERE `guild` = ?', array(\json_encode($settings), $guild))->then(function () {
                     return null;
-                })->done(null, array($this->client, 'handlePromiseRejection'));
+                });
             });
         }
         
         return (new \React\Promise\Promise(function (callable $resolve, callable $reject) use ($guild, $key, $value) {
-            $settings = &$this->settings->get($guild);
+            $settings = $this->settings->get($guild);
             $settings[$key] = $value;
-            $this->settings->set($guild, $settings);
         
             $this->runQuery('UPDATE `settings` SET `settings` = ? WHERE `guild` = ?', array(\json_encode($settings), $guild))->then($resolve, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
         }));
@@ -215,18 +213,16 @@ class MySQLProvider extends SettingProvider {
             return $this->create($guild)->then(function () use ($guild, $key, $value) {
                 $settings = $this->settings->get($guild);
                 unset($settings[$key]);
-                $this->settings->set($guild, $settings);
             
                 return $this->runQuery('UPDATE `settings` SET `settings` = ? WHERE `guild` = ?', array(\json_encode($settings), $guild))->then(function () {
                     return null;
-                })->done(null, array($this->client, 'handlePromiseRejection'));
+                });
             });
         }
         
         return (new \React\Promise\Promise(function (callable $resolve, callable $reject) use ($guild, $key) {
             $settings = $this->settings->get($guild);
             unset($settings[$key]);
-            $this->settings->set($guild, $settings);
             
             $this->runQuery('UPDATE `settings` SET `settings` = ? WHERE `guild` = ?', array(\json_encode($settings), $guild))->then($resolve, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
         }));
@@ -240,7 +236,7 @@ class MySQLProvider extends SettingProvider {
     function setupGuild($guild) {
         $guild = $this->getGuildID($guild);
         
-        $settings = &$this->settings->get($guild);
+        $settings = $this->settings->get($guild);
         if(!$settings) {
             $this->create($guild)->done(null, array($this->client, 'handlePromiseRejection'));
             return;
@@ -324,6 +320,8 @@ class MySQLProvider extends SettingProvider {
             $this->client->emit('warn', 'MySQLProvider couldn\'t parse the settings stored for guild "'.$row['guild'].'". Error: '.\json_last_error_msg());
             return;
         }
+        
+        $settings = new \ArrayObject($settings, \ArrayObject::ARRAY_AS_PROPS);
         
         $this->settings->set($row['guild'], $settings);
         $this->setupGuild($row['guild']);

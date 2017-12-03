@@ -189,9 +189,9 @@ class CommandMessage {
             $typingCount = $this->message->channel->typingCount();
             
             \React\Promise\all($promises)->then(function () use (&$args) {
-                $args = new \ArrayObject((array) $args, \ArrayObject::ARRAY_AS_PROPS | \ArrayObject::STD_PROP_LIST);
+                $args = new \ArrayObject((array) $args, \ArrayObject::ARRAY_AS_PROPS);
             }, function ($error) use (&$args) {
-                $args = new \ArrayObject((array) $args, \ArrayObject::ARRAY_AS_PROPS | \ArrayObject::STD_PROP_LIST);
+                $args = new \ArrayObject((array) $args, \ArrayObject::ARRAY_AS_PROPS);
                 throw $error;
             })->then(function () use (&$args) {
                 $promise = $this->command->run($this, $args, ($this->patternMatches !== null));
