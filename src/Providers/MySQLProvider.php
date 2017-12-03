@@ -38,6 +38,9 @@ class MySQLProvider extends SettingProvider {
         
         $this->settings = new \CharlotteDunois\Yasmin\Utils\Collection();
         
+        $this->listeners['commandPrefixChange'] = function ($guild, $prefix) {
+            $this->set($guild, 'commandPrefix', $prefix);
+        };
         $this->listeners['commandStatusChange'] = function ($guild, $command, $enabled) {
             $this->set($guild, 'command-'.$command->name, $enabled);
         };
@@ -239,8 +242,8 @@ class MySQLProvider extends SettingProvider {
         
         $settings = &$this->settings->get($guild);
         if(!$settings) {
-            $settings = array();
-            $this->create($guild, $settings)->done(null, array($this->client, 'handlePromiseRejection'));
+            $this->create($guild)->done(null, array($this->client, 'handlePromiseRejection'));
+            return;
         }
         
         if($guild === 'global' && \array_key_exists('commandPrefix', $settings)) {

@@ -129,15 +129,10 @@ class LiviaClient extends \CharlotteDunois\Yasmin\Client {
         
         $this->options['commandPrefix'] = $prefix;
         
-        if($fromProvider === false && $this->provider !== null) {
-            if(empty($prefix)) {
-                $this->provider->remove('global', 'commandPrefix')->done(null, array($this, 'handlePromiseRejection'));
-            } else {
-                $this->provider->set('global', 'commandPrefix', $prefix)->done(null, array($this, 'handlePromiseRejection'));
-            }
+        if($fromProvider === false) {
+            $this->emit('commandPrefixChange', null, $prefix);
         }
         
-        $this->emit('commandPrefixChange', null, $prefix);
         return $this;
     }
     
@@ -191,7 +186,7 @@ class LiviaClient extends \CharlotteDunois\Yasmin\Client {
         if($guild !== null && $this->provider !== null) {
             try {
                 $prefix = $this->provider->get($guild, 'commandPrefix', 404);
-                if($prefix !== 404) {
+                if($prefix !== 404 && $prefix !== '') {
                     return $prefix;
                 }
             } catch(\BadMethodCallException $e) {
@@ -203,24 +198,14 @@ class LiviaClient extends \CharlotteDunois\Yasmin\Client {
     }
     
     /**
-     * Set the guild's prefix. An empty string means the command prefix will be used. Null means only mentions. Return value indicates if the prefix has been sent to the provider or there was no provider to set it.
+     * Set the guild's prefix. An empty string means the command prefix will be used. Null means only mentions.
      * @param \CharlotteDunois\Yasmin\Models\Guild|null  $guild
      * @param string|null                                $prefix
      * @return bool
      */
     function setGuildPrefix(\CharlotteDunois\Yasmin\Models\Guild $guild, string $prefix = null) {
-        if($this->provider !== null) {
-            if(\is_string($prefix) && empty($prefix)) {
-                $this->provider->remove($guild, 'commandPrefix')->done(null, array($this, 'handlePromiseRejection'));
-            } else {
-                $this->provider->set($guild, 'commandPrefix', $prefix)->done(null, array($this, 'handlePromiseRejection'));
-            }
-            
-            $this->emit('commandPrefixChange', $guild, $prefix);
-            return true;
-        }
-        
-        return false;
+        $this->emit('commandPrefixChange', $guild, $prefix);
+        return true;
     }
     
     /**
