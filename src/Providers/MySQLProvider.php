@@ -124,6 +124,7 @@ class MySQLProvider extends SettingProvider {
             (new \React\Promise\Promise(function (callable $resolve, $reject) {
                 $this->db->connect(function ($reason) use ($resolve, $reject) {
                     if($reason === null) {
+                        $this->client->emit('debug', 'Connected to MySQL');
                         $resolve();
                     } else {
                         $reject($reason);
