@@ -41,19 +41,23 @@ class LiviaClient extends \CharlotteDunois\Yasmin\Client {
     function __construct(array $options, \React\EventLoop\LoopInterface $loop = null) {
         if(!\array_key_exists('commandPrefix', $options)) {
             $options['commandPrefix'] = 'l$';
-        } elseif($options['commandPrefix'] === null) {
-            $options['commandPrefix'] = '';
         }
         
-        if(empty($options['commandEditableDuration'])) {
+        if(isset($options['commandEditableDuration'])) {
+            $options['commandEditableDuration'] = (int) $options['commandEditableDuration'];
+        } else {
             $options['commandEditableDuration'] = 30;
         }
         
-        if(!isset($options['nonCommandEditable'])) {
+        if(isset($options['nonCommandEditable'])) {
+            $options['nonCommandEditable'] = (bool) $options['nonCommandEditable'];
+        } else {
             $options['nonCommandEditable'] = true;
         }
         
-        if(!isset($options['unknownCommandResponse'])) {
+        if(isset($options['unknownCommandResponse'])) {
+            $options['unknownCommandResponse'] = (bool) $options['unknownCommandResponse'];
+        } else {
             $options['unknownCommandResponse'] = true;
         }
 
