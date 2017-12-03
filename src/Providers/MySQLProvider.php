@@ -259,10 +259,10 @@ class MySQLProvider extends SettingProvider {
      * Sets up a command's status in a guild from the guild's settings.
      * @param string|\CharlotteDunois\Yasmin\Models\Guild  $guild
      * @param \CharlotteDunois\Livia\Commands\Command      $command
-     * @param array                                        $settings
+     * @param array|\ArrayObject                           $settings
      * @internal
      */
-    function setupGuildCommand($guild, \CharlotteDunois\Livia\Commands\Command $command, array &$settings) {
+    function setupGuildCommand($guild, \CharlotteDunois\Livia\Commands\Command $command, &$settings) {
         if(!isset($settings['command-'.$command->name])) {
             return;
         }
@@ -274,10 +274,10 @@ class MySQLProvider extends SettingProvider {
      * Sets up a group's status in a guild from the guild's settings.
      * @param string|\CharlotteDunois\Yasmin\Models\Guild   $guild
      * @param \CharlotteDunois\Livia\Commands\CommandGroup  $group
-     * @param array                                         $settings
+     * @param array|\ArrayObject                           $settings
      * @internal
      */
-    function setupGuildGroup($guild, \CharlotteDunois\Livia\Commands\CommandGroup $group, array &$settings) {
+    function setupGuildGroup($guild, \CharlotteDunois\Livia\Commands\CommandGroup $group, &$settings) {
         if(!isset($settings['group-'.$group->id])) {
             return;
         }
