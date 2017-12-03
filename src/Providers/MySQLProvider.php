@@ -83,7 +83,7 @@ class MySQLProvider extends SettingProvider {
     }
     
     /**
-     * Creates a new table row in the db for the guild.
+     * Creates a new table row in the db for the guild, if it doesn't exist already - otherwise loads the row.
      * @param string|\CharlotteDunois\Yasmin\Models\Guild  $guild
      * @param array                                        $settings
      * @return \React\Promise\Promise
@@ -93,8 +93,15 @@ class MySQLProvider extends SettingProvider {
         $guild = $this->getGuildID($guild);
         
         return (new \React\Promise\Promise(function (callable $resolve, callable $reject) use ($guild, &$settings) {
-            $this->settings->set($guild, $settings);
-            $this->runQuery('INSERT INTO `settings` (`guild`, `settings`) VALUES (?, ?)', array($guild, \json_encode($settings)))->then($resolve, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
+            $this->runQuery('SELECT * FROM `settings` WHERE `guild` = ?', array($guild))->then(function ($command) use ($guild, &$settings) {
+                if(empty($command->resultRows)) {
+                    $this->settings->set($guild, $settings);
+                    $this->runQuery('INSERT INTO `settings` (`guild`, `settings`) VALUES (?, ?)', array($guild, \json_encode($settings)))->then($resolve, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
+                } else {
+                    $this->loadRow($command->resultRows[0]);
+                    $resolve();
+                }
+            });
         }));
     }
     
@@ -127,26 +134,21 @@ class MySQLProvider extends SettingProvider {
                     $this->client->on($event, $listener);
                 }
                 
-                $this->runQuery('CREATE TABLE IF NOT EXISTS `settings` (`guild` VARCHAR(20) NOT NULL, `settings` TEXT NOT NULL, PRIMARY KEY (`guild`))')->then(null, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
-                
-                $this->runQuery('SELECT * FROM `settings`')->then(function ($command) use ($resolve) {
-                    foreach($command->resultRows as $row) {
-                        $settings = \json_decode($row['settings'], true);
-                        if($settings === null) {
-                            $this->client->emit('warn', 'MySQLProvider couldn\'t parse the settings stored for guild "'.$row['guild'].'". Error: '.\json_last_error_msg());
-                            continue;
+                $this->runQuery('CREATE TABLE IF NOT EXISTS `settings` (`guild` VARCHAR(20) NOT NULL, `settings` TEXT NOT NULL, PRIMARY KEY (`guild`))')->then(function () {
+                    return $this->runQuery('SELECT * FROM `settings`')->then(function ($command) {
+                        foreach($command->resultRows as $row) {
+                            $this->loadRow($row);
                         }
                         
-                        $this->settings->set($row['guild'], $settings);
-                        $this->setupGuild($row['guild']);
-                    }
-                    
-                    if($this->settings->has('global')) {
-                        return $resolve();
-                    }
-                    
-                    $this->create('global');
-                }, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
+                        if($this->settings->has('global')) {
+                            return null;
+                        }
+                        
+                        return $this->create('global')->then(function () {
+                            return null;
+                        });
+                    });
+                })->then($resolve, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
             }, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
         }));
     }
@@ -158,7 +160,10 @@ class MySQLProvider extends SettingProvider {
         $guild = $this->getGuildID($guild);
         
         if($this->settings->get($guild) === null) {
-            throw new \BadMethodCallException('Settings of specified guild is not loaded');
+            $this->client->emit('warn', 'Settings of specified guild is not loaded - loading row - returning default value');
+            
+            $this->create($guild);
+            return $defaultValue;
         }
         
         $settings = $this->settings->get($guild);
@@ -173,16 +178,25 @@ class MySQLProvider extends SettingProvider {
      * @inheritDoc
      * @return \React\Promise\Promise
      */
-    function remove($guild, string $key) {
+    function set($guild, string $key, $value) {
         $guild = $this->getGuildID($guild);
         
         if($this->settings->get($guild) === null) {
-            throw new \BadMethodCallException('Settings of specified guild is not loaded');
+            return $this->create($guild)->then(function () use ($guild, $key, $value) {
+                $settings = $this->settings->get($guild);
+                $settings[$key] = $value;
+                $this->settings->set($guild, $settings);
+            
+                return $this->runQuery('UPDATE `settings` SET `settings` = ? WHERE `guild` = ?', array(\json_encode($settings), $guild))->then(function () {
+                    return null;
+                })->done(null, array($this->client, 'handlePromiseRejection'));
+            });
         }
         
-        return (new \React\Promise\Promise(function (callable $resolve, callable $reject) use ($guild, $key) {
+        return (new \React\Promise\Promise(function (callable $resolve, callable $reject) use ($guild, $key, $value) {
             $settings = &$this->settings->get($guild);
-            unset($settings[$key]);
+            $settings[$key] = $value;
+            $this->settings->set($guild, $settings);
         
             $this->runQuery('UPDATE `settings` SET `settings` = ? WHERE `guild` = ?', array(\json_encode($settings), $guild))->then($resolve, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
         }));
@@ -192,17 +206,28 @@ class MySQLProvider extends SettingProvider {
      * @inheritDoc
      * @return \React\Promise\Promise
      */
-    function set($guild, string $key, $value) {
+    function remove($guild, string $key) {
         $guild = $this->getGuildID($guild);
         
         if($this->settings->get($guild) === null) {
-            throw new \BadMethodCallException('Settings of specified guild is not loaded');
+            $this->client->emit('warn', 'Settings of specified guild is not loaded - loading row');
+            
+            return $this->create($guild)->then(function () use ($guild, $key, $value) {
+                $settings = $this->settings->get($guild);
+                unset($settings[$key]);
+                $this->settings->set($guild, $settings);
+            
+                return $this->runQuery('UPDATE `settings` SET `settings` = ? WHERE `guild` = ?', array(\json_encode($settings), $guild))->then(function () {
+                    return null;
+                })->done(null, array($this->client, 'handlePromiseRejection'));
+            });
         }
         
-        return (new \React\Promise\Promise(function (callable $resolve, callable $reject) use ($guild, $key, $value) {
-            $settings = &$this->settings->get($guild);
-            $settings[$key] = $value;
-        
+        return (new \React\Promise\Promise(function (callable $resolve, callable $reject) use ($guild, $key) {
+            $settings = $this->settings->get($guild);
+            unset($settings[$key]);
+            $this->settings->set($guild, $settings);
+            
             $this->runQuery('UPDATE `settings` SET `settings` = ? WHERE `guild` = ?', array(\json_encode($settings), $guild))->then($resolve, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
         }));
     }
@@ -222,7 +247,7 @@ class MySQLProvider extends SettingProvider {
         }
         
         if($guild === 'global' && \array_key_exists('commandPrefix', $settings)) {
-            $this->client->setCommandPrefix($settings['commandPrefix']);
+            $this->client->setCommandPrefix($settings['commandPrefix'], true);
         }
         
         foreach($this->client->registry->commands as $command) {
@@ -287,5 +312,20 @@ class MySQLProvider extends SettingProvider {
                 $resolve($command);
             });
         }));
+    }
+    
+    /**
+     * Processes a database row.
+     * @param array  $row
+     */
+    protected function loadRow(array $row) {
+        $settings = \json_decode($row['settings'], true);
+        if($settings === null) {
+            $this->client->emit('warn', 'MySQLProvider couldn\'t parse the settings stored for guild "'.$row['guild'].'". Error: '.\json_last_error_msg());
+            return;
+        }
+        
+        $this->settings->set($row['guild'], $settings);
+        $this->setupGuild($row['guild']);
     }
 }

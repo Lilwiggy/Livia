@@ -116,14 +116,26 @@ class LiviaClient extends \CharlotteDunois\Yasmin\Client {
     }
     
     /**
-     * Sets the global command prefix. An empty string indicates that there is no default prefix, and only mentions will be used.
-     * Setting to `null` means that the default prefix from ClientOptions will be used instead.
-     * Emits a commandPrefixChange event.
+     * Sets the global command prefix. Null indicates that there is no default prefix, and only mentions will be used. Emits a commandPrefixChange event.
      * @param string|null  $prefix
+     * @param bool         $fromProvider
      * @return $this
+     * @throws \InvalidArgumentException
      */
-    function setCommandPrefix($prefix) {
+    function setCommandPrefix($prefix, bool $fromProvider = false) {
+        if(\is_string($prefix) && empty($prefix)) {
+            throw new \InvalidArgumentException('Can not set an empty string as command prefix');
+        }
+        
         $this->options['commandPrefix'] = $prefix;
+        
+        if($fromProvider === false && $this->provider !== null) {
+            if(empty($prefix)) {
+                $this->provider->remove('global', 'commandPrefix')->done(null, array($this, 'handlePromiseRejection'));
+            } else {
+                $this->provider->set('global', 'commandPrefix', $prefix)->done(null, array($this, 'handlePromiseRejection'));
+            }
+        }
         
         $this->emit('commandPrefixChange', null, $prefix);
         return $this;
@@ -155,7 +167,7 @@ class LiviaClient extends \CharlotteDunois\Yasmin\Client {
             
             if($this->readyTimestamp !== null) {
                 $this->emit('debug', 'Provider set to '.$classname.' - initializing...');
-                $this->provider->init($this)->then($resolve, $reject);
+                $this->provider->init($this)->then($resolve, $reject)->done(null, array($this, 'handlePromiseRejection'));
                 return;
             }
             
@@ -163,7 +175,7 @@ class LiviaClient extends \CharlotteDunois\Yasmin\Client {
             
             $this->once('ready', function () use ($resolve, $reject) {
                 $this->emit('debug', 'Initializing provider...');
-                $this->provider->init($this)->then($resolve, $reject);
+                $this->provider->init($this)->then($resolve, $reject)->done(null, array($this, 'handlePromiseRejection'));
             });
         }))->then(function () {
             $this->emit('debug', 'Provider finished initialization.');
@@ -191,14 +203,18 @@ class LiviaClient extends \CharlotteDunois\Yasmin\Client {
     }
     
     /**
-     * Set the guild's prefix. Null means only mentions. Return value indicates if the prefix has been sent to the provider or there was no provider to set it.
+     * Set the guild's prefix. An empty string means the command prefix will be used. Null means only mentions. Return value indicates if the prefix has been sent to the provider or there was no provider to set it.
      * @param \CharlotteDunois\Yasmin\Models\Guild|null  $guild
      * @param string|null                                $prefix
      * @return bool
      */
     function setGuildPrefix(\CharlotteDunois\Yasmin\Models\Guild $guild, string $prefix = null) {
         if($this->provider !== null) {
-            $this->provider->set($guild, 'commandPrefix', $prefix);
+            if(\is_string($prefix) && empty($prefix)) {
+                $this->provider->remove($guild, 'commandPrefix')->done(null, array($this, 'handlePromiseRejection'));
+            } else {
+                $this->provider->set($guild, 'commandPrefix', $prefix)->done(null, array($this, 'handlePromiseRejection'));
+            }
             
             $this->emit('commandPrefixChange', $guild, $prefix);
             return true;

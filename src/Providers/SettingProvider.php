@@ -45,14 +45,6 @@ abstract class SettingProvider {
     abstract function get($guild, string $key, $defaultValue = null);
     
     /**
-     * Removes a setting from a guild.
-     * @param string|\CharlotteDunois\Yasmin\Models\Guild  $guild
-     * @param string                                       $key
-     * @throws \BadMethodCallException|\InvalidArgumentException
-     */
-    abstract function remove($guild, string $key);
-    
-    /**
      * Sets a setting for a guild.
      * @param string|\CharlotteDunois\Yasmin\Models\Guild  $guild
      * @param string                                       $key
@@ -60,6 +52,14 @@ abstract class SettingProvider {
      * @throws \BadMethodCallException|\InvalidArgumentException
      */
     abstract function set($guild, string $key, $value);
+    
+    /**
+     * Removes a setting from a guild.
+     * @param string|\CharlotteDunois\Yasmin\Models\Guild  $guild
+     * @param string                                       $key
+     * @throws \BadMethodCallException|\InvalidArgumentException
+     */
+    abstract function remove($guild, string $key);
     
     /**
      * Obtains the ID of the provided guild.

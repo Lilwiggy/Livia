@@ -39,7 +39,7 @@ return function ($client) {
             return (new \React\Promise\Promise(function (callable $resolve, callable $reject) use ($message, $args) {
                 if(empty($args['prefix'])) {
                     $prefix = $this->client->getGuildPrefix($message->message->guild);
-                    $msg = ($prefix !== null ? 'The command prefix is '.$prefix.'.' : 'There is no command prefix set.').PHP_EOL.'To run commands, use '.\CharlotteDunois\Livia\Commands\Command::anyUsage('command', $prefix, $this->client->user).'.';
+                    $msg = ($prefix !== null ? 'The command prefix is `'.$prefix.'`.' : 'There is no command prefix set.').PHP_EOL.'To run commands, use '.\CharlotteDunois\Livia\Commands\Command::anyUsage('command', $prefix, $this->client->user).'.';
                     return $message->say($msg)->then($resolve, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
                 }
                 
@@ -52,16 +52,17 @@ return function ($client) {
                 }
                 
                 $prefixLc = \strtolower($args['prefix']);
-                $prefix = ($prefixLc === 'none' ? '' : $args['prefix']);
+                $prefix = ($prefixLc === 'none' ? null : $args['prefix']);
                 $guild = $message->message->guild;
                 
                 if($prefixLc === 'default') {
                     if($guild !== null) {
-                        $this->client->setGuildPrefix($guild, null);
+                        $this->client->setGuildPrefix($guild, '');
                     } else {
                         $this->client->setCommandPrefix(null);
                     }
                     
+                    $prefix = $this->client->commandPrefix;
                     $current = ($this->client->commandPrefix ? '`'.$this->client->commandPrefix.'`' : 'no prefix');
                     $response = 'Reset the command prefix to the default (currently '.$current.').';
                 } else {
@@ -74,7 +75,7 @@ return function ($client) {
                     $response = ($prefix ? 'Set the command prefix to `'.$prefix.'`.' : 'Removed the command prefix entirely.');
                 }
                 
-                $message->reply($response.'To run commands use '.\CharlotteDunois\Livia\Commands\Command::anyUsage('command', $prefix, $this->client->user))->then($resolve, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
+                $message->reply($response.' To run commands use '.\CharlotteDunois\Livia\Commands\Command::anyUsage('command', $prefix, $this->client->user))->then($resolve, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
             }));
         }
     });
