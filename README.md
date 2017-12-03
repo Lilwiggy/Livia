@@ -1,7 +1,7 @@
 # Livia [![Build Status](https://scrutinizer-ci.com/g/CharlotteDunois/Livia/badges/build.png?b=master)](https://scrutinizer-ci.com/g/CharlotteDunois/Livia/build-status/master)
 Livia is a Discord Bot framework, which utilizes [Yasmin](https://github.com/CharlotteDunois/Yasmin), the Discord API library.
 
-Livia is designed after discord.js-Commando, as I think the design is well.
+Commando was used as template for the design of Livia.
 
 # Built-in Argument Types
 Livia ships with a few argument types you can use for your command arguments. Here's a list:
@@ -76,7 +76,7 @@ return function ($client) {
             // return (resolve) the Message instance, or an array of Message instances.
             // Promises are getting automatically resolved.
             
-            return $args['user']->ban()->then(function () use ($message) {
+            return $args->user->ban()->then(function () use ($message) {
                 return $message->reply('The user got banned!');
             });
         }
