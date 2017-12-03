@@ -38,9 +38,6 @@ class MySQLProvider extends SettingProvider {
         
         $this->settings = new \CharlotteDunois\Yasmin\Utils\Collection();
         
-        $this->listeners['commandPrefixChange'] = function ($guild, $prefix) {
-            $this->set($guild, 'commandPrefix', $prefix);
-        };
         $this->listeners['commandStatusChange'] = function ($guild, $command, $enabled) {
             $this->set($guild, 'command-'.$command->name, $enabled);
         };
