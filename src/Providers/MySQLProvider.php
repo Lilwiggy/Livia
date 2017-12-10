@@ -93,7 +93,7 @@ class MySQLProvider extends SettingProvider {
         $guild = $this->getGuildID($guild);
         
         return (new \React\Promise\Promise(function (callable $resolve, callable $reject) use ($guild, &$settings) {
-            $this->runQuery('SELECT * FROM `settings` WHERE `guild` = ?', array($guild))->then(function ($command) use ($guild, &$settings) {
+            $this->runQuery('SELECT * FROM `settings` WHERE `guild` = ?', array($guild))->then(function ($command) use ($guild, &$settings, $resolve, $reject) {
                 if(empty($command->resultRows)) {
                     $this->settings->set($guild, $settings);
                     $this->runQuery('INSERT INTO `settings` (`guild`, `settings`) VALUES (?, ?)', array($guild, \json_encode($settings)))->then($resolve, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
@@ -211,7 +211,7 @@ class MySQLProvider extends SettingProvider {
         if($this->settings->get($guild) === null) {
             $this->client->emit('warn', 'Settings of specified guild is not loaded - loading row');
             
-            return $this->create($guild)->then(function () use ($guild, $key, $value) {
+            return $this->create($guild)->then(function () use ($guild, $key) {
                 $settings = $this->settings->get($guild);
                 unset($settings[$key]);
             

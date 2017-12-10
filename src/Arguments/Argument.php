@@ -280,13 +280,13 @@ class Argument {
      * @return \React\Promise\Promise
      */
     protected function obtainInfinite(\CharlotteDunois\Livia\CommandMessage $message, array $values = array(), $promptLimit = \INF, array &$prompts = array(), array &$answers = array()) {
-        return (new \React\Promise\Promise(function (callable $resolve, callable $reject) use ($message, $values, $promptLimit, $prompts, $answers, $currentVal) {
+        return (new \React\Promise\Promise(function (callable $resolve, callable $reject) use ($message, $values, $promptLimit, $prompts, $answers) {
             $value = null;
             if(!empty($values)) {
                 $value = $values[(\count($values) - 1)];
             }
             
-            $this->infiniteObtain($message, $value, $values, $promptLimit, $prompts, $answers)->then(function ($value) use ($message, $values, $promptLimit, $prompts, $answers, $currentVal, $resolve) {
+            $this->infiniteObtain($message, $value, $values, $promptLimit, $prompts, $answers)->then(function ($value) use ($message, $values, $promptLimit, $prompts, $answers, $resolve) {
                 if(\is_array($value)) {
                     return $resolve($value);
                 }
