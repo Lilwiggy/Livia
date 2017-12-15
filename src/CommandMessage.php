@@ -302,7 +302,9 @@ class CommandMessage {
                 if($shouldEdit) {
                     return $this->editCurrentResponse('dm', $type, $content, $options);
                 } else {
-                    return $this->message->author->send($content, $options);
+                    return $this->message->author->createDM(function ($channel) use ($content, $options) {
+                        return $channel->send($content, $options);
+                    });
                 }
             break;
             default:
