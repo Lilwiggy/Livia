@@ -34,6 +34,9 @@ The following commands are coming with Livia:
 # Making Commands
 Livia features Commands Reloading, which requires you to return an anonymous function in your command file, which returns a new anonymous class.
 
+Do not declare functions outside of the class. This will turn into a **Fatal Error** as the function can not be re-declared.<br>
+Other restrictions apply as well. If you need any (helper) functions or constants, declare them inside the class as method or class constant.
+
 Example:
 ```php
 // /rootBot/commands/moderation/ban.js
