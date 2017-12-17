@@ -191,8 +191,18 @@ class CommandRegistry {
     function registerCommand(...$command) {
         foreach($command as $cmd) {
             if(!($cmd instanceof \CharlotteDunois\Livia\Commands\Command)) {
+                $oldCmd = $cmd;
+                
                 $cmd = $this->handleCommandSpacing($cmd);
                 $cmd = $cmd($this->client);
+                
+                if(!($cmd instanceof \CharlotteDunois\Livia\Commands\Command)) {
+                    throw new \Exception('Anonymous function in '.$oldCmd.' does not return an instance of Command');
+                }
+            }
+            
+            if($this->commands->has($cmd->name)) {
+                throw new \Exception('Can not register another command with the name '.$cmd->name);
             }
             
             $this->commands->set($cmd->name, $cmd);
@@ -242,6 +252,10 @@ class CommandRegistry {
                 throw new \Exception('Anonymous function in file '.\str_replace($path, '', $file).' does not return an instance of Command');
             }
             
+            if($this->commands->has($cmd->name)) {
+                throw new \Exception('Can not register another command with the name '.$cmd->name);
+            }
+            
             $this->commands->set($cmd->name, $cmd);
             
             $group = $this->resolveGroup($cmd->groupID);
@@ -272,6 +286,10 @@ class CommandRegistry {
                 throw new \Exception($oldGr.' is not an instance of CommandGroup');
             }
             
+            if($this->groups->has($gr->id)) {
+                throw new \Exception('Can not register another command group with the ID '.$gr->id);
+            }
+            
             $this->groups->set($gr->id, $gr);
             
             $this->client->emit('debug', 'Registered group '.$gr->id);
@@ -297,6 +315,10 @@ class CommandRegistry {
             
             if(!($t instanceof \CharlotteDunois\Livia\Types\ArgumentType)) {
                 throw new \Exception($oldT.' is not an instance of Type');
+            }
+            
+            if($this->types->has($t->id)) {
+                throw new \Exception('Can not register another argument type with the ID '.$t->id);
             }
             
             $this->types->set($t->id, $t);
