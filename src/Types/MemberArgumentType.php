@@ -38,10 +38,10 @@ class MemberArgumentType extends ArgumentType {
             });
         }
         
-        $search = \strtolower($value);
+        $search = \mb_strtolower($value);
         
         $inexactMembers = $message->message->guild->members->filter(function ($member) use ($search) {
-            return (stripos($member->user->tag, $search) !== false || stripos($member->displayName, $search) !== false);
+            return (\mb_stripos($member->user->tag, $search) !== false || \mb_stripos($member->displayName, $search) !== false);
         });
         $inexactLength = $inexactMembers->count();
         
@@ -53,7 +53,7 @@ class MemberArgumentType extends ArgumentType {
         }
         
         $exactMembers = $message->message->guild->members->filter(function ($member) use ($search) {
-            return (\strtolower($member->user->tag) === $search || \strtolower($member->displayName) === $search);
+            return (\mb_strtolower($member->user->tag) === $search || \mb_strtolower($member->displayName) === $search);
         });
         $exactLength = $exactMembers->count();
         
@@ -87,10 +87,10 @@ class MemberArgumentType extends ArgumentType {
             return $message->message->guild->members->get($matches[1]);
         }
         
-        $search = \strtolower($value);
+        $search = \mb_strtolower($value);
         
         $inexactMembers = $message->message->guild->members->filter(function ($member) use ($search) {
-            return (stripos($member->user->tag, $search) !== false || stripos($member->displayName, $search) !== false);
+            return (\mb_stripos($member->user->tag, $search) !== false || \mb_stripos($member->displayName, $search) !== false);
         });
         $inexactLength = $inexactMembers->count();
         
@@ -102,7 +102,7 @@ class MemberArgumentType extends ArgumentType {
         }
         
         $exactMembers = $message->message->guild->members->filter(function ($member) use ($search) {
-            return (\strtolower($member->user->tag) === $search || \strtolower($member->displayName) === $search);
+            return (\mb_strtolower($member->user->tag) === $search || \mb_strtolower($member->displayName) === $search);
         });
         $exactLength = $exactMembers->count();
         

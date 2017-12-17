@@ -30,10 +30,10 @@ class ChannelArgumentType extends ArgumentType {
             return $message->message->guild->channels->has($matches[1]);
         }
         
-        $search = \strtolower($value);
+        $search = \mb_strtolower($value);
         
         $inexactChannels = $message->message->guild->channels->filter(function ($channel) use ($search) {
-            return (stripos($channel->name, $search) !== false);
+            return (\mb_stripos($channel->name, $search) !== false);
         });
         $inexactLength = $inexactChannels->count();
         
@@ -79,10 +79,10 @@ class ChannelArgumentType extends ArgumentType {
             return $message->message->guild->channels->get($matches[1]);
         }
         
-        $search = \strtolower($value);
+        $search = \mb_strtolower($value);
         
         $inexactChannels = $message->message->guild->channels->filter(function ($channel) use ($search) {
-            return (stripos($channel->name, $search) !== false);
+            return (\mb_stripos($channel->name, $search) !== false);
         });
         $inexactLength = $inexactChannels->count();
         

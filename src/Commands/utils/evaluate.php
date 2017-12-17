@@ -35,11 +35,11 @@ return function ($client) {
         function run(\CharlotteDunois\Livia\CommandMessage $message, \ArrayObject $args, bool $fromPattern) {
             return (new \React\Promise\Promise(function (callable $resolve, callable $reject) use ($message, $args) {
                 $code = $args['script'];
-                if(\substr($code, -1) !== ';') {
+                if(\mb_substr($code, -1) !== ';') {
                     $code .= ';';
                 }
                 
-                if(\strpos($code, 'return') === false && \strpos($code, 'echo') === false) {
+                if(\mb_strpos($code, 'return') === false && \mb_strpos($code, 'echo') === false) {
                     $code = \explode(';', $code);
                     $code[(\count($code) - 2)] = PHP_EOL.'return '.\trim($code[(\count($code) - 2)]);
                     $code = \implode(';', $code);
@@ -52,26 +52,13 @@ return function ($client) {
                     $doCallback = function ($result) use ($code, $message, &$messages, &$time) {
                         $endtime = \microtime(true);
                         
-                        \ob_start('mb_output_handler');
+                        $result = $this->invokeDump($result);
                         
-                        $old = \ini_get('xdebug.var_display_max_depth');
-                        \ini_set('xdebug.var_display_max_depth', 1);
-                        
-                        \var_dump($result);
-                        \ini_set('xdebug.var_display_max_depth', $old);
-                        $result = @\ob_get_clean();
-                        
-                        $result = \explode("\n", \str_replace("\r", "", $result));
-                        \array_shift($result);
-                        $result = \implode(PHP_EOL, $result);
-                        
-                        while(@\ob_end_clean());
-                        
-                        $len = \strlen($result);
-                        $maxlen = 1850 - \strlen($code);
+                        $len = \mb_strlen($result);
+                        $maxlen = 1850 - \mb_strlen($code);
                         
                         if($len > $maxlen) {
-                            $result = \substr($result, 0, $maxlen).PHP_EOL.'...';
+                            $result = \mb_substr($result, 0, $maxlen).PHP_EOL.'...';
                         }
                         
                         $sizeformat = \count($this->timeformats) - 1;
@@ -103,27 +90,13 @@ return function ($client) {
                         }
                         
                         $this->lastResult = $result;
+                        $result = $this->invokeDump($result);
                         
-                        \ob_start('mb_output_handler');
-                        
-                        $old = \ini_get('xdebug.var_display_max_depth');
-                        \ini_set('xdebug.var_display_max_depth', 1);
-                        
-                        \var_dump($result);
-                        \ini_set('xdebug.var_display_max_depth', $old);
-                        $result = @\ob_get_clean();
-                        
-                        $result = \explode("\n", \str_replace("\r", "", $result));
-                        \array_shift($result);
-                        $result = \implode(PHP_EOL, $result);
-                        
-                        while(@\ob_end_clean());
-                        
-                        $len = \strlen($result);
-                        $maxlen = 1850 - \strlen($code);
+                        $len = \mb_strlen($result);
+                        $maxlen = 1850 - \mb_strlen($code);
                         
                         if($len > $maxlen) {
-                            $result = \substr($result, 0, $maxlen).PHP_EOL.'...';
+                            $result = \mb_substr($result, 0, $maxlen).PHP_EOL.'...';
                         }
                         
                         $sizeformat = \count($this->timeformats) - 1;
@@ -145,17 +118,36 @@ return function ($client) {
                     while(@\ob_end_clean());
                     
                     $e = (string) $e;
-                    $len = \strlen($e);
-                    $maxlen = 1900 - \strlen($code);
+                    $len = \mb_strlen($e);
+                    $maxlen = 1900 - \mb_strlen($code);
                     
                     if($len > $maxlen) {
-                        $e = \substr($e, 0, $maxlen).PHP_EOL.'...';
+                        $e = \mb_substr($e, 0, $maxlen).PHP_EOL.'...';
                     }
                     
                     $messages[] = $message->say($message->message->author.PHP_EOL.'```php'.PHP_EOL.$code.PHP_EOL.'```'.PHP_EOL.'Error: ```'.PHP_EOL.$e.PHP_EOL.'```');
                     return $messages;
                 })->then($resolve, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
             }));
+        }
+        
+        function invokeDump($result) {
+            \ob_start('mb_output_handler');
+            
+            $old = \ini_get('xdebug.var_display_max_depth');
+            \ini_set('xdebug.var_display_max_depth', 1);
+            
+            \var_dump($result);
+            \ini_set('xdebug.var_display_max_depth', $old);
+            $result = @\ob_get_clean();
+            
+            $result = \explode("\n", \str_replace("\r", "", $result));
+            \array_shift($result);
+            $result = \implode(PHP_EOL, $result);
+            
+            while(@\ob_end_clean());
+            
+            return $result;
         }
     });
 };

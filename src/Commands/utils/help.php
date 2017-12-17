@@ -38,7 +38,7 @@ return function ($client) {
             return (new \React\Promise\Promise(function (callable $resolve, callable $reject) use ($message, $args) {
                 $groups = $this->client->registry->groups;
                 $commands = (!empty($args['command']) ? $this->client->registry->findCommands($args['command'], false, $message->message) : $this->client->registry->commands->all());
-                $showAll = (!empty($args['command']) && \strtolower($args['command']) === 'all');
+                $showAll = (!empty($args['command']) && \mb_strtolower($args['command']) === 'all');
                 
                 if(!empty($args['command']) && !$showAll) {
                     $countCommands = \count($commands);

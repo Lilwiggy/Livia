@@ -34,10 +34,10 @@ class UserArgumentType extends ArgumentType {
             });
         }
         
-        $search = \strtolower($value);
+        $search = \mb_strtolower($value);
         
         $inexactUsers = $this->client->users->filter(function ($user) use ($search) {
-            return (stripos($user->tag, $search) !== false);
+            return (\mb_stripos($user->tag, $search) !== false);
         });
         $inexactLength = $inexactUsers->count();
         
@@ -49,7 +49,7 @@ class UserArgumentType extends ArgumentType {
         }
         
         $exactUsers = $this->client->users->filter(function ($user) use ($search) {
-            return (\strtolower($user->tag) === $search);
+            return (\mb_strtolower($user->tag) === $search);
         });
         $exactLength = $exactUsers->count();
         
@@ -83,10 +83,10 @@ class UserArgumentType extends ArgumentType {
             return $this->client->users->get($matches[1]);
         }
         
-        $search = \strtolower($value);
+        $search = \mb_strtolower($value);
         
         $inexactUsers = $this->client->users->filter(function ($user) use ($search) {
-            return (stripos($user->tag, $search) !== false);
+            return (\mb_stripos($user->tag, $search) !== false);
         });
         $inexactLength = $inexactUsers->count();
         
@@ -98,7 +98,7 @@ class UserArgumentType extends ArgumentType {
         }
         
         $exactUsers = $this->client->users->filter(function ($user) use ($search) {
-            return (\strtolower($user->tag) === $search);
+            return (\mb_strtolower($user->tag) === $search);
         });
         $exactLength = $exactUsers->count();
         

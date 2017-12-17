@@ -498,7 +498,7 @@ class CommandMessage {
         $results = array();
         
         if($argCount === null) {
-            $argCount = \strlen($argString); // Large enough to get all items
+            $argCount = \mb_strlen($argString); // Large enough to get all items
         }
         
         $content = $argString;
@@ -516,7 +516,7 @@ class CommandMessage {
         }
         
         // If text remains, push it to the array as-is (except for wrapping quotes, which are removed)
-        if(\strlen($content) > 0) {
+        if(\mb_strlen($content) > 0) {
             $results[] = \preg_replace(($allowSingleQuotes ? '/^("|\')(.*)\1$/u' : '/^(")(.*)"$/u'), '$2', $content);
         }
         

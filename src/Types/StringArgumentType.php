@@ -25,15 +25,15 @@ class StringArgumentType extends ArgumentType {
      * @inheritDoc
      */
     function validate(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg = null) {
-        if(\strlen($value) === 0) {
+        if(\mb_strlen($value) === 0) {
             return false;
         }
         
-        if($arg->min !== null && \strlen($value) < $arg->min) {
+        if($arg->min !== null && \mb_strlen($value) < $arg->min) {
             return 'Please enter something above or exactly '.$arg->min.' characters in length.';
         }
         
-        if($arg->max !== null && \strlen($value) > $arg->max) {
+        if($arg->max !== null && \mb_strlen($value) > $arg->max) {
             return 'Please enter a number below or exactly '.$arg->max.' characters in length.';
         }
         

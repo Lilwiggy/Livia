@@ -57,9 +57,9 @@ class CommandRegistry {
      */
     function findCommands(string $searchString, bool $exact = false, \CharlotteDunois\Yasmin\Models\Message $message = null) {
         $parts = array();
-        $searchString = \strtolower($searchString);
+        $searchString = \mb_strtolower($searchString);
         
-        if(\strpos($searchString, ':') !== false) {
+        if(\mb_strpos($searchString, ':') !== false) {
             $parts = \explode(':', $searchString);
             $searchString = \array_pop($parts);
         }
@@ -75,11 +75,11 @@ class CommandRegistry {
                     $matches[] = $command;
                 }
             } else {
-                if(!empty($parts[0]) && $parts[0] === $command->groupID && \stripos($command->name, $searchString) !== false && ($message === null || $command->hasPermission($message) === true)) {
+                if(!empty($parts[0]) && $parts[0] === $command->groupID && \mb_stripos($command->name, $searchString) !== false && ($message === null || $command->hasPermission($message) === true)) {
                     return array($command);
                 }
                 
-                if(\stripos($command->name, $searchString) !== false && ($message === null || $command->hasPermission($message) === true)) {
+                if(\mb_stripos($command->name, $searchString) !== false && ($message === null || $command->hasPermission($message) === true)) {
                     $matches[] = $command;
                 }
             }
@@ -105,8 +105,8 @@ class CommandRegistry {
      * @return \CharlotteDunois\Livia\Commands\CommandGroup[]
      */
     function findGroups(string $searchString, bool $exact = false) {
-        $searchString = \strtolower($searchString);
-        if(\strpos($searchString, ':') !== false) {
+        $searchString = \mb_strtolower($searchString);
+        if(\mb_strpos($searchString, ':') !== false) {
             $parts = \explode(':', $searchString);
             $searchString = \array_pop($parts);
         }
@@ -114,11 +114,11 @@ class CommandRegistry {
         $matches = array();
         foreach($this->groups as $group) {
             if($exact) {
-                if($group->id === $searchString || \strtolower($group->name) === $searchString) {
+                if($group->id === $searchString || \mb_strtolower($group->name) === $searchString) {
                     $matches[] = $group;
                 }
             } else {
-                if(\stripos($group->id, $searchString) !== false || \stripos($group->name, $searchString) !== false) {
+                if(\mb_stripos($group->id, $searchString) !== false || \mb_stripos($group->name, $searchString) !== false) {
                     $matches[] = $group;
                 }
             }
@@ -129,7 +129,7 @@ class CommandRegistry {
         }
         
         foreach($matches as $group) {
-            if($group->id === $searchString || \strtolower($group->name) === $searchString) {
+            if($group->id === $searchString || \mb_strtolower($group->name) === $searchString) {
                 return array($group);
             }
         }
@@ -238,10 +238,10 @@ class CommandRegistry {
         foreach($files as $file) {
             if($ignoreSameLevelFiles === true) {
                 $filepath = \ltrim(\str_replace(array($path, '\\'), array('', '/'), $file), '/');
-                if(\substr_count($filepath, '/') === 0) {
+                if(\mb_substr_count($filepath, '/') === 0) {
                     continue;
                 }
-            } elseif(!empty($ignoreSameLevelFiles) && \stripos($file, $ignoreSameLevelFiles) !== false) {
+            } elseif(!empty($ignoreSameLevelFiles) && \mb_stripos($file, $ignoreSameLevelFiles) !== false) {
                 continue;
             }
             
@@ -347,12 +347,12 @@ class CommandRegistry {
         foreach($files as $file) {
             if($ignoreSameLevelFiles === true) {
                 $filepath = \ltrim(\str_replace(array($path, '\\'), array('', '/'), $file), '/');
-                if(\substr_count($filepath, '/') === 0) {
+                if(\mb_substr_count($filepath, '/') === 0) {
                     continue;
                 }
             } elseif(!empty($ignoreSameLevelFiles)) {
                 $filepath = \ltrim(\str_replace(array($path, '\\'), array('', '/'), $file), '/');
-                if(\stripos($filepath, $ignoreSameLevelFiles) === 0) {
+                if(\mb_stripos($filepath, $ignoreSameLevelFiles) === 0) {
                     continue;
                 }
             }
@@ -461,10 +461,10 @@ class CommandRegistry {
      * @throws \Exception
      */
     function resolveCommandPath(string $groupID, string $command) {
-        $paths = array(__DIR__.'/Commands/'.\strtolower($groupID), $this->commandsPath.'/'.\strtolower($groupID));
+        $paths = array(__DIR__.'/Commands/'.\mb_strtolower($groupID), $this->commandsPath.'/'.\mb_strtolower($groupID));
         
         foreach($paths as $path) {
-            $file = $path.'/'.\strtolower($command).'.php';
+            $file = $path.'/'.\mb_strtolower($command).'.php';
             if(file_exists($file)) {
                 return $file;
             }

@@ -104,7 +104,7 @@ abstract class Command {
         if(empty($info['name']) || !\is_string($info['name'])) {
             throw new \InvalidArgumentException('Command name must be specified and must be a string');
         }
-        if(\strtolower($info['name']) !== $info['name'] || \strpos($info['name'], ' ') !== false) {
+        if(\mb_strtolower($info['name']) !== $info['name'] || \mb_strpos($info['name'], ' ') !== false) {
             throw new \InvalidArgumentException('Command name must be lowercase, without any whitespaces');
         }
         
@@ -128,19 +128,19 @@ abstract class Command {
                     throw new \InvalidArgumentException('Command aliases must be an array of strings');
                 }
                 
-                if(\strtolower($alias) !== $alias) {
+                if(\mb_strtolower($alias) !== $alias) {
                     throw new \InvalidArgumentException('Command aliases must be lowercase');
                 }
             }
         }
         
         if(!empty($info['autoAliases'])) {
-            if(\strpos($this->name, '-') !== false) {
+            if(\mb_strpos($this->name, '-') !== false) {
                 $this->aliases[] = \str_replace('-', '', $this->name);
             }
             
             foreach($this->aliases as $alias) {
-                if(\strpos($alias, '-') !== false) {
+                if(\mb_strpos($alias, '-') !== false) {
                     $this->aliases[] = \str_replace('-', '', $alias);
                 }
             }

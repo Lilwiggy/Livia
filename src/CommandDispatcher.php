@@ -313,7 +313,7 @@ class CommandDispatcher {
                 return (new \CharlotteDunois\Livia\CommandMessage($this->client, $message, null));
             }
             
-            $argString = (string) \substr($message->content, (\strlen($matches[1]) + (!empty($matches[2]) ? \strlen($matches[2]) : 0)));
+            $argString = (string) \mb_substr($message->content, (\mb_strlen($matches[1]) + (!empty($matches[2]) ? \mb_strlen($matches[2]) : 0)));
             return (new \CharlotteDunois\Livia\CommandMessage($this->client, $message, $commands[0], $argString));
         }
         

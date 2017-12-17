@@ -227,7 +227,7 @@ class Argument {
                                 
                                 $value = $msg->content;
                                 
-                                if(\strtolower($value) === 'cancel') {
+                                if(\mb_strtolower($value) === 'cancel') {
                                     return array(
                                         'value' => null,
                                         'cancelled' => 'user',
@@ -306,7 +306,7 @@ class Argument {
             $escaped = \str_replace('@', "@\u{200B}", \CharlotteDunois\Yasmin\Utils\DataHelpers::escapeMarkdown($value));
             
             $reply = $message->reply('You provided an invalid '.$this->label.','.PHP_EOL.
-                '"'.(\strlen($escaped) < 1850 ? $escaped : '[too long to show]').'".'.PHP_EOL.
+                '"'.(\mb_strlen($escaped) < 1850 ? $escaped : '[too long to show]').'".'.PHP_EOL.
                 'Please try again.');
         } elseif(\is_string($valid)) {
             $reply = $message->reply($valid.PHP_EOL.
@@ -351,14 +351,14 @@ class Argument {
                 
                 $value = $msg->content;
                 
-                if(\strtolower($value) === 'finish') {
+                if(\mb_strtolower($value) === 'finish') {
                     return array(
                         'value' => $values,
                         'cancelled' => (\count($values) > 0 ? null : 'user'),
                         'prompts' => $prompts,
                         'answers' => $answers
                     );
-                } elseif(\strtolower($value) === 'cancel') {
+                } elseif(\mb_strtolower($value) === 'cancel') {
                     return array(
                         'value' => null,
                         'cancelled' => 'user',
