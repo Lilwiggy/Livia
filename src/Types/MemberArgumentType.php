@@ -53,7 +53,7 @@ class MemberArgumentType extends ArgumentType {
         }
         
         $exactMembers = $message->message->guild->members->filter(function ($member) use ($search) {
-            return ($member->user->tag === $search || $member->displayName === $search);
+            return (\strtolower($member->user->tag) === $search || \strtolower($member->displayName) === $search);
         });
         $exactLength = $exactMembers->count();
         
@@ -102,7 +102,7 @@ class MemberArgumentType extends ArgumentType {
         }
         
         $exactMembers = $message->message->guild->members->filter(function ($member) use ($search) {
-            return ($member->user->tag === $search || $member->displayName === $search);
+            return (\strtolower($member->user->tag) === $search || \strtolower($member->displayName) === $search);
         });
         $exactLength = $exactMembers->count();
         

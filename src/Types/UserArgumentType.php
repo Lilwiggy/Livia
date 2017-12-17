@@ -49,7 +49,7 @@ class UserArgumentType extends ArgumentType {
         }
         
         $exactUsers = $this->client->users->filter(function ($user) use ($search) {
-            return ($user->tag === $search);
+            return (\strtolower($user->tag) === $search);
         });
         $exactLength = $exactUsers->count();
         
@@ -98,7 +98,7 @@ class UserArgumentType extends ArgumentType {
         }
         
         $exactUsers = $this->client->users->filter(function ($user) use ($search) {
-            return ($user->tag === $search);
+            return (\strtolower($user->tag) === $search);
         });
         $exactLength = $exactUsers->count();
         
