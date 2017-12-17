@@ -141,7 +141,7 @@ return function ($client) {
                     });
                 })->then(function ($pr) {
                     return $pr;
-                }, function ($e) use ($code, $message) {
+                }, function ($e) use ($code, $message, &$messages) {
                     while(@\ob_end_clean());
                     
                     $e = (string) $e;
@@ -152,7 +152,8 @@ return function ($client) {
                         $e = \substr($e, 0, $maxlen).PHP_EOL.'...';
                     }
                     
-                    return $message->say($message->message->author.PHP_EOL.'```php'.PHP_EOL.$code.PHP_EOL.'```'.PHP_EOL.'Error: ```'.PHP_EOL.$e.PHP_EOL.'```');
+                    $messages[] = $message->say($message->message->author.PHP_EOL.'```php'.PHP_EOL.$code.PHP_EOL.'```'.PHP_EOL.'Error: ```'.PHP_EOL.$e.PHP_EOL.'```');
+                    return $messages;
                 })->then($resolve, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
             }));
         }
