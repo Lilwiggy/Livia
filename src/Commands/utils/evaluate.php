@@ -9,7 +9,7 @@
 
 return function ($client) {
     return (new class($client) extends \CharlotteDunois\Livia\Commands\Command {
-        protected $timeformats = array('ms', 'µs');
+        protected $timeformats = array('µs', 'ms');
         protected $lastResult;
         
         function __construct(\CharlotteDunois\Livia\LiviaClient $client) {
@@ -46,19 +46,60 @@ return function ($client) {
                 }
                 
                 \React\Promise\resolve()->then(function () use ($code, $message) {
+                    $messages = array();
+                    $time = null;
+                    
+                    $doCallback = function ($result) use ($code, $message, &$messages, &$time) {
+                        $endtime = \microtime(true);
+                        
+                        \ob_start('mb_output_handler');
+                        
+                        $old = \ini_get('xdebug.var_display_max_depth');
+                        \ini_set('xdebug.var_display_max_depth', 1);
+                        
+                        \var_dump($result);
+                        \ini_set('xdebug.var_display_max_depth', $old);
+                        $result = @\ob_get_clean();
+                        
+                        $result = \explode("\n", \str_replace("\r", "", $result));
+                        \array_shift($result);
+                        $result = \implode(PHP_EOL, $result);
+                        
+                        while(@\ob_end_clean());
+                        
+                        $len = \strlen($result);
+                        $maxlen = 1850 - \strlen($code);
+                        
+                        if($len > $maxlen) {
+                            $result = \substr($result, 0, $maxlen).PHP_EOL.'...';
+                        }
+                        
+                        $sizeformat = \count($this->timeformats) - 1;
+                        $format = 0;
+                        
+                        $exectime = $endtime - $time;
+                        while($exectime < 1.0 && $format < $sizeformat) {
+                            $exectime *= 1000;
+                            $format++;
+                        }
+                        $exectime = \ceil($exectime);
+                        
+                        $messages[] = $message->say($message->message->author.'Executed after '.$exectime.$this->timeformats[$format].' (callback).'.PHP_EOL.PHP_EOL.'```php'.PHP_EOL.$result.PHP_EOL.'```'.($len > $maxlen ? PHP_EOL.'Original length: '.$len : ''));
+                    };
+                    
                     $endtime = null;
-                    $time = microtime(true);
+                    $time = \microtime(true);
                     
                     $result = eval($code);
                     
                     if(!($result instanceof \React\Promise\Promise)) {
-                        $endtime = microtime(true);
+                        $endtime = \microtime(true);
                         $result = \React\Promise\resolve($result);
                     }
                     
-                    return $result->then(function ($result) use ($code, $message, $endtime, $time) {
+                    return $result->then(function ($result) use ($code, $message, &$messages, $endtime, $time) {
                         if($endtime === null) {
-                            $endtime = microtime(true);
+                            $endtime = \microtime(true);
                         }
                         
                         $this->lastResult = $result;
@@ -95,7 +136,8 @@ return function ($client) {
                         }
                         $exectime = \ceil($exectime);
                         
-                        return $message->say($message->message->author.'Executed in '.$exectime.$this->timeformats[$format].'.'.PHP_EOL.PHP_EOL.'```php'.PHP_EOL.$result.PHP_EOL.'```'.($len > $maxlen ? PHP_EOL.'Original length: '.$len : ''));
+                        $messages[] = $message->say($message->message->author.'Executed in '.$exectime.$this->timeformats[$format].'.'.PHP_EOL.PHP_EOL.'```php'.PHP_EOL.$result.PHP_EOL.'```'.($len > $maxlen ? PHP_EOL.'Original length: '.$len : ''));
+                        return $messages;
                     });
                 })->then(function ($pr) {
                     return $pr;
