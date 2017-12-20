@@ -217,6 +217,7 @@ class LiviaClient extends \CharlotteDunois\Yasmin\Client {
      */
     function destroy(bool $destroyUtils = true) {
         return parent::destroy($destroyUtils)->then(function () {
+            $this->cancelTimers();
             if($this->provider !== null) {
                 return $this->provider->destroy();
             }
