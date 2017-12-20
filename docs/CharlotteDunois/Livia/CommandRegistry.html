@@ -164,7 +164,7 @@
                     <abbr title="CharlotteDunois\Livia\$this">$this</abbr>
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_registerCommand">registerCommand</a>(string|<a href="../../CharlotteDunois/Livia/Commands/Command.html"><abbr title="CharlotteDunois\Livia\Commands\Command">Command</abbr></a> $command)
+                    <a href="#method_registerCommand">registerCommand</a>(string|<a href="../../CharlotteDunois/Livia/Commands/Command.html"><abbr title="CharlotteDunois\Livia\Commands\Command">Command</abbr></a> ...$command)
         
                                             <p>Registers a command. Emits a commandRegister event for each command.</p>                </div>
                 <div class="col-md-2"></div>
@@ -224,7 +224,7 @@
                     <abbr title="CharlotteDunois\Livia\$this">$this</abbr>
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_registerGroup">registerGroup</a>(<a href="../../CharlotteDunois/Livia/Commands/CommandGroup.html"><abbr title="CharlotteDunois\Livia\Commands\CommandGroup">CommandGroup</abbr></a>|array $group)
+                    <a href="#method_registerGroup">registerGroup</a>(<a href="../../CharlotteDunois/Livia/Commands/CommandGroup.html"><abbr title="CharlotteDunois\Livia\Commands\CommandGroup">CommandGroup</abbr></a>|array ...$group)
         
                                             <p>Registers a group. Emits a groupRegister event for each group.</p>                </div>
                 <div class="col-md-2"></div>
@@ -234,7 +234,7 @@
                     <abbr title="CharlotteDunois\Livia\$this">$this</abbr>
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_registerType">registerType</a>(<a href="../../CharlotteDunois/Livia/Types/ArgumentType.html"><abbr title="CharlotteDunois\Livia\Types\ArgumentType">ArgumentType</abbr></a>|string $type)
+                    <a href="#method_registerType">registerType</a>(<a href="../../CharlotteDunois/Livia/Types/ArgumentType.html"><abbr title="CharlotteDunois\Livia\Types\ArgumentType">ArgumentType</abbr></a>|string ...$type)
         
                                             <p>Registers a type. Emits a typeRegister event for each type.</p>                </div>
                 <div class="col-md-2"></div>
@@ -404,7 +404,7 @@
                     <h3 id="method_registerCommand">
         <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L191">line 191</a></div>
         <code>                    <abbr title="CharlotteDunois\Livia\$this">$this</abbr>
-    <strong>registerCommand</strong>(string|<a href="../../CharlotteDunois/Livia/Commands/Command.html"><abbr title="CharlotteDunois\Livia\Commands\Command">Command</abbr></a> $command)
+    <strong>registerCommand</strong>(string|<a href="../../CharlotteDunois/Livia/Commands/Command.html"><abbr title="CharlotteDunois\Livia\Commands\Command">Command</abbr></a> ...$command)
         </code>
     </h3>
     <div class="details">
@@ -419,7 +419,7 @@
                     <table class="table table-condensed">
                     <tr>
                 <td>string|<a href="../../CharlotteDunois/Livia/Commands/Command.html"><abbr title="CharlotteDunois\Livia\Commands\Command">Command</abbr></a></td>
-                <td>$command</td>
+                <td>...$command</td>
                 <td>The full qualified command name (groupID:name) or an initiated instance of it.</td>
             </tr>
             </table>
@@ -439,7 +439,7 @@
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" href="https://secure.php.net/Exception">Exception</a></td>
+                <td><a href="https://secure.php.net/Exception" target="_blank">Exception</a></td>
                 <td></td>
             </tr>
             </table>
@@ -493,7 +493,7 @@
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" href="https://secure.php.net/Exception">Exception</a></td>
+                <td><a href="https://secure.php.net/Exception" target="_blank">Exception</a></td>
                 <td></td>
             </tr>
             </table>
@@ -591,7 +591,7 @@
                     <h3 id="method_registerGroup">
         <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L277">line 277</a></div>
         <code>                    <abbr title="CharlotteDunois\Livia\$this">$this</abbr>
-    <strong>registerGroup</strong>(<a href="../../CharlotteDunois/Livia/Commands/CommandGroup.html"><abbr title="CharlotteDunois\Livia\Commands\CommandGroup">CommandGroup</abbr></a>|array $group)
+    <strong>registerGroup</strong>(<a href="../../CharlotteDunois/Livia/Commands/CommandGroup.html"><abbr title="CharlotteDunois\Livia\Commands\CommandGroup">CommandGroup</abbr></a>|array ...$group)
         </code>
     </h3>
     <div class="details">
@@ -606,7 +606,7 @@
                     <table class="table table-condensed">
                     <tr>
                 <td><a href="../../CharlotteDunois/Livia/Commands/CommandGroup.html"><abbr title="CharlotteDunois\Livia\Commands\CommandGroup">CommandGroup</abbr></a>|array</td>
-                <td>$group</td>
+                <td>...$group</td>
                 <td>An instance of CommandGroup or an associative array ('id' => string, 'name' => string).</td>
             </tr>
             </table>
@@ -626,7 +626,7 @@
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" href="https://secure.php.net/Exception">Exception</a></td>
+                <td><a href="https://secure.php.net/Exception" target="_blank">Exception</a></td>
                 <td></td>
             </tr>
             </table>
@@ -640,7 +640,7 @@
                     <h3 id="method_registerType">
         <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L308">line 308</a></div>
         <code>                    <abbr title="CharlotteDunois\Livia\$this">$this</abbr>
-    <strong>registerType</strong>(<a href="../../CharlotteDunois/Livia/Types/ArgumentType.html"><abbr title="CharlotteDunois\Livia\Types\ArgumentType">ArgumentType</abbr></a>|string $type)
+    <strong>registerType</strong>(<a href="../../CharlotteDunois/Livia/Types/ArgumentType.html"><abbr title="CharlotteDunois\Livia\Types\ArgumentType">ArgumentType</abbr></a>|string ...$type)
         </code>
     </h3>
     <div class="details">
@@ -655,7 +655,7 @@
                     <table class="table table-condensed">
                     <tr>
                 <td><a href="../../CharlotteDunois/Livia/Types/ArgumentType.html"><abbr title="CharlotteDunois\Livia\Types\ArgumentType">ArgumentType</abbr></a>|string</td>
-                <td>$type</td>
+                <td>...$type</td>
                 <td>The full qualified class name or an initiated instance of it.</td>
             </tr>
             </table>
@@ -675,7 +675,7 @@
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" href="https://secure.php.net/Exception">Exception</a></td>
+                <td><a href="https://secure.php.net/Exception" target="_blank">Exception</a></td>
                 <td></td>
             </tr>
             </table>
@@ -729,7 +729,7 @@
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" href="https://secure.php.net/Exception">Exception</a></td>
+                <td><a href="https://secure.php.net/Exception" target="_blank">Exception</a></td>
                 <td></td>
             </tr>
             </table>
@@ -774,7 +774,7 @@
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" href="https://secure.php.net/Exception">Exception</a></td>
+                <td><a href="https://secure.php.net/Exception" target="_blank">Exception</a></td>
                 <td></td>
             </tr>
             </table>
@@ -823,7 +823,7 @@
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" href="https://secure.php.net/Exception">Exception</a></td>
+                <td><a href="https://secure.php.net/Exception" target="_blank">Exception</a></td>
                 <td></td>
             </tr>
             </table>
@@ -877,7 +877,7 @@
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" href="https://secure.php.net/Exception">Exception</a></td>
+                <td><a href="https://secure.php.net/Exception" target="_blank">Exception</a></td>
                 <td></td>
             </tr>
             </table>
@@ -926,7 +926,7 @@
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" href="https://secure.php.net/Exception">Exception</a></td>
+                <td><a href="https://secure.php.net/Exception" target="_blank">Exception</a></td>
                 <td></td>
             </tr>
             </table>
@@ -966,7 +966,7 @@
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" href="https://secure.php.net/Exception">Exception</a></td>
+                <td><a href="https://secure.php.net/Exception" target="_blank">Exception</a></td>
                 <td></td>
             </tr>
             </table>
