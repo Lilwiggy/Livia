@@ -14,8 +14,8 @@ return function ($client) {
         
         function __construct(\CharlotteDunois\Livia\LiviaClient $client) {
             parent::__construct($client, array(
-                'name' => 'evaluate',
-                'aliases' => array('eval'),
+                'name' => 'eval',
+                'aliases' => array(),
                 'group' => 'utils',
                 'description' => 'Executes PHP code.',
                 'guildOnly' => false,

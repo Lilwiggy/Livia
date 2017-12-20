@@ -461,10 +461,11 @@ class CommandRegistry {
      * @throws \Exception
      */
     function resolveCommandPath(string $groupID, string $command) {
-        $paths = array(__DIR__.'/Commands/'.\mb_strtolower($groupID), $this->commandsPath.'/'.\mb_strtolower($groupID));
+        $paths = array($this->commandsPath.'/'.\mb_strtolower($groupID), __DIR__.'/Commands/'.\mb_strtolower($groupID));
+        $filename = '/'.\mb_strtolower($command).'.php';
         
         foreach($paths as $path) {
-            $file = $path.'/'.\mb_strtolower($command).'.php';
+            $file = $path.$filename;
             if(file_exists($file)) {
                 return $file;
             }
