@@ -53,7 +53,8 @@
             <div class="collapse navbar-collapse" id="navbar-elements">
                 <ul class="nav navbar-nav">
                     <li><a href="../../classes.html">Classes</a></li>
-                                            <li><a href="../../namespaces.html">Namespaces</a></li>
+                                            <li><a href="../../todo.html">ToDo</a></li>
+                                                                <li><a href="../../namespaces.html">Namespaces</a></li>
                                         <li><a href="../../interfaces.html">Interfaces</a></li>
                     <li><a href="../../traits.html">Traits</a></li>
                     <li><a href="../../doc-index.html">Index</a></li>
@@ -79,14 +80,16 @@
     </div>
 
     <p>    class
-    <strong>CommandDispatcher</strong>        (<a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandDispatcher.php">View source</a>)
+    <strong>CommandDispatcher</strong>        (<a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandDispatcher.php" target="_blank">View source</a>)
 </p>
 
         
     
 
             <div class="description">
-            <p>Handles parsing messages and running commands from them.</p>                                </div>
+            <p>Handles parsing messages and running commands from them.</p>                                                
+        
+                    </div>
     
     
     
@@ -163,7 +166,9 @@
     
 
                     <div class="method-description">
-                                    <p>Adds an inhibitor. The inhibitor is supposed to return false, if the command should not be blocked. Otherwise it should return a string (as reason) or an array, containing as first element the reason and as second element a Promise (which resolves to a Message), a Message instance or null. The inhibitor can return a Promise (for async computation).</p>                                                </div>
+                                    <p>Adds an inhibitor. The inhibitor is supposed to return false, if the command should not be blocked. Otherwise it should return a string (as reason) or an array, containing as first element the reason and as second element a Promise (which resolves to a Message), a Message instance or null. The inhibitor can return a Promise (for async computation).</p>                                                                
+        
+                            </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -203,7 +208,9 @@
     
 
                     <div class="method-description">
-                                    <p>Handles an incoming message.</p>                                                </div>
+                                    <p>Handles an incoming message.</p>                                                                
+        
+                            </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -248,7 +255,9 @@
     
 
                     <div class="method-description">
-                                    <p>Removes an inhibitor.</p>                                                </div>
+                                    <p>Removes an inhibitor.</p>                                                                
+        
+                            </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
