@@ -152,6 +152,7 @@ return function ($client) {
             
             $result = \preg_replace('/string\(\d+\) "'.$reg1.'"|'.$reg1.($reg2 !== null ? '|string\(\d+\) "'.$reg2.'"' : '').'/iu', 'string(10) "[redacted]"', $result);
             $result = \preg_replace('/'.$reg1.($reg2 !== null ? '|'.$reg2 : '').'/iu', '[redacted]', $result);
+            
             return $result;
         }
     });
