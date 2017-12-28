@@ -147,11 +147,12 @@ return function ($client) {
             
             while(@\ob_end_clean());
             
-            $reg1 = preg_quote($this->client->token, '/');
-            $reg2 = (!empty($this->client->user->email) ? \preg_quote($this->client->user->email, '/') : null);
+            $email = $this->client->user->email;
+            $tokenregex = preg_quote($this->client->token, '/');
+            $emailregex = (!empty($email) ? \preg_quote($email, '/') : null);
             
-            $result = \preg_replace('/string\(\d+\) "'.$reg1.'"|'.$reg1.($reg2 !== null ? '|string\(\d+\) "'.$reg2.'"' : '').'/iu', 'string(10) "[redacted]"', $result);
-            $result = \preg_replace('/'.$reg1.($reg2 !== null ? '|'.$reg2 : '').'/iu', '[redacted]', $result);
+            $result = \preg_replace('/string\(\d+\) "'.$tokenregex.'"|'.$tokenregex.($emailregex !== null ? '|string\(\d+\) "'.$emailregex.'"' : '').'/iu', 'string(10) "[redacted]"', $result);
+            $result = \preg_replace('/'.$tokenregex.($emailregex !== null ? '|'.$emailregex : '').'/iu', '[redacted]', $result);
             
             return $result;
         }
