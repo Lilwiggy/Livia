@@ -151,7 +151,7 @@ return function ($client) {
             $tokenregex = preg_quote($this->client->token, '/');
             $emailregex = (!empty($email) ? \preg_quote($email, '/') : null);
             
-            $result = \preg_replace('/string\(\d+\) "'.$tokenregex.'"|'.$tokenregex.($emailregex !== null ? '|string\(\d+\) "'.$emailregex.'"' : '').'/iu', 'string(10) "[redacted]"', $result);
+            $result = \preg_replace('/string\(\d+\) "'.$tokenregex.'"'.($emailregex !== null ? '|string\(\d+\) "'.$emailregex.'"' : '').'/iu', 'string(10) "[redacted]"', $result);
             $result = \preg_replace('/'.$tokenregex.($emailregex !== null ? '|'.$emailregex : '').'/iu', '[redacted]', $result);
             
             return $result;
