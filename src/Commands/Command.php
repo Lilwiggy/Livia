@@ -72,27 +72,27 @@ abstract class Command {
      *
      * <pre>
      * array(
-     *    'name' => string,
-     *    'aliases' => string[], (optional)
-     *    'group' => string, (the ID of the command group)
-     *    'description => string,
-     *    'details' => string, (optional)
-     *    'format' => string, (optional)
-     *    'examples' => string[], (optional)
-     *    'guildOnly' => bool, (defaults to false)
-     *    'ownerOnly' => bool, (defaults to false)
-     *    'clientPermissions' => string[], (optional)
-     *    'userPermissions' => string[], (optional)
-     *    'nsfw' => bool, (defaults to false)
-     *    'throttling' => array, (associative array of array('usages' => int, 'duration' => int) - duration in seconds, optional)
-     *    'defaultHandling' => bool, (defaults to true)
-     *    'args' => array, ({@see \CharlotteDunois\Livia\Arguments\Argument} - key can be the index instead, optional)
-     *    'argsPromptLimit' => int|\INF, (optional)
-     *    'argsType' => string, (one of 'single' or 'multiple', defaults to 'single')
-     *    'argsCount' => int, (optional)
-     *    'argsSingleQuotes' => bool, (optional)
-     *    'patterns' => string[], (Regular Expression strings, optional)
-     *    'guarded' => bool, (defaults to false)
+     *   'name' => string,
+     *   'aliases' => string[], (optional)
+     *   'group' => string, (the ID of the command group)
+     *   'description => string,
+     *   'details' => string, (optional)
+     *   'format' => string, (optional)
+     *   'examples' => string[], (optional)
+     *   'guildOnly' => bool, (defaults to false)
+     *   'ownerOnly' => bool, (defaults to false)
+     *   'clientPermissions' => string[], (optional)
+     *   'userPermissions' => string[], (optional)
+     *   'nsfw' => bool, (defaults to false)
+     *   'throttling' => array, (associative array of array('usages' => int, 'duration' => int) - duration in seconds, optional)
+     *   'defaultHandling' => bool, (defaults to true)
+     *   'args' => array, ({@see \CharlotteDunois\Livia\Arguments\Argument} - key can be the index instead, optional)
+     *   'argsPromptLimit' => int|\INF, (optional)
+     *   'argsType' => string, (one of 'single' or 'multiple', defaults to 'single')
+     *   'argsCount' => int, (optional)
+     *   'argsSingleQuotes' => bool, (optional)
+     *   'patterns' => string[], (Regular Expression strings, optional)
+     *   'guarded' => bool, (defaults to false)
      * )
      * </pre>
      *

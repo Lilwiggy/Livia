@@ -28,12 +28,12 @@ class LiviaClient extends \CharlotteDunois\Yasmin\Client {
      *
      * <pre>
      * array(
-     *    'commandPrefix' => string|null, (Default command prefix, null means only mentions will trigger the handling, defaults to l$)
-     *    'commandEditableDuration' => int, (Time in seconds that command messages should be editable, defaults to 30)
-     *    'nonCommandEditable' => bool, (Whether messages without commands can be edited to a command, defaults to true)
-     *    'unknownCommandResponse' => bool, (Whether the bot should respond to an unknown command, defaults to true)
-     *    'owners' => string[], (array of user IDs)
-     *    'invite' => string, (Invite URL to the bot's support server)
+     *   'commandPrefix' => string|null, (Default command prefix, null means only mentions will trigger the handling, defaults to l$)
+     *   'commandEditableDuration' => int, (Time in seconds that command messages should be editable, defaults to 30)
+     *   'nonCommandEditable' => bool, (Whether messages without commands can be edited to a command, defaults to true)
+     *   'unknownCommandResponse' => bool, (Whether the bot should respond to an unknown command, defaults to true)
+     *   'owners' => string[], (array of user IDs)
+     *   'invite' => string, (Invite URL to the bot's support server)
      * )
      * </pre>
      *
