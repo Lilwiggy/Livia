@@ -35,7 +35,7 @@ abstract class ArgumentType {
             return $this->$name;
         }
         
-        throw new \Exception('Unknown property '.\get_class($this).'::'.$name);
+        throw new \Exception('Unknown property \CharlotteDunois\Livia\Types\ArgumentType::'.$name);
     }
     
     /**

@@ -58,7 +58,18 @@ class CommandMessage {
             /* Continue regardless of error */
         }
         
-        throw new \Exception('Unknown property \CharlotteDunois\Livia\Commands\Command::'.$name);
+        throw new \Exception('Unknown property \CharlotteDunois\Livia\CommandMessage::'.$name);
+    }
+    
+    /**
+     * @internal
+     */
+    function __call($name, $args) {
+        if(\method_exists($this->message, $name)) {
+            return $this->message->$name(...$args);
+        }
+        
+        throw new \Exception('Unknown method \CharlotteDunois\Livia\CommandMessage::'.$name);
     }
     
     /**
