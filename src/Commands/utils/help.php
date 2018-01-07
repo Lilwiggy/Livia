@@ -75,7 +75,9 @@ return function ($client) {
                             $help .= PHP_EOL.'**Examples:**'.PHP_EOL.\implode(PHP_EOL, $command->examples);
                         }
                         
-                        $message->direct($help)->otherwise(function () use ($message) {
+                        $message->direct($help)->then(function () use ($message) {
+                            return $message->reply('Sent you a DM with information.');
+                        }, function () use ($message) {
                             return $message->reply('Unable to send you the help DM. You probably have DMs disabled.');
                         })->then($resolve, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
                     } elseif($countCommands > 15) {
