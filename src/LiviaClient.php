@@ -73,10 +73,10 @@ class LiviaClient extends \CharlotteDunois\Yasmin\Client {
         };
         
         $this->on('message', function ($message) use ($msgError) {
-            $this->dispatcher->handleMessage($message)->otherwise($msgError);
+            $this->dispatcher->handleMessage($message)->otherwise($msgError)->done(null, array($this, 'handlePromiseRejection'));
         });
         $this->on('messageUpdate', function ($message, $oldMessage) use ($msgError) {
-            $this->dispatcher->handleMessage($message, $oldMessage)->otherwise($msgError);
+            $this->dispatcher->handleMessage($message, $oldMessage)->otherwise($msgError)->done(null, array($this, 'handlePromiseRejection'));
         });
         
         if(!empty($options['owners'])) {
