@@ -90,7 +90,7 @@ abstract class Command {
      *      'argsType' => string, (one of 'single' or 'multiple', defaults to 'single')                                                    <br />
      *      'argsCount' => int, (optional)                                                                                                 <br />
      *      'argsSingleQuotes' => bool, (optional)                                                                                         <br />
-     *      'patterns' => string[], (Regular Expression strings, optional)                                                                 <br />
+     *      'patterns' => string[], (Regular Expression strings, pattern matches do not get parsed, optional)                                                                 <br />
      *      'guarded' => bool, (defaults to false)                                                                                         <br />
      *  )
      *
@@ -357,7 +357,7 @@ abstract class Command {
      * @return array|null
      * @internal
      */
-    function &throttle(string $userID) {
+    final function &throttle(string $userID) {
         if($this->throttling === null || $this->client->isOwner($userID)) {
             $null = null;
             return $null;
