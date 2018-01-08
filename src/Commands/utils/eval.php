@@ -141,9 +141,11 @@ return function ($client) {
             \ini_set('xdebug.var_display_max_depth', $old);
             $result = @\ob_get_clean();
             
-            $result = \explode("\n", \str_replace("\r", "", $result));
-            \array_shift($result);
-            $result = \implode(PHP_EOL, $result);
+            if(\extension_loaded('xdebug')) {
+                $result = \explode("\n", \str_replace("\r", "", $result));
+                \array_shift($result);
+                $result = \implode(PHP_EOL, $result);
+            }
             
             while(@\ob_end_clean());
             
