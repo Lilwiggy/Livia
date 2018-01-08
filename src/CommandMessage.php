@@ -58,7 +58,18 @@ class CommandMessage {
             /* Continue regardless of error */
         }
         
-        throw new \Exception('Unknown property \CharlotteDunois\Livia\Commands\Command::'.$name);
+        throw new \Exception('Unknown property \CharlotteDunois\Livia\CommandMessage::'.$name);
+    }
+    
+    /**
+     * @internal
+     */
+    function __call($name, $args) {
+        if(\method_exists($this->message, $name)) {
+            return $this->message->$name(...$args);
+        }
+        
+        throw new \Exception('Unknown method \CharlotteDunois\Livia\CommandMessage::'.$name);
     }
     
     /**
@@ -302,7 +313,9 @@ class CommandMessage {
                 if($shouldEdit) {
                     return $this->editCurrentResponse('dm', $type, $content, $options);
                 } else {
-                    return $this->message->author->send($content, $options);
+                    return $this->message->author->createDM()->then(function ($channel) use ($content, $options) {
+                        return $channel->send($content, $options);
+                    });
                 }
             break;
             default:
@@ -496,7 +509,7 @@ class CommandMessage {
         $results = array();
         
         if($argCount === null) {
-            $argCount = \strlen($argString); // Large enough to get all items
+            $argCount = \mb_strlen($argString); // Large enough to get all items
         }
         
         $content = $argString;
@@ -514,7 +527,7 @@ class CommandMessage {
         }
         
         // If text remains, push it to the array as-is (except for wrapping quotes, which are removed)
-        if(\strlen($content) > 0) {
+        if(\mb_strlen($content) > 0) {
             $results[] = \preg_replace(($allowSingleQuotes ? '/^("|\')(.*)\1$/u' : '/^(")(.*)"$/u'), '$2', $content);
         }
         

@@ -30,10 +30,10 @@ class RoleArgumentType extends ArgumentType {
             return $message->message->guild->roles->has($matches[1]);
         }
         
-        $search = \strtolower($value);
+        $search = \mb_strtolower($value);
         
         $inexactRoles = $message->message->guild->roles->filter(function ($role) use ($search) {
-            return (stripos($role->name, $search) !== false);
+            return (\mb_stripos($role->name, $search) !== false);
         });
         $inexactLength = $inexactRoles->count();
         
@@ -79,10 +79,10 @@ class RoleArgumentType extends ArgumentType {
             return $message->message->guild->roles->get($matches[1]);
         }
         
-        $search = \strtolower($value);
+        $search = \mb_strtolower($value);
         
         $inexactRoles = $message->message->guild->roles->filter(function ($role) use ($search) {
-            return (stripos($role->name, $search) !== false);
+            return (\mb_stripos($role->name, $search) !== false);
         });
         $inexactLength = $inexactRoles->count();
         

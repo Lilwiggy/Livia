@@ -53,7 +53,8 @@
             <div class="collapse navbar-collapse" id="navbar-elements">
                 <ul class="nav navbar-nav">
                     <li><a href="../../classes.html">Classes</a></li>
-                                            <li><a href="../../namespaces.html">Namespaces</a></li>
+                                            <li><a href="../../todo.html">ToDo</a></li>
+                                                                <li><a href="../../namespaces.html">Namespaces</a></li>
                                         <li><a href="../../interfaces.html">Interfaces</a></li>
                     <li><a href="../../traits.html">Traits</a></li>
                     <li><a href="../../doc-index.html">Index</a></li>
@@ -79,14 +80,16 @@
     </div>
 
     <p>    class
-    <strong>CommandRegistry</strong>        (<a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php">View source</a>)
+    <strong>CommandRegistry</strong>        (<a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php" target="_blank">View source</a>)
 </p>
 
         
     
 
             <div class="description">
-            <p>Handles registration and searching of commands and groups.</p>                                </div>
+            <p>Handles registration and searching of commands and groups.</p>                                                
+        
+                    </div>
     
     
     
@@ -97,41 +100,51 @@
                 <td class="type" id="property_client">
                                                                                 <a href="../../CharlotteDunois/Livia/LiviaClient.html"><abbr title="CharlotteDunois\Livia\LiviaClient">LiviaClient</abbr></a>
                 </td>
-                <td>$client</td>
+                <td><a name="property_client" href="#property_client">$client</a></td>
                 <td class="last">The client which initiated the instance.</td>
                 <td></td>
+                <td>
+                                    </td>
             </tr>
                     <tr>
                 <td class="type" id="property_commands">
                                                                                 <abbr title="CharlotteDunois\Yasmin\Utils\Collection">Collection</abbr>
                 </td>
-                <td>$commands</td>
+                <td><a name="property_commands" href="#property_commands">$commands</a></td>
                 <td class="last">Registered commands, mapped by their name.</td>
                 <td></td>
+                <td>
+                                    </td>
             </tr>
                     <tr>
                 <td class="type" id="property_commandsPath">
                                                                                 string|null
                 </td>
-                <td>$commandsPath</td>
+                <td><a name="property_commandsPath" href="#property_commandsPath">$commandsPath</a></td>
                 <td class="last">Fully resolved path to the bot's commands directory.</td>
                 <td></td>
+                <td>
+                                    </td>
             </tr>
                     <tr>
                 <td class="type" id="property_groups">
                                                                                 <abbr title="CharlotteDunois\Yasmin\Utils\Collection">Collection</abbr>
                 </td>
-                <td>$groups</td>
+                <td><a name="property_groups" href="#property_groups">$groups</a></td>
                 <td class="last">Registered command groups, mapped by their name.</td>
                 <td></td>
+                <td>
+                                    </td>
             </tr>
                     <tr>
                 <td class="type" id="property_types">
                                                                                 <abbr title="CharlotteDunois\Yasmin\Utils\Collection">Collection</abbr>
                 </td>
-                <td>$types</td>
+                <td><a name="property_types" href="#property_types">$types</a></td>
                 <td class="last">Registered argument types, mapped by their name.</td>
                 <td></td>
+                <td>
+                                    </td>
             </tr>
             </table>
 
@@ -164,7 +177,7 @@
                     <abbr title="CharlotteDunois\Livia\$this">$this</abbr>
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_registerCommand">registerCommand</a>(string|<a href="../../CharlotteDunois/Livia/Commands/Command.html"><abbr title="CharlotteDunois\Livia\Commands\Command">Command</abbr></a> $command)
+                    <a href="#method_registerCommand">registerCommand</a>(string|<a href="../../CharlotteDunois/Livia/Commands/Command.html"><abbr title="CharlotteDunois\Livia\Commands\Command">Command</abbr></a> ...$command)
         
                                             <p>Registers a command. Emits a commandRegister event for each command.</p>                </div>
                 <div class="col-md-2"></div>
@@ -224,7 +237,7 @@
                     <abbr title="CharlotteDunois\Livia\$this">$this</abbr>
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_registerGroup">registerGroup</a>(<a href="../../CharlotteDunois/Livia/Commands/CommandGroup.html"><abbr title="CharlotteDunois\Livia\Commands\CommandGroup">CommandGroup</abbr></a>|array $group)
+                    <a href="#method_registerGroup">registerGroup</a>(<a href="../../CharlotteDunois/Livia/Commands/CommandGroup.html"><abbr title="CharlotteDunois\Livia\Commands\CommandGroup">CommandGroup</abbr></a>|array ...$group)
         
                                             <p>Registers a group. Emits a groupRegister event for each group.</p>                </div>
                 <div class="col-md-2"></div>
@@ -234,7 +247,7 @@
                     <abbr title="CharlotteDunois\Livia\$this">$this</abbr>
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_registerType">registerType</a>(<a href="../../CharlotteDunois/Livia/Types/ArgumentType.html"><abbr title="CharlotteDunois\Livia\Types\ArgumentType">ArgumentType</abbr></a>|string $type)
+                    <a href="#method_registerType">registerType</a>(<a href="../../CharlotteDunois/Livia/Types/ArgumentType.html"><abbr title="CharlotteDunois\Livia\Types\ArgumentType">ArgumentType</abbr></a>|string ...$type)
         
                                             <p>Registers a type. Emits a typeRegister event for each type.</p>                </div>
                 <div class="col-md-2"></div>
@@ -317,7 +330,9 @@
     
 
                     <div class="method-description">
-                                    <p>Finds all commands that match the search string.</p>                                                </div>
+                                    <p>Finds all commands that match the search string.</p>                                                                
+        
+                            </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -351,6 +366,8 @@
 
             
             
+                        
+                        
                     </div>
     </div>
 
@@ -367,7 +384,9 @@
     
 
                     <div class="method-description">
-                                    <p>Finds all commands that match the search string.</p>                                                </div>
+                                    <p>Finds all commands that match the search string.</p>                                                                
+        
+                            </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -396,6 +415,8 @@
 
             
             
+                        
+                        
                     </div>
     </div>
 
@@ -404,7 +425,7 @@
                     <h3 id="method_registerCommand">
         <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L191">line 191</a></div>
         <code>                    <abbr title="CharlotteDunois\Livia\$this">$this</abbr>
-    <strong>registerCommand</strong>(string|<a href="../../CharlotteDunois/Livia/Commands/Command.html"><abbr title="CharlotteDunois\Livia\Commands\Command">Command</abbr></a> $command)
+    <strong>registerCommand</strong>(string|<a href="../../CharlotteDunois/Livia/Commands/Command.html"><abbr title="CharlotteDunois\Livia\Commands\Command">Command</abbr></a> ...$command)
         </code>
     </h3>
     <div class="details">
@@ -412,14 +433,16 @@
     
 
                     <div class="method-description">
-                                    <p>Registers a command. Emits a commandRegister event for each command.</p>                                                </div>
+                                    <p>Registers a command. Emits a commandRegister event for each command.</p>                                                                
+        
+                            </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
                     <tr>
                 <td>string|<a href="../../CharlotteDunois/Livia/Commands/Command.html"><abbr title="CharlotteDunois\Livia\Commands\Command">Command</abbr></a></td>
-                <td>$command</td>
+                <td>...$command</td>
                 <td>The full qualified command name (groupID:name) or an initiated instance of it.</td>
             </tr>
             </table>
@@ -439,19 +462,21 @@
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" href="https://secure.php.net/Exception">Exception</a></td>
+                <td><a href="https://secure.php.net/Exception" target="_blank">Exception</a></td>
                 <td></td>
             </tr>
             </table>
 
             
+                        
+                        
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_registerCommandsIn">
-        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L219">line 219</a></div>
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L229">line 229</a></div>
         <code>                    <abbr title="CharlotteDunois\Livia\$this">$this</abbr>
     <strong>registerCommandsIn</strong>(string $path, bool $ignoreSameLevelFiles = false)
         </code>
@@ -461,7 +486,9 @@
     
 
                     <div class="method-description">
-                                    <p>Registers all commands in a directory. The path gets saved as commands path. Emits a commandRegister event for each command.</p>                                                </div>
+                                    <p>Registers all commands in a directory. The path gets saved as commands path. Emits a commandRegister event for each command.</p>                                                                
+        
+                            </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -493,19 +520,21 @@
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" href="https://secure.php.net/Exception">Exception</a></td>
+                <td><a href="https://secure.php.net/Exception" target="_blank">Exception</a></td>
                 <td></td>
             </tr>
             </table>
 
             
+                        
+                        
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_registerDefaultCommands">
-        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L377">line 377</a></div>
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L399">line 399</a></div>
         <code>                    
     <strong>registerDefaultCommands</strong>()
         </code>
@@ -515,18 +544,22 @@
     
 
                     <div class="method-description">
-                                    <p>Registers the default commands.</p>                                                </div>
+                                    <p>Registers the default commands.</p>                                                                
+        
+                            </div>
                 <div class="tags">
             
             
             
+                        
+                        
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_registerDefaultGroups">
-        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L384">line 384</a></div>
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L406">line 406</a></div>
         <code>                    
     <strong>registerDefaultGroups</strong>()
         </code>
@@ -536,18 +569,22 @@
     
 
                     <div class="method-description">
-                                    <p>Registers the default command groups.</p>                                                </div>
+                                    <p>Registers the default command groups.</p>                                                                
+        
+                            </div>
                 <div class="tags">
             
             
             
+                        
+                        
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_registerDefaultTypes">
-        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L394">line 394</a></div>
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L416">line 416</a></div>
         <code>                    
     <strong>registerDefaultTypes</strong>()
         </code>
@@ -557,18 +594,22 @@
     
 
                     <div class="method-description">
-                                    <p>Registers the default argument types.</p>                                                </div>
+                                    <p>Registers the default argument types.</p>                                                                
+        
+                            </div>
                 <div class="tags">
             
             
             
+                        
+                        
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_registerDefaults">
-        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L368">line 368</a></div>
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L390">line 390</a></div>
         <code>                    
     <strong>registerDefaults</strong>()
         </code>
@@ -578,20 +619,24 @@
     
 
                     <div class="method-description">
-                                    <p>Registers the default argument types, groups, and commands.</p>                                                </div>
+                                    <p>Registers the default argument types, groups, and commands.</p>                                                                
+        
+                            </div>
                 <div class="tags">
             
             
             
+                        
+                        
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_registerGroup">
-        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L263">line 263</a></div>
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L277">line 277</a></div>
         <code>                    <abbr title="CharlotteDunois\Livia\$this">$this</abbr>
-    <strong>registerGroup</strong>(<a href="../../CharlotteDunois/Livia/Commands/CommandGroup.html"><abbr title="CharlotteDunois\Livia\Commands\CommandGroup">CommandGroup</abbr></a>|array $group)
+    <strong>registerGroup</strong>(<a href="../../CharlotteDunois/Livia/Commands/CommandGroup.html"><abbr title="CharlotteDunois\Livia\Commands\CommandGroup">CommandGroup</abbr></a>|array ...$group)
         </code>
     </h3>
     <div class="details">
@@ -599,14 +644,16 @@
     
 
                     <div class="method-description">
-                                    <p>Registers a group. Emits a groupRegister event for each group.</p>                                                </div>
+                                    <p>Registers a group. Emits a groupRegister event for each group.</p>                                                                
+        
+                            </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
                     <tr>
                 <td><a href="../../CharlotteDunois/Livia/Commands/CommandGroup.html"><abbr title="CharlotteDunois\Livia\Commands\CommandGroup">CommandGroup</abbr></a>|array</td>
-                <td>$group</td>
+                <td>...$group</td>
                 <td>An instance of CommandGroup or an associative array ('id' => string, 'name' => string).</td>
             </tr>
             </table>
@@ -626,21 +673,23 @@
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" href="https://secure.php.net/Exception">Exception</a></td>
+                <td><a href="https://secure.php.net/Exception" target="_blank">Exception</a></td>
                 <td></td>
             </tr>
             </table>
 
             
+                        
+                        
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_registerType">
-        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L290">line 290</a></div>
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L308">line 308</a></div>
         <code>                    <abbr title="CharlotteDunois\Livia\$this">$this</abbr>
-    <strong>registerType</strong>(<a href="../../CharlotteDunois/Livia/Types/ArgumentType.html"><abbr title="CharlotteDunois\Livia\Types\ArgumentType">ArgumentType</abbr></a>|string $type)
+    <strong>registerType</strong>(<a href="../../CharlotteDunois/Livia/Types/ArgumentType.html"><abbr title="CharlotteDunois\Livia\Types\ArgumentType">ArgumentType</abbr></a>|string ...$type)
         </code>
     </h3>
     <div class="details">
@@ -648,14 +697,16 @@
     
 
                     <div class="method-description">
-                                    <p>Registers a type. Emits a typeRegister event for each type.</p>                                                </div>
+                                    <p>Registers a type. Emits a typeRegister event for each type.</p>                                                                
+        
+                            </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
                     <tr>
                 <td><a href="../../CharlotteDunois/Livia/Types/ArgumentType.html"><abbr title="CharlotteDunois\Livia\Types\ArgumentType">ArgumentType</abbr></a>|string</td>
-                <td>$type</td>
+                <td>...$type</td>
                 <td>The full qualified class name or an initiated instance of it.</td>
             </tr>
             </table>
@@ -675,19 +726,21 @@
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" href="https://secure.php.net/Exception">Exception</a></td>
+                <td><a href="https://secure.php.net/Exception" target="_blank">Exception</a></td>
                 <td></td>
             </tr>
             </table>
 
             
+                        
+                        
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_registerTypesIn">
-        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L318">line 318</a></div>
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L340">line 340</a></div>
         <code>                    <abbr title="CharlotteDunois\Livia\$this">$this</abbr>
     <strong>registerTypesIn</strong>(string $path, bool|string $ignoreSameLevelFiles = false)
         </code>
@@ -697,7 +750,9 @@
     
 
                     <div class="method-description">
-                                    <p>Registers all types in a directory. Emits a typeRegister event for each type.</p>                                                </div>
+                                    <p>Registers all types in a directory. Emits a typeRegister event for each type.</p>                                                                
+        
+                            </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -729,19 +784,21 @@
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" href="https://secure.php.net/Exception">Exception</a></td>
+                <td><a href="https://secure.php.net/Exception" target="_blank">Exception</a></td>
                 <td></td>
             </tr>
             </table>
 
             
+                        
+                        
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_reregisterCommand">
-        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L404">line 404</a></div>
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L426">line 426</a></div>
         <code>                    
     <strong>reregisterCommand</strong>(<a href="../../CharlotteDunois/Livia/Commands/Command.html"><abbr title="CharlotteDunois\Livia\Commands\Command">Command</abbr></a>|string $command, <a href="../../CharlotteDunois/Livia/Commands/Command.html"><abbr title="CharlotteDunois\Livia\Commands\Command">Command</abbr></a> $oldCommand)
         </code>
@@ -751,7 +808,9 @@
     
 
                     <div class="method-description">
-                                    <p>Reregisters a command. Emits a commandReregister event.</p>                                                </div>
+                                    <p>Reregisters a command. Emits a commandReregister event.</p>                                                                
+        
+                            </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -774,12 +833,14 @@
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" href="https://secure.php.net/Exception">Exception</a></td>
+                <td><a href="https://secure.php.net/Exception" target="_blank">Exception</a></td>
                 <td></td>
             </tr>
             </table>
 
             
+                        
+                        
                     </div>
     </div>
 
@@ -796,7 +857,9 @@
     
 
                     <div class="method-description">
-                                    <p>Resolves a given command, command name or command message to the command.</p>                                                </div>
+                                    <p>Resolves a given command, command name or command message to the command.</p>                                                                
+        
+                            </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -823,19 +886,21 @@
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" href="https://secure.php.net/Exception">Exception</a></td>
+                <td><a href="https://secure.php.net/Exception" target="_blank">Exception</a></td>
                 <td></td>
             </tr>
             </table>
 
             
+                        
+                        
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_resolveCommandPath">
-        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L441">line 441</a></div>
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L463">line 463</a></div>
         <code>                    string
     <strong>resolveCommandPath</strong>(string $groupID, string $command)
         </code>
@@ -845,7 +910,9 @@
     
 
                     <div class="method-description">
-                                    <p>Resolves a given group ID and command name to the path.</p>                                                </div>
+                                    <p>Resolves a given group ID and command name to the path.</p>                                                                
+        
+                            </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -877,12 +944,14 @@
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" href="https://secure.php.net/Exception">Exception</a></td>
+                <td><a href="https://secure.php.net/Exception" target="_blank">Exception</a></td>
                 <td></td>
             </tr>
             </table>
 
             
+                        
+                        
                     </div>
     </div>
 
@@ -899,7 +968,9 @@
     
 
                     <div class="method-description">
-                                    <p>Resolves a given commandgroup, command group name or command message to the command group.</p>                                                </div>
+                                    <p>Resolves a given commandgroup, command group name or command message to the command group.</p>                                                                
+        
+                            </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -926,19 +997,21 @@
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" href="https://secure.php.net/Exception">Exception</a></td>
+                <td><a href="https://secure.php.net/Exception" target="_blank">Exception</a></td>
                 <td></td>
             </tr>
             </table>
 
             
+                        
+                        
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_unregisterCommand">
-        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L425">line 425</a></div>
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandRegistry.php#L447">line 447</a></div>
         <code>                    
     <strong>unregisterCommand</strong>(<a href="../../CharlotteDunois/Livia/Commands/Command.html"><abbr title="CharlotteDunois\Livia\Commands\Command">Command</abbr></a> $command)
         </code>
@@ -948,7 +1021,9 @@
     
 
                     <div class="method-description">
-                                    <p>Unregisters a command. Emits a commandUnregister event.</p>                                                </div>
+                                    <p>Unregisters a command. Emits a commandUnregister event.</p>                                                                
+        
+                            </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -966,12 +1041,14 @@
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" href="https://secure.php.net/Exception">Exception</a></td>
+                <td><a href="https://secure.php.net/Exception" target="_blank">Exception</a></td>
                 <td></td>
             </tr>
             </table>
 
             
+                        
+                        
                     </div>
     </div>
 

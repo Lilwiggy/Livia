@@ -51,7 +51,7 @@ return function ($client) {
                     return $message->reply('Only the bot owner may change the command prefix.')->then($resolve, $reject)->done(null, array($this->client, 'handlePromiseRejection'));
                 }
                 
-                $prefixLc = \strtolower($args['prefix']);
+                $prefixLc = \mb_strtolower($args['prefix']);
                 $prefix = ($prefixLc === 'none' ? null : $args['prefix']);
                 $guild = $message->message->guild;
                 

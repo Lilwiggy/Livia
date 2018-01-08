@@ -15,8 +15,8 @@ namespace CharlotteDunois\Livia;
  * @property \CharlotteDunois\Livia\CommandDispatcher                 $dispatcher     The client's command dispatcher.
  * @property \CharlotteDunois\Livia\CommandRegistry                   $registry       The client's command registry.
  * @property \CharlotteDunois\Livia\Providers\SettingProvider|null    $provider       The client's setting provider.
- * @property string|null                                              $commandPrefix  The global command prefix. {@see LiviaClient::setCommandPrefix}
- * @property \CharlotteDunois\Yasmin\Models\User[]                    $owners         Owners of the bot, set by the client option owners. If you simply need to check if a user is an owner of the bot, please use LiviaClient::isOwner instead. {@see \CharlotteDunois\Livia\LiviaClient:isOwner}
+ * @property string|null                                              $commandPrefix  The global command prefix. ({@see LiviaClient::setCommandPrefix})
+ * @property \CharlotteDunois\Yasmin\Models\User[]                    $owners         Owners of the bot, set by the client option owners. If you simply need to check if a user is an owner of the bot, please use LiviaClient::isOwner instead. ({@see \CharlotteDunois\Livia\LiviaClient:isOwner})
  */
 class LiviaClient extends \CharlotteDunois\Yasmin\Client {
     protected $dispatcher;
@@ -26,14 +26,16 @@ class LiviaClient extends \CharlotteDunois\Yasmin\Client {
     /**
      * Constructs a new Command Client. Additional available Client Options are as following:
      *
-     *  array(                                                                                                                                         <br />
-     *      'commandPrefix' => string|null, (Default command prefix, null means only mentions will trigger the handling, defaults to l$)               <br />
-     *      'commandEditableDuration' => int, (Time in seconds that command messages should be editable, defaults to 30)                               <br />
-     *      'nonCommandEditable' => bool, (Whether messages without commands can be edited to a command, defaults to true)                             <br />
-     *      'unknownCommandResponse' => bool, (Whether the bot should respond to an unknown command, defaults to true)                                 <br />
-     *      'owners' => string[], (array of user IDs)                                                                                                  <br />
-     *      'invite' => string, (Invite URL to the bot's support server)                                                                               <br />
-     *  )
+     * <pre>
+     * array(
+     *   'commandPrefix' => string|null, (Default command prefix, null means only mentions will trigger the handling, defaults to l$)
+     *   'commandEditableDuration' => int, (Time in seconds that command messages should be editable, defaults to 30)
+     *   'nonCommandEditable' => bool, (Whether messages without commands can be edited to a command, defaults to true)
+     *   'unknownCommandResponse' => bool, (Whether the bot should respond to an unknown command, defaults to true)
+     *   'owners' => string[], (array of user IDs)
+     *   'invite' => string, (Invite URL to the bot's support server)
+     * )
+     * </pre>
      *
      * @param array                           $options  Any Client Options.
      * @param \React\EventLoop\LoopInterface  $loop
@@ -71,10 +73,10 @@ class LiviaClient extends \CharlotteDunois\Yasmin\Client {
         };
         
         $this->on('message', function ($message) use ($msgError) {
-            $this->dispatcher->handleMessage($message)->otherwise($msgError);
+            $this->dispatcher->handleMessage($message)->otherwise($msgError)->done(null, array($this, 'handlePromiseRejection'));
         });
         $this->on('messageUpdate', function ($message, $oldMessage) use ($msgError) {
-            $this->dispatcher->handleMessage($message, $oldMessage)->otherwise($msgError);
+            $this->dispatcher->handleMessage($message, $oldMessage)->otherwise($msgError)->done(null, array($this, 'handlePromiseRejection'));
         });
         
         if(!empty($options['owners'])) {

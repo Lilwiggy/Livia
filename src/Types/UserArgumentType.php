@@ -25,7 +25,7 @@ class UserArgumentType extends ArgumentType {
      * @inheritDoc
      */
     function validate(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg = null) {
-        $prg = \preg_match('/(?:<@?)?(\d+)>?/', $value, $matches);
+        $prg = \preg_match('/(?:<@!?)?(\d+)>?/', $value, $matches);
         if($prg === 1) {
             return $message->client->fetchUser($matches[1])->then(function () {
                 return true;
@@ -34,10 +34,10 @@ class UserArgumentType extends ArgumentType {
             });
         }
         
-        $search = \strtolower($value);
+        $search = \mb_strtolower($value);
         
         $inexactUsers = $this->client->users->filter(function ($user) use ($search) {
-            return (stripos($user->tag, $search) !== false);
+            return (\mb_stripos($user->tag, $search) !== false);
         });
         $inexactLength = $inexactUsers->count();
         
@@ -49,7 +49,7 @@ class UserArgumentType extends ArgumentType {
         }
         
         $exactUsers = $this->client->users->filter(function ($user) use ($search) {
-            return ($user->tag === $search);
+            return (\mb_strtolower($user->tag) === $search);
         });
         $exactLength = $exactUsers->count();
         
@@ -78,15 +78,15 @@ class UserArgumentType extends ArgumentType {
      * @inheritDoc
      */
     function parse(string $value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg = null) {
-        $prg = \preg_match('/(?:<@?)?(\d+)>?/', $value, $matches);
+        $prg = \preg_match('/(?:<@!?)?(\d+)>?/', $value, $matches);
         if($prg === 1) {
             return $this->client->users->get($matches[1]);
         }
         
-        $search = \strtolower($value);
+        $search = \mb_strtolower($value);
         
         $inexactUsers = $this->client->users->filter(function ($user) use ($search) {
-            return (stripos($user->tag, $search) !== false);
+            return (\mb_stripos($user->tag, $search) !== false);
         });
         $inexactLength = $inexactUsers->count();
         
@@ -98,7 +98,7 @@ class UserArgumentType extends ArgumentType {
         }
         
         $exactUsers = $this->client->users->filter(function ($user) use ($search) {
-            return ($user->tag === $search);
+            return (\mb_strtolower($user->tag) === $search);
         });
         $exactLength = $exactUsers->count();
         

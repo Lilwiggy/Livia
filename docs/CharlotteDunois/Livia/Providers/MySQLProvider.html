@@ -53,7 +53,8 @@
             <div class="collapse navbar-collapse" id="navbar-elements">
                 <ul class="nav navbar-nav">
                     <li><a href="../../../classes.html">Classes</a></li>
-                                            <li><a href="../../../namespaces.html">Namespaces</a></li>
+                                            <li><a href="../../../todo.html">ToDo</a></li>
+                                                                <li><a href="../../../namespaces.html">Namespaces</a></li>
                                         <li><a href="../../../interfaces.html">Interfaces</a></li>
                     <li><a href="../../../traits.html">Traits</a></li>
                     <li><a href="../../../doc-index.html">Index</a></li>
@@ -79,14 +80,16 @@
     </div>
 
     <p>    class
-    <strong>MySQLProvider</strong>        extends <a href="../../../CharlotteDunois/Livia/Providers/SettingProvider.html"><abbr title="CharlotteDunois\Livia\Providers\SettingProvider">SettingProvider</abbr></a>        (<a href="https://github.com/CharlotteDunois/Livia/blob/master/src/Providers/MySQLProvider.php">View source</a>)
+    <strong>MySQLProvider</strong>        extends <a href="../../../CharlotteDunois/Livia/Providers/SettingProvider.html"><abbr title="CharlotteDunois\Livia\Providers\SettingProvider">SettingProvider</abbr></a>        (<a href="https://github.com/CharlotteDunois/Livia/blob/master/src/Providers/MySQLProvider.php" target="_blank">View source</a>)
 </p>
 
         
     
 
             <div class="description">
-            <p>Loads and stores settings associated with guilds in a MySQL database. Requires the composer package react/mysql.</p>                                </div>
+            <p>Loads and stores settings associated with guilds in a MySQL database. Requires the composer package react/mysql.</p>                                                
+        
+                    </div>
     
     
     
@@ -120,7 +123,7 @@
                     <abbr title="React\Promise\Promise">Promise</abbr>
                 </div>
                 <div class="col-md-8 type">
-                    <a href="#method_create">create</a>(string|<abbr title="CharlotteDunois\Yasmin\Models\Guild">Guild</abbr> $guild, array|<a target="_blank" href="https://secure.php.net/ArrayObject">ArrayObject</a> $settings = array())
+                    <a href="#method_create">create</a>(string|<abbr title="CharlotteDunois\Yasmin\Models\Guild">Guild</abbr> $guild, array|<a href="https://secure.php.net/ArrayObject" target="_blank">ArrayObject</a> $settings = array())
         
                                             <p>Creates a new table row in the db for the guild, if it doesn't exist already - otherwise loads the row.</p>                </div>
                 <div class="col-md-2"></div>
@@ -218,7 +221,9 @@
     
 
                     <div class="method-description">
-                                    <p>Constructs a new instance.</p>                                                </div>
+                                    <p>Constructs a new instance.</p>                                                                
+        
+                            </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -258,6 +263,8 @@
             
             
             
+                        
+                        
                     </div>
     </div>
 
@@ -287,6 +294,8 @@
             
             
             
+                        
+                        
                     </div>
     </div>
 
@@ -295,7 +304,7 @@
                     <h3 id="method_create">
         <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/Providers/MySQLProvider.php#L92">line 92</a></div>
         <code>                    <abbr title="React\Promise\Promise">Promise</abbr>
-    <strong>create</strong>(string|<abbr title="CharlotteDunois\Yasmin\Models\Guild">Guild</abbr> $guild, array|<a target="_blank" href="https://secure.php.net/ArrayObject">ArrayObject</a> $settings = array())
+    <strong>create</strong>(string|<abbr title="CharlotteDunois\Yasmin\Models\Guild">Guild</abbr> $guild, array|<a href="https://secure.php.net/ArrayObject" target="_blank">ArrayObject</a> $settings = array())
         </code>
     </h3>
     <div class="details">
@@ -303,7 +312,9 @@
     
 
                     <div class="method-description">
-                                    <p>Creates a new table row in the db for the guild, if it doesn't exist already - otherwise loads the row.</p>                                                </div>
+                                    <p>Creates a new table row in the db for the guild, if it doesn't exist already - otherwise loads the row.</p>                                                                
+        
+                            </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -314,7 +325,7 @@
                 <td></td>
             </tr>
                     <tr>
-                <td>array|<a target="_blank" href="https://secure.php.net/ArrayObject">ArrayObject</a></td>
+                <td>array|<a href="https://secure.php.net/ArrayObject" target="_blank">ArrayObject</a></td>
                 <td>$settings</td>
                 <td></td>
             </tr>
@@ -335,12 +346,14 @@
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" href="https://secure.php.net/InvalidArgumentException">InvalidArgumentException</a></td>
+                <td><a href="https://secure.php.net/InvalidArgumentException" target="_blank">InvalidArgumentException</a></td>
                 <td></td>
             </tr>
             </table>
 
             
+                        
+                        
                     </div>
     </div>
 
@@ -360,13 +373,15 @@
             
             
             
+                        
+                        
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_get">
-        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/Providers/MySQLProvider.php#L160">line 160</a></div>
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/Providers/MySQLProvider.php#L162">line 162</a></div>
         <code>                    mixed
     <strong>get</strong>(string|<abbr title="CharlotteDunois\Yasmin\Models\Guild">Guild</abbr> $guild, string $key, mixed $defaultValue = null)
         </code>
@@ -408,6 +423,8 @@
 
             
             
+                        
+                        
                     </div>
     </div>
 
@@ -424,7 +441,9 @@
     
 
                     <div class="method-description">
-                                    <p>Obtains the ID of the provided guild.</p>                                                </div>
+                                    <p>Obtains the ID of the provided guild.</p>                                                                
+        
+                            </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -451,19 +470,21 @@
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" href="https://secure.php.net/InvalidArgumentException">InvalidArgumentException</a></td>
+                <td><a href="https://secure.php.net/InvalidArgumentException" target="_blank">InvalidArgumentException</a></td>
                 <td></td>
             </tr>
             </table>
 
             
+                        
+                        
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_init">
-        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/Providers/MySQLProvider.php#L120">line 120</a></div>
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/Providers/MySQLProvider.php#L122">line 122</a></div>
         <code>                    <abbr title="React\Promise\Promise">Promise</abbr>
     <strong>init</strong>(<a href="../../../CharlotteDunois/Livia/LiviaClient.html"><abbr title="CharlotteDunois\Livia\LiviaClient">LiviaClient</abbr></a> $client)
         </code>
@@ -495,13 +516,15 @@
 
             
             
+                        
+                        
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_remove">
-        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/Providers/MySQLProvider.php#L208">line 208</a></div>
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/Providers/MySQLProvider.php#L210">line 210</a></div>
         <code>                    
     <strong>remove</strong>(string|<abbr title="CharlotteDunois\Yasmin\Models\Guild">Guild</abbr> $guild, string $key)
         </code>
@@ -529,13 +552,15 @@
             
             
             
+                        
+                        
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_runQuery">
-        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/Providers/MySQLProvider.php#L296">line 296</a></div>
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/Providers/MySQLProvider.php#L298">line 298</a></div>
         <code>                    <abbr title="React\Promise\Promise">Promise</abbr>
     <strong>runQuery</strong>(string $sql, array $parameters = array())
         </code>
@@ -545,7 +570,9 @@
     
 
                     <div class="method-description">
-                                    <p>Runs a SQL query. Resolves with the Command instance.</p>                                                </div>
+                                    <p>Runs a SQL query. Resolves with the Command instance.</p>                                                                
+        
+                            </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -578,18 +605,22 @@
 
                     <table class="table table-condensed">
                     <tr>
-                <td>https://github.com/bixuehujin/reactphp-mysql/blob/master/src/Command.php</td>
+                <td>
+                                            <a href="https://github.com/bixuehujin/reactphp-mysql/blob/master/src/Command.php" target="_blank">https://github.com/bixuehujin/reactphp-mysql/blob/master/src/Command.php</a>
+                                    </td>
                 <td></td>
             </tr>
             </table>
 
+                        
+                        
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_set">
-        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/Providers/MySQLProvider.php#L182">line 182</a></div>
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/Providers/MySQLProvider.php#L184">line 184</a></div>
         <code>                    
     <strong>set</strong>(string|<abbr title="CharlotteDunois\Yasmin\Models\Guild">Guild</abbr> $guild, string $key, mixed $value)
         </code>
@@ -622,6 +653,8 @@
             
             
             
+                        
+                        
                     </div>
     </div>
 

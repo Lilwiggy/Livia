@@ -130,7 +130,7 @@ class CommandDispatcher {
                         } else {
                             $this->client->emit('unknownCommand', $cmdMessage);
                             if(((bool) $this->client->getOption('unknownCommandResponse', true))) {
-                                $message->reply('Unknown command. Use '.\CharlotteDunois\Livia\Commands\Command::anyUsage('help'))->then(function ($response) use ($message, $oldMessage, $cmdMessage, $resolve) {
+                                $message->reply('Unknown command. Use '.\CharlotteDunois\Livia\Commands\Command::anyUsage('help').'.')->then(function ($response) use ($message, $oldMessage, $cmdMessage, $resolve) {
                                     $responses = array($response);
                                     $cmdMessage->finalize($responses);
                                     
@@ -313,7 +313,7 @@ class CommandDispatcher {
                 return (new \CharlotteDunois\Livia\CommandMessage($this->client, $message, null));
             }
             
-            $argString = (string) \substr($message->content, (\strlen($matches[1]) + (!empty($matches[2]) ? \strlen($matches[2]) : 0)));
+            $argString = (string) \mb_substr($message->content, (\mb_strlen($matches[1]) + (!empty($matches[2]) ? \mb_strlen($matches[2]) : 0)));
             return (new \CharlotteDunois\Livia\CommandMessage($this->client, $message, $commands[0], $argString));
         }
         

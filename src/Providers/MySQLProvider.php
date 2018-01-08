@@ -112,6 +112,8 @@ class MySQLProvider extends SettingProvider {
         foreach($this->listeners as $event => $listener) {
             $this->client->removeListener($event, $listener);
         }
+        
+        $this->db->close();
     }
     
     /**

@@ -21,9 +21,9 @@ namespace CharlotteDunois\Livia\Arguments;
  * @property int|float|null                                   $min           If type is integer or float, this is the minimum value of the number. If type is string, this is the minimum length of the string.
  * @property mixed|null                                       $default       The default value for the argument.
  * @property bool                                             $infinite      Whether the argument accepts an infinite number of values.
- * @property callable|null                                    $validate      Validator function for validating a value for the argument. {@see \CharlotteDunois\Livia\Types\ArgumentType::validate}
- * @property callable|null                                    $parse         Parser function to parse a value for the argument. {@see \CharlotteDunois\Livia\Types\ArgumentType::parse}
- * @property callable|null                                    $emptyChecker  Empty checker function for the argument. {@see \CharlotteDunois\Livia\Types\ArgumentType::isEmpty}
+ * @property callable|null                                    $validate      Validator function for validating a value for the argument. ({@see \CharlotteDunois\Livia\Types\ArgumentType::validate})
+ * @property callable|null                                    $parse         Parser function to parse a value for the argument. ({@see \CharlotteDunois\Livia\Types\ArgumentType::parse})
+ * @property callable|null                                    $emptyChecker  Empty checker function for the argument. ({@see \CharlotteDunois\Livia\Types\ArgumentType::isEmpty})
  * @property int                                              $wait          How long to wait for input (in seconds).
  */
 class Argument {
@@ -45,20 +45,22 @@ class Argument {
     /**
      * Constructs a new Argument. Info is an array as following:
      *
-     *  array(                                                                                                                                        <br />
-     *      'key' => string, (Key for the argument)                                                                                                   <br />
-     *      'label' => string, (Label for the argument, defaults to key)                                                                              <br />
-     *      'prompt' => string, (First prompt for the argument when it wasn't specified)                                                              <br />
-     *      'type' => string, (Type of the argument, must be the ID of one of the registered argument types)                                          <br />
-     *      'max' => int|float, (If type is integer or float this is the maximum value, if type is string this is the maximum length, optional)       <br />
-     *      'min' => int|float, (If type is integer or float this is the minimum value, if type is string this is the minimum length, optional)       <br />
-     *      'default' => mixed, (Default value for the argumen, must not be null, optional)                                                           <br />
-     *      'infinite' => bool, (Infinite argument collecting, defaults to false)                                                                     <br />
-     *      'validate' => callable, (Validator function for the argument, optional)                                                                   <br />
-     *      'parse' => callable, (Parser function for the argument, optional)                                                                         <br />
-     *      'emptyChecker' => callable, (Empty checker function for the argument, optional)                                                                <br />
-     *      'wait' => int (How long to wait for input (in seconds)                                                                                    <br />
-     *  )
+     * <pre>
+     * array(
+     *   'key' => string, (Key for the argument)
+     *   'label' => string, (Label for the argument, defaults to key)
+     *   'prompt' => string, (First prompt for the argument when it wasn't specified)
+     *   'type' => string, (Type of the argument, must be the ID of one of the registered argument types)
+     *   'max' => int|float, (If type is integer or float this is the maximum value, if type is string this is the maximum length, optional)
+     *   'min' => int|float, (If type is integer or float this is the minimum value, if type is string this is the minimum length, optional)
+     *   'default' => mixed, (Default value for the argumen, must not be null, optional)
+     *   'infinite' => bool, (Infinite argument collecting, defaults to false)
+     *   'validate' => callable, (Validator function for the argument, optional)
+     *   'parse' => callable, (Parser function for the argument, optional)
+     *   'emptyChecker' => callable, (Empty checker function for the argument, optional)
+     *   'wait' => int (How long to wait for input (in seconds)
+     * )
+     * </pre>
      *
      * @param \CharlotteDunois\Livia\LiviaClient    $client
      * @param array                                 $info
@@ -189,7 +191,7 @@ class Argument {
             
             if($empty && $value === null) {
                 $reply = $message->reply($this->prompt.PHP_EOL.
-                    'Please try again. Respond with `cancel` to cancel the command. The command will automatically be cancelled in  '.$this->wait.' seconds.');
+                    'Respond with `cancel` to cancel the command. The command will automatically be cancelled in  '.$this->wait.' seconds.');
             } elseif($valid === false) {
                 $reply = $message->reply('You provided an invalid '.$this->label.'.'.PHP_EOL.
                     'Please try again. Respond with `cancel` to cancel the command. The command will automatically be cancelled in  '.$this->wait.' seconds.');
@@ -227,7 +229,7 @@ class Argument {
                                 
                                 $value = $msg->content;
                                 
-                                if(\strtolower($value) === 'cancel') {
+                                if(\mb_strtolower($value) === 'cancel') {
                                     return array(
                                         'value' => null,
                                         'cancelled' => 'user',
@@ -306,7 +308,7 @@ class Argument {
             $escaped = \str_replace('@', "@\u{200B}", \CharlotteDunois\Yasmin\Utils\DataHelpers::escapeMarkdown($value));
             
             $reply = $message->reply('You provided an invalid '.$this->label.','.PHP_EOL.
-                '"'.(\strlen($escaped) < 1850 ? $escaped : '[too long to show]').'".'.PHP_EOL.
+                '"'.(\mb_strlen($escaped) < 1850 ? $escaped : '[too long to show]').'".'.PHP_EOL.
                 'Please try again.');
         } elseif(\is_string($valid)) {
             $reply = $message->reply($valid.PHP_EOL.
@@ -351,14 +353,14 @@ class Argument {
                 
                 $value = $msg->content;
                 
-                if(\strtolower($value) === 'finish') {
+                if(\mb_strtolower($value) === 'finish') {
                     return array(
                         'value' => $values,
                         'cancelled' => (\count($values) > 0 ? null : 'user'),
                         'prompts' => $prompts,
                         'answers' => $answers
                     );
-                } elseif(\strtolower($value) === 'cancel') {
+                } elseif(\mb_strtolower($value) === 'cancel') {
                     return array(
                         'value' => null,
                         'cancelled' => 'user',

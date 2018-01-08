@@ -53,7 +53,8 @@
             <div class="collapse navbar-collapse" id="navbar-elements">
                 <ul class="nav navbar-nav">
                     <li><a href="../../classes.html">Classes</a></li>
-                                            <li><a href="../../namespaces.html">Namespaces</a></li>
+                                            <li><a href="../../todo.html">ToDo</a></li>
+                                                                <li><a href="../../namespaces.html">Namespaces</a></li>
                                         <li><a href="../../interfaces.html">Interfaces</a></li>
                     <li><a href="../../traits.html">Traits</a></li>
                     <li><a href="../../doc-index.html">Index</a></li>
@@ -79,14 +80,16 @@
     </div>
 
     <p>    class
-    <strong>CommandMessage</strong>        (<a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandMessage.php">View source</a>)
+    <strong>CommandMessage</strong>        (<a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandMessage.php" target="_blank">View source</a>)
 </p>
 
         
     
 
             <div class="description">
-            <p>A command message.</p>                                </div>
+            <p>A command message.</p>                                                
+        
+                    </div>
     
     
     
@@ -97,41 +100,51 @@
                 <td class="type" id="property_argString">
                                                                                 string|null
                 </td>
-                <td>$argString</td>
+                <td><a name="property_argString" href="#property_argString">$argString</a></td>
                 <td class="last">Argument string for the command.</td>
                 <td></td>
+                <td>
+                                    </td>
             </tr>
                     <tr>
                 <td class="type" id="property_client">
                                                                                 <a href="../../CharlotteDunois/Livia/LiviaClient.html"><abbr title="CharlotteDunois\Livia\LiviaClient">LiviaClient</abbr></a>
                 </td>
-                <td>$client</td>
+                <td><a name="property_client" href="#property_client">$client</a></td>
                 <td class="last">The client which initiated the instance.</td>
                 <td></td>
+                <td>
+                                    </td>
             </tr>
                     <tr>
                 <td class="type" id="property_command">
                                                                                 <a href="../../CharlotteDunois/Livia/Commands/Command.html"><abbr title="CharlotteDunois\Livia\Commands\Command">Command</abbr></a>|null
                 </td>
-                <td>$command</td>
+                <td><a name="property_command" href="#property_command">$command</a></td>
                 <td class="last">The command that got triggered, if any.</td>
                 <td></td>
+                <td>
+                                    </td>
             </tr>
                     <tr>
                 <td class="type" id="property_message">
                                                                                 <abbr title="CharlotteDunois\Yasmin\Models\Message">Message</abbr>
                 </td>
-                <td>$message</td>
+                <td><a name="property_message" href="#property_message">$message</a></td>
                 <td class="last">The message that triggers the command.</td>
                 <td></td>
+                <td>
+                                    </td>
             </tr>
                     <tr>
                 <td class="type" id="property_patternMatches">
                                                                                 string[]|null
                 </td>
-                <td>$patternMatches</td>
+                <td><a name="property_patternMatches" href="#property_patternMatches">$patternMatches</a></td>
                 <td class="last">Pattern matches (if from a pattern trigger).</td>
                 <td></td>
+                <td>
+                                    </td>
             </tr>
             </table>
 
@@ -217,7 +230,7 @@
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method_direct">
-        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandMessage.php#L419">line 419</a></div>
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandMessage.php#L432">line 432</a></div>
         <code>                    <abbr title="React\Promise\Promise">Promise</abbr>
     <strong>direct</strong>(string $content, array $options = array())
         </code>
@@ -227,7 +240,9 @@
     
 
                     <div class="method-description">
-                                    <p>Responds with a direct message. Resolves with an instance of Message or an array of Message instances.</p>                                                </div>
+                                    <p>Responds with a direct message. Resolves with an instance of Message or an array of Message instances.</p>                                                                
+        
+                            </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -256,13 +271,15 @@
 
             
             
+                        
+                        
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_edit">
-        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandMessage.php#L530">line 530</a></div>
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandMessage.php#L543">line 543</a></div>
         <code>                    <abbr title="React\Promise\Promise">Promise</abbr>
     <strong>edit</strong>(string $content, array $options = array())
         </code>
@@ -272,7 +289,9 @@
     
 
                     <div class="method-description">
-                                    <p>Shortcut to $this->message->edit.</p>                                                </div>
+                                    <p>Shortcut to $this->message->edit.</p>                                                                
+        
+                            </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -301,13 +320,15 @@
 
             
             
+                        
+                        
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_parseArgs">
-        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandMessage.php#L490">line 490</a></div>
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandMessage.php#L503">line 503</a></div>
         <code>        static            string[]
     <strong>parseArgs</strong>(string $argString, int|float|null $argCount = null, bool $allowSingleQuotes = true)
         </code>
@@ -317,7 +338,9 @@
     
 
                     <div class="method-description">
-                                    <p>Parses an argument string into an array of arguments.</p>                                                </div>
+                                    <p>Parses an argument string into an array of arguments.</p>                                                                
+        
+                            </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -351,13 +374,15 @@
 
             
             
+                        
+                        
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_parseCommandArgs">
-        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandMessage.php#L68">line 68</a></div>
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandMessage.php#L79">line 79</a></div>
         <code>                    string|string[]
     <strong>parseCommandArgs</strong>()
         </code>
@@ -367,7 +392,9 @@
     
 
                     <div class="method-description">
-                                    <p>Parses the argString into usable arguments, based on the argsType and argsCount of the command.</p>                                                </div>
+                                    <p>Parses the argString into usable arguments, based on the argsType and argsCount of the command.</p>                                                                
+        
+                            </div>
                 <div class="tags">
             
                             <h4>Return Value</h4>
@@ -381,13 +408,15 @@
 
             
             
+                        
+                        
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_reply">
-        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandMessage.php#L409">line 409</a></div>
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandMessage.php#L422">line 422</a></div>
         <code>                    <abbr title="React\Promise\Promise">Promise</abbr>
     <strong>reply</strong>(string $content, array $options = array())
         </code>
@@ -397,7 +426,9 @@
     
 
                     <div class="method-description">
-                                    <p>Responds with a reply message. Resolves with an instance of Message or an array of Message instances.</p>                                                </div>
+                                    <p>Responds with a reply message. Resolves with an instance of Message or an array of Message instances.</p>                                                                
+        
+                            </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -426,13 +457,15 @@
 
             
             
+                        
+                        
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_run">
-        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandMessage.php#L84">line 84</a></div>
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandMessage.php#L95">line 95</a></div>
         <code>                    <abbr title="React\Promise\Promise">Promise</abbr>
     <strong>run</strong>()
         </code>
@@ -442,7 +475,9 @@
     
 
                     <div class="method-description">
-                                    <p>Runs the command. Resolves with an instance of Message or an array of Message instances.</p>                                                </div>
+                                    <p>Runs the command. Resolves with an instance of Message or an array of Message instances.</p>                                                                
+        
+                            </div>
                 <div class="tags">
             
                             <h4>Return Value</h4>
@@ -456,13 +491,15 @@
 
             
             
+                        
+                        
                     </div>
     </div>
 
             </div>
                     <div class="method-item">
                     <h3 id="method_say">
-        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandMessage.php#L399">line 399</a></div>
+        <div class="location">at         <a href="https://github.com/CharlotteDunois/Livia/blob/master/src/CommandMessage.php#L412">line 412</a></div>
         <code>                    <abbr title="React\Promise\Promise">Promise</abbr>
     <strong>say</strong>(string $content, array $options = array())
         </code>
@@ -472,7 +509,9 @@
     
 
                     <div class="method-description">
-                                    <p>Responds with a plain message. Resolves with an instance of Message or an array of Message instances.</p>                                                </div>
+                                    <p>Responds with a plain message. Resolves with an instance of Message or an array of Message instances.</p>                                                                
+        
+                            </div>
                 <div class="tags">
                             <h4>Parameters</h4>
 
@@ -501,6 +540,8 @@
 
             
             
+                        
+                        
                     </div>
     </div>
 
