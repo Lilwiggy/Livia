@@ -421,7 +421,7 @@ class Argument {
                 $validate = \React\Promise\resolve($validate);
             }
             
-            return $validate->then(function ($valid) use ($message, $value, &$values, $promptLimit, &$val) {
+            return $validate->then(function ($valid) use ($message, $value, $promptLimit, &$val) {
                 if($valid !== true) {
                     $val = $valid;
                     $prompts = array();
