@@ -142,7 +142,7 @@ class ArgumentCollector {
             return \React\Promise\resolve();
         }
         
-        return $this->args[$current]->obtain($message, (!empty($provided[$current]) ? (!empty($this->args[$current]->infinite) ? \array_slice($provided, $current) : $provided[$current]) : null), $promptLimit)->then(function ($result) use ($message, &$provided, $promptLimit, &$values, &$results, $current)  {
+        return $this->args[$current]->obtain($message, (!empty($provided[$current]) ? ($this->args[$current]->infinite ? \array_slice($provided, $current) : $provided[$current]) : null), $promptLimit)->then(function ($result) use ($message, &$provided, $promptLimit, &$values, &$results, $current)  {
             $results[] = $result;
             
             if($result['cancelled']) {

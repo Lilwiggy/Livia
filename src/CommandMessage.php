@@ -38,7 +38,7 @@ class CommandMessage {
         $this->message = $message;
         $this->command = $command;
         
-        $this->argString = $argString;
+        $this->argString = ($argString !== null ? \trim($argString) : $argString);
         $this->patternMatches = $patternMatches;
     }
     
@@ -79,10 +79,10 @@ class CommandMessage {
     function parseCommandArgs() {
         switch($this->command->argsType) {
             case 'single':
-                $args = \trim($this->argString);
+                $args = $this->argString;
                 return \preg_replace(($this->command->argsSingleQuotes ? '/^("|\')(.*)\1$/u' : '/^(")(.*)"$/u'), '$2', $args);
             case 'multiple':
-                return self::parseArgs(\trim($this->argString), $this->command->argsCount, $this->command->argsSingleQuotes);
+                return self::parseArgs($this->argString, $this->command->argsCount, $this->command->argsSingleQuotes);
             default:
                 throw new \RangeException('Unknown argsType "'.$this->command->argsType.'".');
         }
@@ -173,7 +173,7 @@ class CommandMessage {
             
             if(!$args && $countArgs > 0) {
                 $count = (!empty($this->command->args[($countArgs - 1)]['infinite']) ? \INF : $countArgs);
-                $provided = self::parseArgs(\trim($this->argString), $count, $this->command->argsSingleQuotes);
+                $provided = self::parseArgs($this->argString, $count, $this->command->argsSingleQuotes);
                 
                 $promises[] = $this->command->argsCollector->obtain($this, $provided)->then(function ($result) use (&$args) {
                     if($result['cancelled']) {
@@ -508,6 +508,8 @@ class CommandMessage {
         $regex = ($allowSingleQuotes ? '/\s*(?:("|\')(.*?)\1|(\S+))\s*/u' : '/\s*(?:(")(.*?)"|(\S+))\s*/u');
         $results = array();
         
+        $argString = \trim($argString);
+        
         if($argCount === null) {
             $argCount = \mb_strlen($argString); // Large enough to get all items
         }
@@ -523,12 +525,18 @@ class CommandMessage {
             $val = \trim((!empty($matches[2][$key]) ? $matches[2][$key] : $matches[3][$key]));
             $results[] = $val;
             
-            $content = \preg_replace('/'.\preg_quote($val, '/').'/u', '', $content, 1);
+            $content = \trim(\preg_replace('/'.\preg_quote($val, '/').'/u', '', $content, 1));
         }
         
         // If text remains, push it to the array as-is (except for wrapping quotes, which are removed)
         if(\mb_strlen($content) > 0) {
             $results[] = \preg_replace(($allowSingleQuotes ? '/^("|\')(.*)\1$/u' : '/^(")(.*)"$/u'), '$2', $content);
+        }
+        
+        if(\count($results) > 0) {
+            $results = \array_filter($results, function ($val) {
+                return (\mb_strlen(\trim($val)) > 0);
+            });
         }
         
         return $results;

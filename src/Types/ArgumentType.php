@@ -65,6 +65,10 @@ abstract class ArgumentType {
      * @return bool
      */
     function isEmpty($value, \CharlotteDunois\Livia\CommandMessage $message, \CharlotteDunois\Livia\Arguments\Argument $arg = null) {
+        if(\is_array($value) || \is_object($value)) {
+            return (empty($value));
+        }
+        
         return (\mb_strlen(\trim(((string) $value))) === 0);
     }
 }
