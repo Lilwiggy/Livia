@@ -10,7 +10,7 @@
 namespace CharlotteDunois\Livia;
 
 /**
- * The Command Client, the heart of the framework.
+ * The Livia Client, the heart of the framework.
  *
  * @property \CharlotteDunois\Livia\CommandDispatcher                 $dispatcher     The client's command dispatcher.
  * @property \CharlotteDunois\Livia\CommandRegistry                   $registry       The client's command registry.
