@@ -107,11 +107,11 @@ abstract class Command {
             'name' => 'required|string|lowercase|nowhitespace',
             'group' => 'required|string',
             'description' => 'required|string',
-            'aliases' => 'type:string',
+            'aliases' => 'array:string',
             'autoAliases' => 'boolean',
             'details' => 'string',
             'format' => 'string',
-            'examples' => 'type:string',
+            'examples' => 'array:string',
             'guildOnly' => 'boolean',
             'ownerOnly' => 'boolean',
             'clientPermissions' => 'array',
@@ -123,7 +123,7 @@ abstract class Command {
             'argsType' => 'string|in:single,multiple',
             'argsPromptLimit' => 'integer|float',
             'argsCount' => 'integer|min:2',
-            'patterns' => 'type:string',
+            'patterns' => 'array:string',
             'guarded' => 'boolean'
         ));
         
