@@ -305,10 +305,9 @@ abstract class Command {
      * @return array|null
      * @internal
      */
-    final function &throttle(string $userID) {
-        if($this->throttling === null || $this->client->isOwner($userID)) {
-            $null = null;
-            return $null;
+    final function throttle(string $userID) {
+        if(empty($this->throttling) || $this->client->isOwner($userID)) {
+            return null;
         }
         
         if(!$this->throttles->has($userID)) {
@@ -322,6 +321,34 @@ abstract class Command {
         }
         
         return $this->throttles->get($userID);
+    }
+    
+    /**
+     * Increments the usage of the throttle object for a user, if necessary (owners are excluded).
+     * @param string  $userID
+     * @internal
+     */
+    final function updateThrottle(string $userID) {
+        if(empty($this->throttling) || $this->client->isOwner($userID)) {
+            return;
+        }
+        
+        if(!$this->throttles->has($userID)) {
+            $this->throttles->set($userID, array(
+                'start' => \time(),
+                'usages' => 1,
+                'timeout' => $this->client->addTimer($this->throttling['duration'], function () use ($userID) {
+                    $this->throttles->delete($userID);
+                })
+            ));
+            
+            return;
+        }
+        
+        $throttle = $this->throttles->get($userID);
+        $throttle['usages']++;
+        
+        $this->throttles->set($userID, $throttle);
     }
     
     /**

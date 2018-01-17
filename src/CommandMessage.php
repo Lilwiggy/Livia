@@ -121,6 +121,11 @@ class CommandMessage {
             $perms = $this->command->hasPermission($this);
             if($perms === false || \is_string($perms)) {
                 $this->client->emit('commandBlocked', $this, 'permission');
+                
+                if($this->patternMatches !== null && !((bool) $this->client->getOption('commandBlockedMessagePattern', true))) {
+                    return $resolve();
+                }
+                
                 if($perms === false) {
                     $perms = 'You do not have permission to use the `'.$this->command->name.'` command.';
                 }
@@ -143,6 +148,10 @@ class CommandMessage {
                 if(\count($missing) > 0) {
                     $this->client->emit('commandBlocked', $this, 'clientPermissions');
                     
+                    if($this->patternMatches !== null && !((bool) $this->client->getOption('commandBlockedMessagePattern', true))) {
+                        return $resolve();
+                    }
+                    
                     if(\count($missing) === 1) {
                         $msg = 'I need the permissions `'.$missing[0].'` permission for the `'.$this->command->name.'` command to work.';
                     } else {
@@ -158,10 +167,14 @@ class CommandMessage {
             }
             
             // Throttle the command
-            $throttle = &$this->command->throttle($this->message->author->id);
+            $throttle = $this->command->throttle($this->message->author->id);
             if($throttle && ($throttle['usages'] + 1) > ($this->command->throttling['usages'])) {
                 $remaining = $throttle['start'] + $this->command->throttling['duration'] - \time();
                 $this->client->emit('commandBlocked', $this, 'throttling');
+                
+                if($this->patternMatches !== null && !((bool) $this->client->getOption('commandThrottlingMessagePattern', true))) {
+                    return $resolve();
+                }
                 
                 $this->message->reply('You may not use the `'.$this->command->name.'` command again for another '.$remaining.' seconds.')->then($resolve, $reject);
                 return;
@@ -194,7 +207,7 @@ class CommandMessage {
             
             // Run the command
             if($throttle) {
-                $throttle['usages']++;
+                $this->command->updateThrottle($this->message->author->id);
             }
             
             $typingCount = $this->message->channel->typingCount();
