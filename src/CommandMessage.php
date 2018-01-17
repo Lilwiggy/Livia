@@ -226,8 +226,8 @@ class CommandMessage {
                 $this->client->emit('commandRun', $this->command, $promise, $this, $args, ($this->patternMatches !== null));
                 
                 return $promise->then(function($response) {
-                    if(!($response instanceof \CharlotteDunois\Yasmin\Models\Message || \is_array($response) || $response === null)) {
-                        throw new \RuntimeException('Command '.$this->command->name.'\'s run() resolved with an unknown type ('.\gettype($response).'). Command run methods must return a Promise that resolve with a Message, an array of Messages, or null.');
+                    if(!($response instanceof \CharlotteDunois\Yasmin\Models\Message || $response instanceof \CharlotteDunois\Yasmin\Utils\Collection || \is_array($response) || $response === null)) {
+                        throw new \RuntimeException('Command '.$this->command->name.'\'s run() resolved with an unknown type ('.\gettype($response).'). Command run methods must return a Promise that resolve with a Message, an array of Messages, a Collection of Messages, or null.');
                     }
                     
                     if(!\is_array($response)) {
